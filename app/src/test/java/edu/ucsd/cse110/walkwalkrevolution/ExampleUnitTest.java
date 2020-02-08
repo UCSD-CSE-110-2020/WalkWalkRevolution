@@ -1,4 +1,4 @@
-package com.example.walkwalkrevolution;
+package edu.ucsd.cse110.walkwalkrevolution;
 
 import org.junit.Test;
 
