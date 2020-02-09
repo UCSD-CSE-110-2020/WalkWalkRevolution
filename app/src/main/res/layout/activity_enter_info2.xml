@@ -18,7 +18,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.286" />
+        app:layout_constraintVertical_bias="0.37" />
 
     <Button
         android:id="@+id/bt_gotoRoute"
@@ -62,8 +62,8 @@
 
     <EditText
         android:id="@+id/editText5"
-        android:layout_width="325dp"
-        android:layout_height="310dp"
+        android:layout_width="332dp"
+        android:layout_height="207dp"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
