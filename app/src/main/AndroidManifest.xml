@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="edu.ucsd.cse110.walkwalkrevolution.MainActivity">
+        <activity android:name=".RoutesActivity"></activity>
+        <activity android:name=".NewRouteActivity" />
+        <activity android:name=".ConfirmDeleteActivity" />
+        <activity android:name=".EnterInfo2Activity" />
+        <activity android:name=".EnterInfo1Activity" />
+        <activity android:name=".CompleteRunActivity" />
+        <activity android:name=".CurrentRunActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
