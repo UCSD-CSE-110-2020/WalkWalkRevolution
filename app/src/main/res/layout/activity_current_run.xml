@@ -118,7 +118,7 @@
         app:layout_constraintVertical_bias="0.249" />
 
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textGoesHere"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00:12"
@@ -130,6 +130,11 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.308" />
+
+    <Chronometer android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/chrono"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/textView13"
