@@ -33,7 +33,7 @@ public class RoutesActivity extends AppCompatActivity {
                 gotoNewRoute();
             }
         });
-        
+
     }
 
     public void gotoMainMenu() {
