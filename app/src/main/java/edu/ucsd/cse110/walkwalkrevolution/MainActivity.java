@@ -1,20 +1,32 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import edu.ucsd.cse110.walkwalkrevolution.R;
+import androidx.appcompat.app.AppCompatActivity;
+
+import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
+import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessServiceFactory;
+import edu.ucsd.cse110.walkwalkrevolution.fitness.GoogleFitAdapter;
 
 public class MainActivity extends AppCompatActivity {
+
+    private String fitnessServiceKey = "GOOGLE_FIT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
+            @Override
+            public FitnessService create(StepCountActivity stepCountActivity) {
+                return new GoogleFitAdapter(stepCountActivity);
+            }
+        });
+        launchStepCountActivity();
 
         Button bt_newRun = (Button) findViewById(R.id.bt_startNewRun);
 
@@ -35,7 +47,12 @@ public class MainActivity extends AppCompatActivity {
                 gotoRoutes();
             }
         });
+    }
 
+    public void launchStepCountActivity() {
+        Intent intent = new Intent(this, StepCountActivity.class);
+        intent.putExtra(StepCountActivity.FITNESS_SERVICE_KEY, fitnessServiceKey);
+        startActivity(intent);
     }
 
     public void gotoNewRun() {

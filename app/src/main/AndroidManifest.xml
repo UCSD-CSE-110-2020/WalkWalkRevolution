@@ -16,6 +16,7 @@
         <activity android:name=".EnterInfo1Activity" />
         <activity android:name=".CompleteRunActivity" />
         <activity android:name=".CurrentRunActivity" />
+        <activity android:name=".StepCountActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
