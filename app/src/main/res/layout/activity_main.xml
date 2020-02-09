@@ -50,10 +50,10 @@
         app:layout_constraintVertical_bias="0.266" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/textSteps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1234"
+        android:text="0"
         android:textColor="#8BC34A"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
