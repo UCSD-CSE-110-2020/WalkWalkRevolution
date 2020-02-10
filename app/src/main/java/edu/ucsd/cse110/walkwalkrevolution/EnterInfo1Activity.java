@@ -34,6 +34,10 @@ public class EnterInfo1Activity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_info1);
 
+
+        // create new route
+        Route newRoute;
+
         // drop down features selection
         sp_trackLoop = (Spinner)findViewById(R.id.sp_trackLoop);
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
@@ -145,6 +149,8 @@ public class EnterInfo1Activity extends AppCompatActivity{
             }
         });
 
+
+        
     }
 
 
