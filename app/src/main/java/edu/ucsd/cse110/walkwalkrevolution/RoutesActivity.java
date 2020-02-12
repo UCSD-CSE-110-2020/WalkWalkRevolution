@@ -21,20 +21,19 @@ public class RoutesActivity extends AppCompatActivity {
 
         Button bt_mainMenu = (Button) findViewById(R.id.bt_gotoMainMenu);
 
-        
+        // logging for current route data
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
-        SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
-        Log.d("myTag","name " + tempRoute.getString("name", ""));
-        Log.d("myTag","startingPoint " + tempRoute.getString("startingPoint", ""));
-        Log.d("myTag","steps " + tempRoute.getString("steps", ""));
-        Log.d("myTag","distance " + tempRoute.getString("distance", ""));
-        Log.d("myTag","notes " + tempRoute.getString("notes", ""));
-        Log.d("myTag","isFavorite " + tempRoute.getString("isFavorite", ""));
-        Log.d("myTag","style " + tempRoute.getString("style", ""));
-        Log.d("myTag","terrain " + tempRoute.getString("terrain", ""));
-        Log.d("myTag","enviroment " + tempRoute.getString("environment", ""));
-        Log.d("myTag","surface " + tempRoute.getString("surface", ""));
-        Log.d("myTag","difficulty "  + tempRoute.getString("difficulty", ""));
+        Log.d("route","name " + tempRoute.getString("name", ""));
+        Log.d("route","startingPoint " + tempRoute.getString("startingPoint", ""));
+        Log.d("route","steps " + tempRoute.getString("steps", ""));
+        Log.d("route","distance " + tempRoute.getString("distance", ""));
+        Log.d("route","notes " + tempRoute.getString("notes", ""));
+        Log.d("route","isFavorite " + tempRoute.getString("isFavorite", ""));
+        Log.d("route","style " + tempRoute.getString("style", ""));
+        Log.d("route","terrain " + tempRoute.getString("terrain", ""));
+        Log.d("route","enviroment " + tempRoute.getString("environment", ""));
+        Log.d("route","surface " + tempRoute.getString("surface", ""));
+        Log.d("route","difficulty "  + tempRoute.getString("difficulty", ""));
 
 
         // check if user pressed main menu

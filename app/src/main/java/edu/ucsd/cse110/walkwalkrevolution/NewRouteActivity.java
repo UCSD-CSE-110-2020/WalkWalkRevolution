@@ -16,19 +16,19 @@ public class NewRouteActivity extends AppCompatActivity {
 
     //drop down features selection
     private Spinner sp_trackLoop;
-    private static final String[] style = {"loop", "out and back"};
+    private static final String[] style = {"LOOP", "OUT AND BACK"};
 
     private Spinner sp_trackFlat;
-    private static final String[] terrain = {"flat", "hilly"};
+    private static final String[] terrain = {"FLAT", "HILLY"};
 
     private Spinner sp_trackStreets;
-    private static final String[] environment = {"streets", "trail"};
+    private static final String[] environment = {"STREETS", "TRAIL"};
 
     private Spinner sp_trackEven;
-    private static final String[] surface = {"even surface", "uneven surface"};
+    private static final String[] surface = {"EVEN SURFACE", "UNEVEN SURFACE"};
 
     private Spinner sp_trackDifficulty;
-    private static final String[] difficulty = {"moderate", "easy", "difficult"};
+    private static final String[] difficulty = {"MODERATE", "EASY", "DIFFICULT"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
