@@ -21,8 +21,8 @@ public class Route {
      * Constructors
      */
     Route() {
-        name = "error name";
-        startingPoint = "error starting point";
+        name = "ERROR NAME";
+        startingPoint = "ERROR STARTING POINT";
         steps = 0;
         distance = 0;
         notes = "error";
@@ -35,7 +35,7 @@ public class Route {
         this.startingPoint = startingPoint;
         steps = 0;
         distance = 0;
-        notes = "error";
+        notes = "ERROR";
         features = new String[5];
         isFavorite = false;
     }
@@ -91,6 +91,7 @@ public class Route {
     /**
      * Get / Set Methods For Other Features
      */
+
     public void setFeatures(String newPath, String newTerrain,
                             String newEnviroment, String newSurface,
                             String newDifficulty) {
