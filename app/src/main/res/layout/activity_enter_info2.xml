@@ -61,7 +61,7 @@
         app:layout_constraintVertical_bias="0.157" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/notesText"
         android:layout_width="332dp"
         android:layout_height="207dp"
         android:ems="10"
@@ -75,10 +75,10 @@
         app:layout_constraintVertical_bias="0.586" />
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/markFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CheckBox"
+        android:text="Favorite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.085"
