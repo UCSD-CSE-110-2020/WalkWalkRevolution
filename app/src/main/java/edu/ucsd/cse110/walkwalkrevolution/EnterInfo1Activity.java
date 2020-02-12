@@ -182,8 +182,8 @@ public class EnterInfo1Activity extends AppCompatActivity{
         EditText eName = (EditText) findViewById(R.id.enterName);
         EditText eStartingPoint = (EditText) findViewById(R.id.enterStartingPoint);
         //EditText textSteps = (EditText) findViewById(R.id.textSteps);
-        tempRouteEdit.putString("steps", "6543");
-        tempRouteEdit.putString("distance", "1.23");
+        tempRouteEdit.putString("steps", "0");
+        tempRouteEdit.putString("distance", "0");
         tempRouteEdit.putString("name", eName.getText().toString());
         tempRouteEdit.putString("startingPoint", eStartingPoint.getText().toString());
         tempRouteEdit.apply();

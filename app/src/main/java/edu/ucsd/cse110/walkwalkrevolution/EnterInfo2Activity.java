@@ -72,9 +72,9 @@ public class EnterInfo2Activity extends AppCompatActivity {
         Route newRoute = new Route();
         newRoute.setName(tempRoute.getString("name", ""));
         newRoute.setStartingPoint(tempRoute.getString("startingPoint", ""));
-        int numSteps = Integer.parseInt(tempRoute.getString("steps", ""));
+        int numSteps = Integer.parseInt(tempRoute.getString("steps", "0"));
         newRoute.setSteps(numSteps);
-        float distance = Float.parseFloat(tempRoute.getString("distance", ""));
+        float distance = Float.parseFloat(tempRoute.getString("distance", "0"));
         newRoute.setDistance(distance);
         newRoute.setNotes(tempRoute.getString("notes", ""));
         newRoute.setFavorite(favorite.isChecked());
