@@ -17,14 +17,7 @@ public class EnterInfo2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_enter_info2);
 
-        SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
-        SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
 
-        EditText notes = (EditText) findViewById(R.id.notesText);
-        tempRouteEdit.putString("notes", notes.getText().toString());
-
-        CheckBox favorite = (CheckBox) findViewById(R.id.markFavorite);
-        tempRouteEdit.putString("isFavorite", favorite.get)
 
         Button bt_route = (Button) findViewById(R.id.bt_gotoRoute);
 
@@ -32,6 +25,7 @@ public class EnterInfo2Activity extends AppCompatActivity {
         bt_route.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                save();
                 gotoRoute();
             }
         });
@@ -40,5 +34,22 @@ public class EnterInfo2Activity extends AppCompatActivity {
     public void gotoRoute() {
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
+    }
+
+    private void save() {
+        SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
+        SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
+
+        EditText notes = (EditText) findViewById(R.id.notesText);
+        tempRouteEdit.putString("notes", notes.getText().toString());
+
+        CheckBox favorite = (CheckBox) findViewById(R.id.markFavorite);
+
+        if(favorite.isChecked())
+            tempRouteEdit.putString("isFavorite", "true");
+        else
+            tempRouteEdit.putString("isFavorite", "false");
+
+        tempRouteEdit.apply();
     }
 }

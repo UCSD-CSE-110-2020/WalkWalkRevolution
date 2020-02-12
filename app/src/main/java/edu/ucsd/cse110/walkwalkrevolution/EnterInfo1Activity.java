@@ -55,11 +55,13 @@ public class EnterInfo1Activity extends AppCompatActivity{
                 String valueSelected = style[position];
                 //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("style", valueSelected);
+                tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                tempRouteEdit.putString("style", style[0]);
+                tempRouteEdit.apply();
             }
         });
 
@@ -76,11 +78,13 @@ public class EnterInfo1Activity extends AppCompatActivity{
                 String valueSelected = terrain[position];
                 //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("terrain", valueSelected);
+                tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                tempRouteEdit.putString("terrain", terrain[0]);
+                tempRouteEdit.apply();
             }
         });
 
@@ -97,11 +101,13 @@ public class EnterInfo1Activity extends AppCompatActivity{
                 String valueSelected = environment[position];
                 //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("environment", valueSelected);
+                tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                tempRouteEdit.putString("environment", environment[0]);
+                tempRouteEdit.apply();
             }
         });
 
@@ -118,11 +124,13 @@ public class EnterInfo1Activity extends AppCompatActivity{
                 String valueSelected = surface[position];
                 //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("surface", valueSelected);
+                tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                tempRouteEdit.putString("surface", surface[0]);
+                tempRouteEdit.apply();
             }
         });
 
@@ -138,23 +146,17 @@ public class EnterInfo1Activity extends AppCompatActivity{
                 String valueSelected = difficulty[position];
                 //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("difficulty", valueSelected);
+                tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                tempRouteEdit.putString("difficulty", difficulty[0]);
+                tempRouteEdit.apply();
             }
         });
 
-        // get route name / starting point
-        EditText eName = (EditText) findViewById(R.id.enterName);
-        EditText eStartingPoint = (EditText) findViewById(R.id.enterStartingPoint);
-        //EditText textSteps = (EditText) findViewById(R.id.textSteps);
-        tempRouteEdit.putString("steps", "6543");
-        tempRouteEdit.putString("distance", "1.23");
-        tempRouteEdit.putString("name", eName.getText().toString());
-        tempRouteEdit.putString("startingPoint", eStartingPoint.getText().toString());
-        tempRouteEdit.apply();
+
 
         Button bt_enterInfo2 = (Button) findViewById(R.id.bt_gotoEnterInfo2);
 
@@ -162,7 +164,7 @@ public class EnterInfo1Activity extends AppCompatActivity{
         bt_enterInfo2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                save();
                 gotoEnterInfo2();
 
             }
@@ -173,7 +175,19 @@ public class EnterInfo1Activity extends AppCompatActivity{
     }
 
 
-
+    public void save() {
+        SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
+        SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
+        // get route name / starting point
+        EditText eName = (EditText) findViewById(R.id.enterName);
+        EditText eStartingPoint = (EditText) findViewById(R.id.enterStartingPoint);
+        //EditText textSteps = (EditText) findViewById(R.id.textSteps);
+        tempRouteEdit.putString("steps", "6543");
+        tempRouteEdit.putString("distance", "1.23");
+        tempRouteEdit.putString("name", eName.getText().toString());
+        tempRouteEdit.putString("startingPoint", eStartingPoint.getText().toString());
+        tempRouteEdit.apply();
+    }
 
     public void gotoEnterInfo2() {
         Intent intent = new Intent(this, EnterInfo2Activity.class);

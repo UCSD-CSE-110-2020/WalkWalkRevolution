@@ -3,7 +3,9 @@ package edu.ucsd.cse110.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,6 +20,22 @@ public class RoutesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_routes);
 
         Button bt_mainMenu = (Button) findViewById(R.id.bt_gotoMainMenu);
+
+        
+        SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
+        SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
+        Log.d("myTag","name " + tempRoute.getString("name", ""));
+        Log.d("myTag","startingPoint " + tempRoute.getString("startingPoint", ""));
+        Log.d("myTag","steps " + tempRoute.getString("steps", ""));
+        Log.d("myTag","distance " + tempRoute.getString("distance", ""));
+        Log.d("myTag","notes " + tempRoute.getString("notes", ""));
+        Log.d("myTag","isFavorite " + tempRoute.getString("isFavorite", ""));
+        Log.d("myTag","style " + tempRoute.getString("style", ""));
+        Log.d("myTag","terrain " + tempRoute.getString("terrain", ""));
+        Log.d("myTag","enviroment " + tempRoute.getString("environment", ""));
+        Log.d("myTag","surface " + tempRoute.getString("surface", ""));
+        Log.d("myTag","difficulty "  + tempRoute.getString("difficulty", ""));
+
 
         // check if user pressed main menu
         bt_mainMenu.setOnClickListener(new View.OnClickListener() {
