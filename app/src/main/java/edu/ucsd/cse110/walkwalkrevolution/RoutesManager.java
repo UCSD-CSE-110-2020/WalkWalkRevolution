@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -30,16 +31,20 @@ public class RoutesManager {
     }
 
     // load saved routes
-    public void loadAll() {
+    public ArrayList<String[]> loadAll() {
         Map<String, ?> routeMap = savedRoutes.getAll();
+        ArrayList<String[]> loadList = new ArrayList<String[]>();
         for (Map.Entry<String, ?> entry : routeMap.entrySet()) {
-            loadRoute((Map.Entry<String, Set<String>>)entry);
+            loadList.add(loadRoute((Map.Entry<String, Set<String>>)entry));
         }
+        return loadList;
     }
 
-    public void loadRoute(Map.Entry<String, Set<String>> route) {
+    public String[] loadRoute(Map.Entry<String, Set<String>> route) {
         String name = route.getKey();
-        Set<String> values = route.getValue();
+        String[] routeValues = (String[]) route.getValue().toArray();
+        String routeData[] = {name, routeValues[1], routeValues[2]};
+        return routeData;
     }
 
     // add a new route

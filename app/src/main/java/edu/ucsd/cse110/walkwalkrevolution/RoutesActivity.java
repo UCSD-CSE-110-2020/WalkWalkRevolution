@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public class RoutesActivity extends AppCompatActivity {
@@ -38,11 +39,15 @@ public class RoutesActivity extends AppCompatActivity {
 
         // Setup RouteManager
         RoutesManager manager = new RoutesManager(this);
-
+        // Load Route List
+        loadRouteList(manager.loadAll());
     }
 
-    public void createNewRoute(String name, Set<String> values) {
-        // Async Task?
+    public void loadRouteList(ArrayList<String[]> loadList) {
+        // Async Task? I think so
+        for (String[] routeValue : loadList) {
+
+        }
     }
 
     public void gotoMainMenu() {
