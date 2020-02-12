@@ -41,12 +41,15 @@ public class RoutesActivity extends AppCompatActivity {
 
         // Setup RouteManager
         RoutesManager manager = new RoutesManager(this);
+
+        // Route Testing (Alphebetical Order)
         manager.clearRoutes();
-        //manager.addRoute(new Route());
-        //manager.addRoute(new Route("kms", "londong"));
+        manager.addRoute(new Route());
+        manager.addRoute(new Route("kms", "londong"));
         manager.addRoute(new Route("wt00000f", "ok"));
         manager.addRoute(new Route("zebra", "ok"));
-        //manager.addRoute(new Route("", "ok"));
+        manager.addRoute(new Route("aaaa", "ok"));
+
         // Load Route List
         ListView list = (ListView) findViewById(R.id.routeList);
 
