@@ -171,7 +171,7 @@ public class EnterInfo1Activity extends AppCompatActivity{
         });
 
 
-        
+
     }
 
 
