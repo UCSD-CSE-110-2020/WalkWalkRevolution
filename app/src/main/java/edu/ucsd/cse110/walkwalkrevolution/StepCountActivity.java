@@ -39,8 +39,11 @@ public class StepCountActivity extends AppCompatActivity {
 
         fitnessService.setup();
 
-        task = new StepCountUpdateAsyncTask();
-        task.execute();
+        if (task == null) {
+            //task = new StepCountUpdateAsyncTask();
+            //task.execute();
+        }
+        fitnessService.updateStepCount();
     }
 
     @Override
