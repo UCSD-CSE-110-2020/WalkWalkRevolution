@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">Walk Walk Revolution</string>
     <string name="title_activity_routes">RoutesActivity</string>
+
+    <!-- Constants for storage of route values -->
+    <string name="steps_tag">_steps</string>
+    <string name="distance_tag">_distance</string>
+    <string name="path_tag">_path</string>
+    <string name="terrain_tag">_terrain</string>
+    <string name="enviroment_tag">_enviroment</string>
+    <string name="surface_tag">_surface</string>
+    <string name="difficulty_tag">_difficulty</string>
+    <string name="notes_tag">_notes</string>
+    <string name="favorite_tag">_favorite</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
