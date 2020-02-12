@@ -100,10 +100,10 @@ public class Route {
         return notes;
     }
 
-    public void setFeatures(String newNotes, String newStyle, String newTerrain,
+    public void setFeatures(String newPath, String newTerrain,
                             String newEnviroment, String newSurface,
                             String newDifficulty) {
-        features[0] = newStyle;
+        features[0] = newPath;
         features[1] = newTerrain;
         features[2] = newEnviroment;
         features[3] = newSurface;

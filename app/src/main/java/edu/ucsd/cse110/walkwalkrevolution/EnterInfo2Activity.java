@@ -78,7 +78,7 @@ public class EnterInfo2Activity extends AppCompatActivity {
         newRoute.setDistance(distance);
         newRoute.setNotes(tempRoute.getString("notes", ""));
         newRoute.setFavorite(favorite.isChecked());
-        newRoute.setFeatures(tempRoute.getString("notes", ""), tempRoute.getString("style", ""),tempRoute.getString("terrain", ""),
+        newRoute.setFeatures(tempRoute.getString("style", ""),tempRoute.getString("terrain", ""),
                 tempRoute.getString("environment", ""), tempRoute.getString("surface", ""), tempRoute.getString("difficulty", ""));
 
         // save new route
