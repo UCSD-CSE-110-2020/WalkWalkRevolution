@@ -1,24 +1,19 @@
 package edu.ucsd.cse110.walkwalkrevolution;
+import java.io.Serializable;
 
-public class Walk {
+public class Walk implements Serializable {
     private String totalTime;
-    private int speed;
     private int steps;
     private double distance;
 
-    public Walk(String t, int s, int st, double dis) {
+    public Walk(String t, int st, double dis) {
         totalTime = t;
-        speed = s;
         steps = st;
         distance = dis;
     }
 
     public void setTotalTime(String t) {
         totalTime = t;
-    }
-
-    public void setSpeed(int s) {
-        speed = s;
     }
 
     public void setSteps(int st) {
@@ -31,10 +26,6 @@ public class Walk {
 
     public String getTotalTime() {
         return this.totalTime;
-    }
-
-    public int getSpeed() {
-        return this.speed;
     }
 
     public int getSteps() {
