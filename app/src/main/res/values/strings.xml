@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">Walk Walk Revolution</string>
     <string name="title_activity_routes">RoutesActivity</string>
+
+    <!-- String Constants dialog_height_prompt-->
     <string name="welcome">Welcome</string>
     <string name="height">Please Input Your Height (in cm)</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
