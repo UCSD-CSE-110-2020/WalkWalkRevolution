@@ -4,7 +4,7 @@
 
     <!-- String Constants dialog_height_prompt-->
     <string name="welcome">Welcome</string>
-    <string name="height">Please Input Your Height (in cm)</string>
+    <string name="height">Please Input Your Height (Inches)</string>
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
 
