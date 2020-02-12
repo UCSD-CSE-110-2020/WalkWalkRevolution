@@ -13,9 +13,8 @@ public class Route {
     private float distance;
 
     // Additional Features
-    private String notes;
-    // loop vs out-back
     private String features[];
+    private String notes;
     private boolean isFavorite;
 
     /**
@@ -92,18 +91,10 @@ public class Route {
     /**
      * Get / Set Methods For Other Features
      */
-    public void setNotes(String newNotes) {
-        notes = newNotes;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setFeatures(String newNotes, String newStyle, String newTerrain,
+    public void setFeatures(String newPath, String newTerrain,
                             String newEnviroment, String newSurface,
                             String newDifficulty) {
-        features[0] = newStyle;
+        features[0] = newPath;
         features[1] = newTerrain;
         features[2] = newEnviroment;
         features[3] = newSurface;
@@ -112,6 +103,14 @@ public class Route {
 
     public String[] getFeatures() {
         return features;
+    }
+
+    public void setNotes(String newNotes) {
+        notes = newNotes;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     public void setFavorite(boolean bool) {
