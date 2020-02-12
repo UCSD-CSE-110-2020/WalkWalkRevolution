@@ -7,6 +7,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -16,27 +20,53 @@ public class RoutesManager {
 
     private Context context;
     private ArrayList<Route> routes;
-    SharedPreferences sharedPreferences;
+    SharedPreferences savedRoutes;
+    SharedPreferences.Editor routeEditor;
 
-    RoutesManager(Context con) {
-        context = con;
-        sharedPreferences = context.getSharedPreferences("routes", MODE_PRIVATE);
+    RoutesManager(Context currentContext) {
+        context = currentContext;
+        savedRoutes = context.getSharedPreferences("routes", MODE_PRIVATE);
+        routeEditor = savedRoutes.edit();
     }
 
-    // load routes from user preferences
+    // load saved routes
     public void loadAll() {
-        String numOfRoutesStr = sharedPreferences.getString("numOfRoutes", "0");
+        Map<String, ?> routeMap = savedRoutes.getAll();
+        for (Map.Entry<String, ?> entry : routeMap.entrySet()) {
+            loadRoute((Map.Entry<String, Set<String>>)entry);
+        }
+    }
+
+    public void loadRoute(Map.Entry<String, Set<String>> route) {
+        String name = route.getKey();
+        Set<String> values = route.getValue();
     }
 
     // add a new route
-    public void newRoute() {
+    public void addRoute(Route newRoute) {
+        String routeFeatures[] = {
+                newRoute.getStartingPoint(),
+                Integer.toString(newRoute.getSteps()),
+                Float.toString(newRoute.getDistance()),
+                newRoute.getFeatures()[0],
+                newRoute.getFeatures()[1],
+                newRoute.getFeatures()[2],
+                newRoute.getFeatures()[3],
+                newRoute.getFeatures()[4],
+                newRoute.getNotes(),
+                Boolean.toString(newRoute.getFavorite()
+                )};
 
+        Set<String> routeSet = new HashSet<>(Arrays.asList(routeFeatures));
+        routeEditor.putStringSet(newRoute.getName(), routeSet);
+
+        routeEditor.apply();
     }
 
-    public void saveAll(){
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("test1", "1");
-        editor.putString("test2", "2");
-        editor.apply();
+    // delete a route
+    public void deleteRoute(String name) {
+        routeEditor.remove(name);
+        routeEditor.apply();
     }
+
 }

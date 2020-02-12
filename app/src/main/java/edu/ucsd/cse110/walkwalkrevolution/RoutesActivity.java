@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Set;
+
 public class RoutesActivity extends AppCompatActivity {
 
     @Override
@@ -34,15 +36,22 @@ public class RoutesActivity extends AppCompatActivity {
             }
         });
 
+        // Setup RouteManager
+        RoutesManager manager = new RoutesManager(this);
+
+    }
+
+    public void createNewRoute(String name, Set<String> values) {
+        // Async Task?
     }
 
     public void gotoMainMenu() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Intent intentMainMenu = new Intent(this, MainActivity.class);
+        startActivity(intentMainMenu);
     }
 
     public void gotoNewRoute() {
-        Intent intent = new Intent(this, NewRouteActivity.class);
-        startActivity(intent);
+        Intent intentNewRoute = new Intent(this, NewRouteActivity.class);
+        startActivity(intentNewRoute);
     }
 }
