@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        showHeightDialog();
 
         FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -79,5 +82,18 @@ public class HomeActivity extends AppCompatActivity {
         Intent intent = new Intent(this, RoutesActivity.class);
         finish();
         startActivity(intent);
+    }
+
+    public void showHeightDialog() {
+        // Create an instance of the dialog fragment and show it
+        HeightPromptDialog heightPrompt = new HeightPromptDialog();
+
+        SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
+        float savedHeight = savedHeightPref.getFloat("user_height", -1);
+        boolean useHeight = savedHeightPref.getBoolean("use_height", true);
+
+        if (savedHeight <= 0 && useHeight) {
+            heightPrompt.show(getSupportFragmentManager(), "Height");
+        }
     }
 }
