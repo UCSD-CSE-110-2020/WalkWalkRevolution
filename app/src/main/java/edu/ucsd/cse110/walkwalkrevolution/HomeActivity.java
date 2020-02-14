@@ -11,14 +11,14 @@ import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessServiceFactory;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.GoogleFitAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private String fitnessServiceKey = "GOOGLE_FIT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         FitnessServiceFactory.put(fitnessServiceKey, new FitnessServiceFactory.BluePrint() {
             @Override
@@ -26,9 +26,9 @@ public class MainActivity extends AppCompatActivity {
                 return new GoogleFitAdapter(stepCountActivity);
             }
         });
-        launchStepCountActivity();
+        //launchStepCountActivity();
 
-        Button bt_newRun = (Button) findViewById(R.id.bt_startNewRun);
+        Button bt_newRun = (Button) findViewById(R.id.bt_startNewWalk);
 
         // check if user pressed start new run button
         bt_newRun.setOnClickListener(new View.OnClickListener() {
@@ -38,13 +38,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button bt_routes = (Button) findViewById(R.id.bt_gotoRoute2);
+        Button bt_routes = (Button) findViewById(R.id.bt_routes);
 
         // check if user pressed routes button
         bt_routes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gotoRoutes();
+            }
+        });
+
+
+        Button bt_mock = (Button) findViewById(R.id.bt_mock);
+        // support mocking
+        bt_mock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoMock();
             }
         });
     }
@@ -56,12 +66,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoNewRun() {
-        Intent intent = new Intent(this, CurrentRunActivity.class);
+        Intent intent = new Intent(this, CurrentWalkActivity.class);
+        startActivity(intent);
+    }
+
+    public void gotoMock() {
+        Intent intent = new Intent(this, RouteNewActivity.class);
         startActivity(intent);
     }
 
     public void gotoRoutes() {
         Intent intent = new Intent(this, RoutesActivity.class);
+        finish();
         startActivity(intent);
     }
 }

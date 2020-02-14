@@ -61,7 +61,7 @@ public class RoutesManager {
                 savedRoutesFeatures.getString(
                         route.getKey() + R.string.terrain_tag, ""),
                 savedRoutesFeatures.getString(
-                        route.getKey() + R.string.enviroment_tag, ""),
+                        route.getKey() + R.string.environment_tag, ""),
                 savedRoutesFeatures.getString(
                         route.getKey() + R.string.surface_tag, ""),
                 savedRoutesFeatures.getString(
@@ -103,7 +103,7 @@ public class RoutesManager {
         String terrain = newRoute.getFeatures()[1];
         featureRouteEditor.putString(newRoute.getName() + R.string.terrain_tag, terrain);
         String enviroment = newRoute.getFeatures()[2];
-        featureRouteEditor.putString(newRoute.getName() + R.string.enviroment_tag, enviroment);
+        featureRouteEditor.putString(newRoute.getName() + R.string.environment_tag, enviroment);
         String surface = newRoute.getFeatures()[3];
         featureRouteEditor.putString(newRoute.getName() + R.string.surface_tag, surface);
         String difficulty = newRoute.getFeatures()[4];
@@ -127,7 +127,7 @@ public class RoutesManager {
         featureRouteEditor.remove(name + R.string.distance_tag);
         featureRouteEditor.remove(name + R.string.path_tag);
         featureRouteEditor.remove(name + R.string.terrain_tag);
-        featureRouteEditor.remove(name + R.string.enviroment_tag);
+        featureRouteEditor.remove(name + R.string.environment_tag);
         featureRouteEditor.remove(name + R.string.surface_tag);
         featureRouteEditor.remove(name + R.string.difficulty_tag);
         featureRouteEditor.remove(name + R.string.notes_tag);
@@ -137,12 +137,11 @@ public class RoutesManager {
         featureRouteEditor.apply();
     }
 
-    // delete all route
+    // delete all routes
     public void clearRoutes() {
         infoRouteEditor.clear();
         featureRouteEditor.clear();
         infoRouteEditor.apply();
         featureRouteEditor.apply();
     }
-
 }

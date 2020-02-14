@@ -13,175 +13,185 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class EnterInfo1Activity extends AppCompatActivity{
+public class RouteNewActivity extends AppCompatActivity{
 
     //drop down features selection
-    private Spinner sp_trackLoop;
-    private static final String[] style = {"LOOP", "OUT AND BACK"};
+    private Spinner sp_routeStyle;
+    private static final String[] style = {"Style:", "Loop", "Out and Back"};
 
-    private Spinner sp_trackFlat;
-    private static final String[] terrain = {"FLAT", "HILLY"};
+    private Spinner sp_routeTerrain;
+    private static final String[] terrain = {"Terrain:", "Flat", "Hilly"};
 
-    private Spinner sp_trackStreets;
-    private static final String[] environment = {"STREETS", "TRAIL"};
+    private Spinner sp_routeEnvironment;
+    private static final String[] environment = {"Environment:", "Streets", "Trail"};
 
-    private Spinner sp_trackEven;
-    private static final String[] surface = {"EVEN SURFACE", "UNEVEN SURFACE"};
+    private Spinner sp_routeSurface;
+    private static final String[] surface = {"Surface:", "Even Surface", "Uneven Surface"};
 
-    private Spinner sp_trackDifficulty;
-    private static final String[] difficulty = {"MODERATE", "EASY", "DIFFICULT"};
+    private Spinner sp_routeDifficulty;
+    private static final String[] difficulty = {"Difficulty:", "Easy", "Moderate", "Difficult"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enter_info1);
-
-
-
+        setContentView(R.layout.activity_route_new);
 
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
         SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
 
         // drop down features selection
-        sp_trackLoop = (Spinner)findViewById(R.id.sp_trackLoop);
+        sp_routeStyle = (Spinner) findViewById(R.id.sp_routeStyle);
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,style);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp_trackLoop.setAdapter(adapter);
-        sp_trackLoop.setSelection(0); //set default selection to 0
-        sp_trackLoop.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_routeStyle.setAdapter(adapter);
+        sp_routeStyle.setSelection(0); //set default selection to 0
+        sp_routeStyle.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String valueSelected = style[position];
-                //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
+                String valueSelected = "";
+                if (position != 0) {
+                    valueSelected = style[position];
+                }
+                //Toast.makeText(RouteNewActivity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("style", valueSelected);
                 tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                tempRouteEdit.putString("style", style[0]);
+                tempRouteEdit.putString("style", "");
                 tempRouteEdit.apply();
             }
         });
 
 
-        sp_trackFlat = (Spinner)findViewById(R.id.sp_trackFlat);
+        sp_routeTerrain = (Spinner) findViewById(R.id.sp_routeTerrain);
         ArrayAdapter<String>adapter2 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,terrain);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp_trackFlat.setAdapter(adapter2);
-        sp_trackFlat.setSelection(0); //set default selection to 0
-        sp_trackFlat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_routeTerrain.setAdapter(adapter2);
+        sp_routeTerrain.setSelection(0); //set default selection to 0
+        sp_routeTerrain.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String valueSelected = terrain[position];
-                //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
+                String valueSelected = "";
+                if (position != 0) {
+                    valueSelected = terrain[position];
+                }
+                //Toast.makeText(RouteNewActivity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("terrain", valueSelected);
                 tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                tempRouteEdit.putString("terrain", terrain[0]);
+                tempRouteEdit.putString("terrain", "");
                 tempRouteEdit.apply();
             }
         });
 
 
-        sp_trackStreets = (Spinner)findViewById(R.id.sp_trackStreets);
+        sp_routeEnvironment = (Spinner) findViewById(R.id.sp_routeEnvironment);
         ArrayAdapter<String>adapter3 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,environment);
         adapter3.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp_trackStreets.setAdapter(adapter3);
-        sp_trackStreets.setSelection(0); //set default selection to 0
-        sp_trackStreets.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_routeEnvironment.setAdapter(adapter3);
+        sp_routeEnvironment.setSelection(0); //set default selection to 0
+        sp_routeEnvironment.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String valueSelected = environment[position];
-                //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
+                String valueSelected = "";
+                if (position != 0) {
+                    valueSelected = environment[position];
+                }
+                //Toast.makeText(RouteNewActivity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("environment", valueSelected);
                 tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                tempRouteEdit.putString("environment", environment[0]);
+                tempRouteEdit.putString("environment", "");
                 tempRouteEdit.apply();
             }
         });
 
 
-        sp_trackEven = (Spinner)findViewById(R.id.sp_trackEven);
+        sp_routeSurface = (Spinner) findViewById(R.id.sp_routeSurface);
         ArrayAdapter<String>adapter4 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,surface);
         adapter4.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp_trackEven.setAdapter(adapter4);
-        sp_trackEven.setSelection(0); //set default selection to 0
-        sp_trackEven.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_routeSurface.setAdapter(adapter4);
+        sp_routeSurface.setSelection(0); //set default selection to 0
+        sp_routeSurface.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String valueSelected = surface[position];
-                //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
+                String valueSelected = "";
+                if (position != 0) {
+                    valueSelected = surface[position];
+                }
+                //Toast.makeText(RouteNewActivity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("surface", valueSelected);
                 tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                tempRouteEdit.putString("surface", surface[0]);
+                tempRouteEdit.putString("surface", "");
                 tempRouteEdit.apply();
             }
         });
 
-        sp_trackDifficulty = (Spinner)findViewById(R.id.sp_trackDifficulty);
+        sp_routeDifficulty = (Spinner) findViewById(R.id.sp_routeDifficulty);
         ArrayAdapter<String>adapter5 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,difficulty);
         adapter5.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sp_trackDifficulty.setAdapter(adapter5);
-        sp_trackDifficulty.setSelection(0); //set default selection to 0
-        sp_trackDifficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        sp_routeDifficulty.setAdapter(adapter5);
+        sp_routeDifficulty.setSelection(0); //set default selection to 0
+        sp_routeDifficulty.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String valueSelected = difficulty[position];
-                //Toast.makeText(EnterInfo1Activity.this, valueSelected, Toast.LENGTH_SHORT).show();
+                String valueSelected = "";
+                if (position != 0) {
+                    valueSelected = difficulty[position];
+                }
+                //Toast.makeText(RouteNewActivity.this, valueSelected, Toast.LENGTH_SHORT).show();
                 tempRouteEdit.putString("difficulty", valueSelected);
                 tempRouteEdit.apply();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                tempRouteEdit.putString("difficulty", difficulty[0]);
+                tempRouteEdit.putString("difficulty", "");
                 tempRouteEdit.apply();
             }
         });
 
-
-
-        Button bt_enterInfo2 = (Button) findViewById(R.id.bt_gotoEnterInfo2);
+        Button bt_next = (Button) findViewById(R.id.bt_next);
 
         // check if user pressed next
-        bt_enterInfo2.setOnClickListener(new View.OnClickListener() {
+        bt_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                save();
-                gotoEnterInfo2();
-
+                // Title must be entered
+                if (((EditText) findViewById(R.id.box_title)).getText().toString().matches("")) {
+                    Toast.makeText(RouteNewActivity.this, "Please Enter a Title", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    save();
+                    gotoRouteExtra();
+                }
             }
         });
-
-
-
     }
-
 
     public void save() {
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
         SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
         // get route name / starting point
-        EditText eName = (EditText) findViewById(R.id.enterName);
-        EditText eStartingPoint = (EditText) findViewById(R.id.enterStartingPoint);
-        //EditText textSteps = (EditText) findViewById(R.id.textSteps);
+        EditText eName = (EditText) findViewById(R.id.box_title);
+        EditText eStartingPoint = (EditText) findViewById(R.id.box_startingPoint);
         tempRouteEdit.putString("steps", "0");
         tempRouteEdit.putString("distance", "0");
         tempRouteEdit.putString("name", eName.getText().toString());
@@ -189,8 +199,8 @@ public class EnterInfo1Activity extends AppCompatActivity{
         tempRouteEdit.apply();
     }
 
-    public void gotoEnterInfo2() {
-        Intent intent = new Intent(this, EnterInfo2Activity.class);
+    public void gotoRouteExtra() {
+        Intent intent = new Intent(this, RouteExtraActivity.class);
         startActivity(intent);
     }
 }
