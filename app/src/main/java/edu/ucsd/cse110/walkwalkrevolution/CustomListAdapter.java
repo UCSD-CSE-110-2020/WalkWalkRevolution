@@ -46,7 +46,7 @@ class CustomListAdapter extends ArrayAdapter<String> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
         nameText.setText(routeData.get(position).getName());
-        stepsText.setText(routeData.get(position).getSteps());
+        stepsText.setText(Integer.toString(routeData.get(position).getSteps()));
         milesText.setText(Float.toString(routeData.get(position).getDistance()));
 
         Calendar lastRun = routeData.get(position).getLastRun();
