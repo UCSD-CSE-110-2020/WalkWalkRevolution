@@ -80,7 +80,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
     }
 
     public void gotoMock() {
-        Intent intent = new Intent(this, RouteNewActivity.class);
+        Intent intent = new Intent(this, MockActivity.class);
         startActivity(intent);
     }
 

@@ -2,10 +2,9 @@
     <string name="app_name">Walk Walk Revolution</string>
     <string name="title_activity_routes">RoutesActivity</string>
     <!-- String Constants dialog_height_prompt-->
-    <string name="welcome">Please Enter Your Height, It Is Needed To Calculate Your Walking Distance</string>
-    <string name="height">Please Input Your Height (Inches)</string>
-    <string name="cancel">Cancel</string>
-    <string name="submit">Submit</string>
+    <string name="dialog_height">Please enter your height (inches), it is needed to calculate your walking distance.</string>
+    <string name="hint_height">Ex: 67</string>
+    <string name="confirm_text">Confirm</string>
     <!-- Constants for storage of route values -->
     <string name="steps_tag">_steps</string>
     <string name="distance_tag">_distance</string>
