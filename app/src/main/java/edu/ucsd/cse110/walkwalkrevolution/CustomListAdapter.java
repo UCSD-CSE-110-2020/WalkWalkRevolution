@@ -15,15 +15,15 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 
 class CustomListAdapter extends ArrayAdapter<String> {
-    ArrayList<String[]> routeData;
+    ArrayList<Route> routeData;
     private Activity context;
     private Integer[] favoriteImg;
 
-    public CustomListAdapter(Activity context, ArrayList<String[]> routeData) {
+    public CustomListAdapter(Activity context, ArrayList<Route> routeData) {
         super(context, R.layout.route_list);
         this.routeData = routeData;
-        for(String[] routeValues : routeData) {
-            add(routeValues[0]);
+        for(Route routeValues : routeData) {
+            add(routeValues.getName());
         }
 
         this.context=context;
@@ -43,9 +43,10 @@ class CustomListAdapter extends ArrayAdapter<String> {
         TextView milesText = (TextView) rowView.findViewById(R.id.routeMiles);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
-        nameText.setText(routeData.get(position)[0]);
-        stepsText.setText(routeData.get(position)[2]);
-        milesText.setText(routeData.get(position)[3]);
+        nameText.setText(routeData.get(position).getName());
+        stepsText.setText(routeData.get(position).getSteps());
+        milesText.setText(Float.toString(routeData.get(position).getDistance()));
+
         // Parse Favorite or not
         //imageView.setImageResource(Integer.parseInt(routeData.get(position)[2]));
 
