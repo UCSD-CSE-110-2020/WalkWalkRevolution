@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import java.util.Calendar;
+
 // store a single route
 public class Route {
 
@@ -11,6 +13,7 @@ public class Route {
     private int steps;
     // distance in miles
     private float distance;
+    private Calendar lastRun;
 
     // Additional Features
     private String features[];
@@ -25,6 +28,7 @@ public class Route {
         startingPoint = "ERROR STARTING POINT";
         steps = 0;
         distance = 0;
+        lastRun = null;
         notes = "error";
         features = new String[5];
         isFavorite = false;
@@ -35,16 +39,21 @@ public class Route {
         this.startingPoint = startingPoint;
         steps = 0;
         distance = 0;
-        notes = "ERROR";
+        lastRun = null;
+        notes = "";
         features = new String[5];
         isFavorite = false;
     }
 
-    Route(String name, String startingPoint, String notes, String style,
+    Route(String name, String startingPoint, int steps, float distance,
+          Calendar lastRun, String notes, String style,
           String terrain, String enviroment, String surface,
           String difficulty, boolean favorite) {
         this.name = name;
         this.startingPoint = startingPoint;
+        this.steps = steps;
+        this.distance = distance;
+        this.lastRun = lastRun;
         this.notes = notes;
         features = new String[]{style, terrain, enviroment, surface, difficulty};
         isFavorite = favorite;
@@ -86,6 +95,14 @@ public class Route {
 
     public float getDistance() {
         return distance;
+    }
+
+    public void setLastRun(Calendar newLastRun) {
+        lastRun = newLastRun;
+    }
+
+    public Calendar getLastRun() {
+        return lastRun;
     }
 
     /**
