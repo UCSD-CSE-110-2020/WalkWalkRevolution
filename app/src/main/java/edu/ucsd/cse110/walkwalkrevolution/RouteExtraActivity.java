@@ -11,29 +11,28 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-public class EnterInfo2Activity extends AppCompatActivity {
+public class RouteExtraActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enter_info2);
+        setContentView(R.layout.activity_route_extra);
 
-
-
-        Button bt_route = (Button) findViewById(R.id.bt_gotoRoute);
+        Button bt_done = (Button) findViewById(R.id.bt_done);
 
         // check if user pressed done
-        bt_route.setOnClickListener(new View.OnClickListener() {
+        bt_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 save();
-                gotoRoute();
+                gotoRoutes();
             }
         });
     }
 
-    public void gotoRoute() {
+    public void gotoRoutes() {
         Intent intent = new Intent(this, RoutesActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -41,10 +40,10 @@ public class EnterInfo2Activity extends AppCompatActivity {
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
         SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
 
-        EditText notes = (EditText) findViewById(R.id.notesText);
+        EditText notes = (EditText) findViewById(R.id.box_notesText);
         tempRouteEdit.putString("notes", notes.getText().toString());
 
-        CheckBox favorite = (CheckBox) findViewById(R.id.markFavorite);
+        CheckBox favorite = (CheckBox) findViewById(R.id.option_favorite);
 
         if(favorite.isChecked())
             tempRouteEdit.putString("isFavorite", "true");
@@ -63,7 +62,7 @@ public class EnterInfo2Activity extends AppCompatActivity {
         Log.d("route","isFavorite " + tempRoute.getString("isFavorite", ""));
         Log.d("route","style " + tempRoute.getString("style", ""));
         Log.d("route","terrain " + tempRoute.getString("terrain", ""));
-        Log.d("route","enviroment " + tempRoute.getString("environment", ""));
+        Log.d("route","environment " + tempRoute.getString("environment", ""));
         Log.d("route","surface " + tempRoute.getString("surface", ""));
         Log.d("route","difficulty "  + tempRoute.getString("difficulty", ""));
 
@@ -84,6 +83,5 @@ public class EnterInfo2Activity extends AppCompatActivity {
         // save new route
         RoutesManager routesManager = new RoutesManager(this);
         routesManager.addRoute(newRoute);
-
     }
 }

@@ -10,12 +10,9 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+public class CurrentWalkActivity extends AppCompatActivity {
 
-public class CurrentRunActivity extends AppCompatActivity {
-
-    TextView textGoesHere;
+    TextView currTime;
     long startTime;
     long countUp;
     int iniStep = 0;
@@ -28,13 +25,13 @@ public class CurrentRunActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_run);
+        setContentView(R.layout.activity_current_walk);
 
         Button bt_stopRun = (Button) findViewById(R.id.bt_stopRun);
         Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
         startTime = SystemClock.elapsedRealtime();
 
-        textGoesHere = (TextView) findViewById(R.id.textGoesHere);
+        currTime = (TextView) findViewById(R.id.box_currTime);
         stopWatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
 
             @Override
@@ -47,12 +44,12 @@ public class CurrentRunActivity extends AppCompatActivity {
                 iniDistance = ((double)iniStep * height * stepMultiplier) / footInMile;
                 newWalk.setDistance(round(iniDistance, 3));
 
-                TextView updateStep = findViewById(R.id.textView16);
-                TextView updateDistance = findViewById(R.id.textView18);
+                TextView updateStep = findViewById(R.id.box_currSteps);
+                TextView updateDistance = findViewById(R.id.box_currDist);
                 updateStep.setText(Integer.toString(iniStep++));
                 updateDistance.setText(round(iniDistance, 3) + " miles");
 
-                textGoesHere.setText(asText);
+                currTime.setText(asText);
             }
         });
         stopWatch.start();
@@ -61,15 +58,29 @@ public class CurrentRunActivity extends AppCompatActivity {
         bt_stopRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                gotoNewRoute();
+            }
+        });
 
-                gotoCompleteRun();
+        Button bt_mock = (Button) findViewById(R.id.bt_mock);
+        // support mocking
+        bt_mock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoMock();
             }
         });
     }
 
-    public void gotoCompleteRun() {
-        Intent intent = new Intent(this, CompleteRunActivity.class);
+    public void gotoNewRoute() {
+        Intent intent = new Intent(this, RouteNewActivity.class);
         intent.putExtra("finalWalk", newWalk);
+        finish();
+        startActivity(intent);
+    }
+
+    public void gotoMock() {
+        Intent intent = new Intent(this, RouteNewActivity.class);
         startActivity(intent);
     }
 
