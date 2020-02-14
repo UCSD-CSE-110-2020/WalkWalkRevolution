@@ -33,8 +33,10 @@ public class RoutesManager {
 
     RoutesManager(Context currentContext) {
         context = currentContext;
-        savedRoutesInfo = context.getSharedPreferences("routes_info", MODE_PRIVATE);
-        savedRoutesFeatures = context.getSharedPreferences("routes_features", MODE_PRIVATE);
+        savedRoutesInfo = context.getSharedPreferences(
+                context.getResources().getString(R.string.routeInfo_store), MODE_PRIVATE);
+        savedRoutesFeatures = context.getSharedPreferences(
+                context.getResources().getString(R.string.routeFeature_store), MODE_PRIVATE);
         infoRouteEditor = savedRoutesInfo.edit();
         featureRouteEditor = savedRoutesFeatures.edit();
     }
@@ -112,6 +114,9 @@ public class RoutesManager {
         featureRouteEditor.putInt(newRoute.getName() + R.string.month_tag, month);
         featureRouteEditor.putInt(newRoute.getName() + R.string.day_tag, day);
 
+        String notes = newRoute.getNotes();
+        featureRouteEditor.putString(newRoute.getName() + R.string.notes_tag, notes);
+
         String path = newRoute.getFeatures()[0];
         featureRouteEditor.putString(newRoute.getName() + R.string.path_tag, path);
         String terrain = newRoute.getFeatures()[1];
@@ -122,9 +127,6 @@ public class RoutesManager {
         featureRouteEditor.putString(newRoute.getName() + R.string.surface_tag, surface);
         String difficulty = newRoute.getFeatures()[4];
         featureRouteEditor.putString(newRoute.getName() + R.string.difficulty_tag, difficulty);
-
-        String notes = newRoute.getNotes();
-        featureRouteEditor.putString(newRoute.getName() + R.string.notes_tag, notes);
 
         boolean favorite = newRoute.getFavorite();
         featureRouteEditor.putBoolean(newRoute.getName() + R.string.favorite_tag, favorite);
@@ -139,12 +141,15 @@ public class RoutesManager {
 
         featureRouteEditor.remove(name + R.string.steps_tag);
         featureRouteEditor.remove(name + R.string.distance_tag);
+        featureRouteEditor.remove(name + R.string.year_tag);
+        featureRouteEditor.remove(name + R.string.month_tag);
+        featureRouteEditor.remove(name + R.string.day_tag);
+        featureRouteEditor.remove(name + R.string.notes_tag);
         featureRouteEditor.remove(name + R.string.path_tag);
         featureRouteEditor.remove(name + R.string.terrain_tag);
         featureRouteEditor.remove(name + R.string.enviroment_tag);
         featureRouteEditor.remove(name + R.string.surface_tag);
         featureRouteEditor.remove(name + R.string.difficulty_tag);
-        featureRouteEditor.remove(name + R.string.notes_tag);
         featureRouteEditor.remove(name + R.string.favorite_tag);
 
         infoRouteEditor.apply();

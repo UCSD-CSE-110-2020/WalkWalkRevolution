@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 class CustomListAdapter extends ArrayAdapter<String> {
     ArrayList<Route> routeData;
@@ -39,6 +40,7 @@ class CustomListAdapter extends ArrayAdapter<String> {
         View rowView=inflater.inflate(R.layout.route_list, null,true);
 
         TextView nameText = (TextView) rowView.findViewById(R.id.routeName);
+        TextView lastRunText = (TextView) rowView.findViewById(R.id.routeLastRun);
         TextView stepsText = (TextView) rowView.findViewById(R.id.routeSteps);
         TextView milesText = (TextView) rowView.findViewById(R.id.routeMiles);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
@@ -46,6 +48,16 @@ class CustomListAdapter extends ArrayAdapter<String> {
         nameText.setText(routeData.get(position).getName());
         stepsText.setText(routeData.get(position).getSteps());
         milesText.setText(Float.toString(routeData.get(position).getDistance()));
+
+        Calendar lastRun = routeData.get(position).getLastRun();
+
+        if (lastRun == null) {
+            lastRunText.setText(R.string.never_run);
+        } else {
+            lastRunText.setText(lastRun.get(Calendar.MONTH) + R.string.seperator +
+                    lastRun.get(Calendar.DAY_OF_MONTH) + R.string.seperator +
+                    lastRun.get(Calendar.YEAR));
+        }
 
         // Parse Favorite or not
         //imageView.setImageResource(Integer.parseInt(routeData.get(position)[2]));
