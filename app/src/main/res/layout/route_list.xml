@@ -1,47 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:id="@+id/entry_full"
+    android:layout_width="400dp"
+    android:layout_height="75dp">
 
     <ImageView
-        android:id="@+id/icon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:id="@+id/icon_favoriteStar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:contentDescription="@string/desc_favorite_star"
+        android:layout_gravity="center"
         android:padding="5dp" />
 
-    <LinearLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/entry_route"
+        android:layout_width="370dp"
+        android:layout_height="75dp"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/routeName"
+            android:id="@+id/entry_routeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RouteName"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginStart="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:padding="2dp"
-            android:textColor="#4d4d4d" />
+            android:text="@string/empty"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#4d4d4d"
+            android:textStyle="bold" />
+
         <TextView
-            android:id="@+id/routeLastRun"
+            android:id="@+id/entry_routeDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/empty" />
+
         <TextView
-            android:id="@+id/routeSteps"
+            android:id="@+id/entry_routeStepsAndMiles"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="10dp"/>
-        <TextView
-            android:id="@+id/routeMiles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginLeft="10dp"/>
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/empty" />
     </LinearLayout>
 </LinearLayout>

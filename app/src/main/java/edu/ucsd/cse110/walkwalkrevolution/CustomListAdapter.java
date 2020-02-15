@@ -2,7 +2,6 @@ package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,15 +38,18 @@ class CustomListAdapter extends ArrayAdapter<String> {
 
         View rowView=inflater.inflate(R.layout.route_list, null,true);
 
-        TextView nameText = (TextView) rowView.findViewById(R.id.routeName);
-        TextView lastRunText = (TextView) rowView.findViewById(R.id.routeLastRun);
-        TextView stepsText = (TextView) rowView.findViewById(R.id.routeSteps);
-        TextView milesText = (TextView) rowView.findViewById(R.id.routeMiles);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+
+        TextView nameText = (TextView) rowView.findViewById(R.id.entry_routeName);
+        TextView lastRunText = (TextView) rowView.findViewById(R.id.entry_routeDate);
+        TextView stepsAndMilesText = (TextView) rowView.findViewById(R.id.entry_routeStepsAndMiles);
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon_favoriteStar);
+
+
 
         nameText.setText(routeData.get(position).getName());
-        stepsText.setText(Integer.toString(routeData.get(position).getSteps()));
-        milesText.setText(Float.toString(routeData.get(position).getDistance()));
+        String stepsAndMilesString = "Steps: " + Integer.toString(routeData.get(position).getSteps())
+                + "  Distance: " + Float.toString(routeData.get(position).getDistance());
+       stepsAndMilesText.setText(stepsAndMilesString);
 
         Calendar lastRun = routeData.get(position).getLastRun();
 
