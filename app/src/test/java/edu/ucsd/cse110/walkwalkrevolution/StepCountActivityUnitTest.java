@@ -36,7 +36,7 @@ public class StepCountActivityUnitTest {
 
         ActivityScenario<StepCountActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            TextView textSteps = activity.findViewById(R.id.textSteps);
+            TextView textSteps = activity.findViewById(R.id.box_dailySteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
     }
@@ -47,7 +47,7 @@ public class StepCountActivityUnitTest {
 
         ActivityScenario<StepCountActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            TextView textSteps = activity.findViewById(R.id.textSteps);
+            TextView textSteps = activity.findViewById(R.id.box_dailySteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
     }
@@ -58,7 +58,7 @@ public class StepCountActivityUnitTest {
 
         ActivityScenario<StepCountActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
-            TextView textSteps = activity.findViewById(R.id.textSteps);
+            TextView textSteps = activity.findViewById(R.id.box_dailySteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
     }

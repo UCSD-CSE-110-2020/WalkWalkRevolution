@@ -6,26 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".RoutesActivity">
 
-    <TextView
-        android:id="@+id/routesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Routes"
-        android:textColor="#8BC34A"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.162" />
-
     <Button
-        android:id="@+id/bt_gotoMainMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/bt_home"
+        android:layout_width="74dp"
+        android:layout_height="45dp"
         android:background="#8BC34A"
-        android:text="Main menu"
+        android:text="@string/bt_home_text"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -33,33 +20,49 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/bt_gotoNewRoute"
+    <TextView
+        android:id="@+id/title_routes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#8BC34A"
-        android:text="ADD"
-        android:textSize="30sp"
+        android:text="@string/title_routes"
+        android:textColor="#8BC34A"
+        android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.815" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <ListView
-        android:id = "@+id/routeList"
-        android:layout_width = "wrap_content"
-        android:layout_height = "match_parent"
-        android:divider = "#000"
-        android:dividerHeight = "1dp"
-        android:footerDividersEnabled = "false"
-        android:headerDividersEnabled = "false"
+        android:id="@+id/routeList"
+        android:layout_width="350dp"
+        android:layout_height="525dp"
+        android:divider="#000"
+        android:dividerHeight="1dp"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:background="@drawable/border"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bt_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="#8BC34A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.881"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.815" />
+        app:layout_constraintVertical_bias="0.949"
+        app:maxImageSize="40dp"
+        app:srcCompat="@drawable/art_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

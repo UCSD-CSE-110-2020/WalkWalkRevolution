@@ -11,8 +11,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
-import java.util.Set;
 
 public class RoutesActivity extends AppCompatActivity {
 
@@ -21,7 +22,7 @@ public class RoutesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
 
-        Button bt_mainMenu = (Button) findViewById(R.id.bt_gotoMainMenu);
+        Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
 
         // logging for current route data
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
@@ -46,7 +47,7 @@ public class RoutesActivity extends AppCompatActivity {
             }
         });
 
-        Button bt_newRoute = (Button) findViewById(R.id.bt_gotoNewRoute);
+        FloatingActionButton bt_newRoute = (FloatingActionButton) findViewById(R.id.bt_add);
 
         // check if user pressed main menu
         bt_newRoute.setOnClickListener(new View.OnClickListener() {
@@ -61,11 +62,17 @@ public class RoutesActivity extends AppCompatActivity {
 
         // Route Testing (Alphebetical Order)
         manager.clearRoutes();
+        /* Manager Test
         manager.addRoute(new Route());
         manager.addRoute(new Route("kms", "londong"));
         manager.addRoute(new Route("wt00000f", "ok"));
         manager.addRoute(new Route("zebra", "ok"));
         manager.addRoute(new Route("aaaa", "ok"));
+        manager.addRoute(new Route("adsad", "londong"));
+        manager.addRoute(new Route("gadgdsg", "ok"));
+        manager.addRoute(new Route("zczc", "ok"));
+        manager.addRoute(new Route("aaadfdaaa", "ok"));
+        */
 
         // Load Route List
         ListView list = (ListView) findViewById(R.id.routeList);
@@ -88,12 +95,13 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     public void gotoMainMenu() {
-        Intent intentMainMenu = new Intent(this, MainActivity.class);
+        Intent intentMainMenu = new Intent(this, HomeActivity.class);
+        finish();
         startActivity(intentMainMenu);
     }
 
     public void gotoNewRoute() {
-        Intent intentNewRoute = new Intent(this, NewRouteActivity.class);
+        Intent intentNewRoute = new Intent(this, RouteNewActivity.class);
         startActivity(intentNewRoute);
     }
 
