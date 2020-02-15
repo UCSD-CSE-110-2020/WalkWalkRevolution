@@ -3,8 +3,14 @@
     <string name="title_activity_routes">RoutesActivity</string>
 
     <!-- Constants for storage of route values -->
+    <string name="routeInfo_store">routes_info</string>
+    <string name="routeFeature_store">routes_features</string>
+
     <string name="steps_tag">_steps</string>
     <string name="distance_tag">_distance</string>
+    <string name="year_tag">_year</string>
+    <string name="month_tag">_month</string>
+    <string name="day_tag">_day</string>
     <string name="path_tag">_path</string>
     <string name="terrain_tag">_terrain</string>
     <string name="enviroment_tag">_enviroment</string>
@@ -12,6 +18,12 @@
     <string name="difficulty_tag">_difficulty</string>
     <string name="notes_tag">_notes</string>
     <string name="favorite_tag">_favorite</string>
+
+    <string name="default_str"></string>
+
+    <!-- Constants for display of route list -->
+    <string name="never_run">Never Run</string>
+    <string name="seperator">/</string>
 
     <string name="large_text">
         "Material is the metaphor.\n\n"
