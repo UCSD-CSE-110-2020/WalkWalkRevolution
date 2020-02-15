@@ -88,7 +88,7 @@ public class RoutesActivity extends AppCompatActivity {
     }
 
     public void gotoMainMenu() {
-        Intent intentMainMenu = new Intent(this, MainActivity.class);
+        Intent intentMainMenu = new Intent(this, HomeActivity.class);
         startActivity(intentMainMenu);
     }
 

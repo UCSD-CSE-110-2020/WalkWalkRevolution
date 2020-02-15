@@ -17,7 +17,7 @@ import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessServiceFactory;
 import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(AndroidJUnit4.class)
-public class StepCountActivityUnitTest {
+public class HomeActivityUnitTest {
     private static final String TEST_SERVICE = "TEST_SERVICE";
 
     private Intent intent;
@@ -26,15 +26,15 @@ public class StepCountActivityUnitTest {
     @Before
     public void setUp() {
         FitnessServiceFactory.put(TEST_SERVICE, TestFitnessService::new);
-        intent = new Intent(ApplicationProvider.getApplicationContext(), StepCountActivity.class);
-        intent.putExtra(StepCountActivity.FITNESS_SERVICE_KEY, TEST_SERVICE);
+        intent = new Intent(ApplicationProvider.getApplicationContext(), HomeActivity.class);
+        intent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, TEST_SERVICE);
     }
 
     @Test
     public void testZeroUpdateSteps() {
         nextStepCount = 0;
 
-        ActivityScenario<StepCountActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             TextView textSteps = activity.findViewById(R.id.textSteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
@@ -45,7 +45,7 @@ public class StepCountActivityUnitTest {
     public void testSmallUpdateSteps() {
         nextStepCount = 10;
 
-        ActivityScenario<StepCountActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             TextView textSteps = activity.findViewById(R.id.textSteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
@@ -56,7 +56,7 @@ public class StepCountActivityUnitTest {
     public void testLargeUpdateSteps() {
         nextStepCount = 1337;
 
-        ActivityScenario<StepCountActivity> scenario = ActivityScenario.launch(intent);
+        ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             TextView textSteps = activity.findViewById(R.id.textSteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
@@ -65,10 +65,10 @@ public class StepCountActivityUnitTest {
 
     private class TestFitnessService implements FitnessService {
         private static final String TAG = "[TestFitnessService]: ";
-        private StepCountActivity stepCountActivity;
+        private HomeActivity HomeActivity;
 
-        public TestFitnessService(StepCountActivity stepCountActivity) {
-            this.stepCountActivity = stepCountActivity;
+        public TestFitnessService(HomeActivity HomeActivity) {
+            this.HomeActivity = HomeActivity;
         }
 
         @Override
@@ -84,7 +84,7 @@ public class StepCountActivityUnitTest {
         @Override
         public void updateStepCount() {
             System.out.println(TAG + "updateStepCount to " + nextStepCount);
-            stepCountActivity.setStepCount(nextStepCount);
+            HomeActivity.setStepCount(nextStepCount);
         }
     }
 }
