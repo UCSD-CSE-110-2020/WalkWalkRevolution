@@ -77,7 +77,7 @@ public class RoutesActivity extends AppCompatActivity {
         // Load Route List
         ListView list = (ListView) findViewById(R.id.routeList);
 
-        ArrayList<String[]> routeList = manager.loadAll();
+        ArrayList<Route> routeList = manager.loadAll();
 
         CustomListAdapter customAdapter = new CustomListAdapter(this, routeList);
 
@@ -105,7 +105,7 @@ public class RoutesActivity extends AppCompatActivity {
         startActivity(intentNewRoute);
     }
 
-    public void gotoRoute(String[] routeInfo) {
+    public void gotoRoute(Route selectedRoute) {
 
     }
 }

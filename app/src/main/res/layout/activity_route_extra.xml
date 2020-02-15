@@ -62,23 +62,23 @@
 
     <EditText
         android:id="@+id/box_notesText"
-        android:layout_width="325dp"
-        android:layout_height="250dp"
+        android:layout_width="354dp"
+        android:layout_height="171dp"
         android:background="@drawable/border"
         android:ems="10"
+        android:gravity="top"
         android:hint="@string/hint_notes"
         android:importantForAutofill="no"
         android:inputType="textMultiLine|textCapSentences"
-        android:gravity="top"
         android:padding="5dp"
         android:scrollHorizontally="false"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.306"
+        app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.644" />
+        app:layout_constraintVertical_bias="0.669" />
 
     <Button
         android:id="@+id/bt_done"
