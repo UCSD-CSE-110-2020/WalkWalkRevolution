@@ -6,8 +6,14 @@
     <string name="hint_height">Ex: 67</string>
     <string name="confirm_text">Confirm</string>
     <!-- Constants for storage of route values -->
+    <string name="routeInfo_store">routes_info</string>
+    <string name="routeFeature_store">routes_features</string>
+
     <string name="steps_tag">_steps</string>
     <string name="distance_tag">_distance</string>
+    <string name="year_tag">_year</string>
+    <string name="month_tag">_month</string>
+    <string name="day_tag">_day</string>
     <string name="path_tag">_path</string>
     <string name="terrain_tag">_terrain</string>
     <string name="environment_tag">_environment</string>
@@ -15,6 +21,10 @@
     <string name="difficulty_tag">_difficulty</string>
     <string name="notes_tag">_notes</string>
     <string name="favorite_tag">_favorite</string>
+    <string name="default_str"></string>
+    <!-- Constants for display of route list -->
+    <string name="never_run">Never Run</string>
+    <string name="seperator">/</string>
     <string name="action_settings">Settings</string>
     <string name="empty">N/A</string>
     <string name="bt_stop_text">Stop Walk</string>
