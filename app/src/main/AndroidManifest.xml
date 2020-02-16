@@ -11,7 +11,9 @@
         android:theme="@style/AppTheme">
         <service
             android:name=".StepCountUpdateService"
-            android:exported="false" />
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity android:name=".RoutesActivity" />
         <activity android:name=".NewRouteActivity" />
         <activity android:name=".ConfirmDeleteActivity" />
