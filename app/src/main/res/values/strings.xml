@@ -32,6 +32,7 @@
     <string name="name_distance">Distance:</string>
     <string name="name_time_elapsed">Time Elapsed:</string>
     <string name="name_last_distance">Last Walk Dist.:</string>
+    <string name="name_isFavorite">Is Favorite:</string>
     <string name="name_last_time">Last Walk Time:</string>
     <string name="name_last_steps">Last Walk Steps:</string>
     <string name="bt_routes_text">Routes</string>

@@ -44,6 +44,11 @@ public class RouteNewActivity extends AppCompatActivity{
         Intent i = getIntent();
         prevWalk = (Walk)i.getSerializableExtra("finalWalk");
 
+        // add a new walk
+        if (prevWalk == null) {
+            prevWalk = new Walk("0",0,0);
+        }
+
         // drop down features selection
         sp_routeStyle = (Spinner) findViewById(R.id.sp_routeStyle);
         ArrayAdapter<String>adapter = new ArrayAdapter<String>(this,
