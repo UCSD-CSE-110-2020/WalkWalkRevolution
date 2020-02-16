@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
 
-    private int lastStepCount = 0;
+    private boolean receiversRegistered;
 
     private TextView textSteps;
     private FitnessService fitnessService;
@@ -76,12 +76,48 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        registerReceivers();
         launchFitnessActivity();
-
-        // Register broadcast receiver from step count updater
-        registerReceiver(broadcastReceiver, new IntentFilter(StepCountUpdateService.BROADCAST_ACTION));
-
         launchUpdateService();
+    }
+
+    public void registerReceivers() {
+        if (!receiversRegistered) {
+            // Register broadcast receiver from step count updater
+            registerReceiver(broadcastReceiver, new IntentFilter(StepCountUpdateService.BROADCAST_ACTION));
+            receiversRegistered = true;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (receiversRegistered) {
+            unregisterReceiver(broadcastReceiver);
+            receiversRegistered = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        registerReceivers();
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        registerReceivers();
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (receiversRegistered) {
+            unregisterReceiver(broadcastReceiver);
+            receiversRegistered = false;
+        }
     }
 
     @Override
@@ -157,12 +193,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setStepCount(int stepCount) {
-        lastStepCount = stepCount;
+        WalkWalkRevolutionApplication.stepCount.set(stepCount);
         textSteps.setText(String.valueOf(stepCount));
     }
 
-    public long getStepCount() {
+    public void updateStepCount() {
         fitnessService.updateStepCount();
-        return lastStepCount;
     }
 }
