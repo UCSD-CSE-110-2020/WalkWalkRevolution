@@ -56,8 +56,8 @@ class CustomListAdapter extends ArrayAdapter<String> {
         if (lastRun == null) {
             lastRunText.setText(R.string.never_run);
         } else {
-            lastRunText.setText(lastRun.get(Calendar.MONTH) + R.string.seperator +
-                    lastRun.get(Calendar.DAY_OF_MONTH) + R.string.seperator +
+            lastRunText.setText(lastRun.get(Calendar.MONTH) + "/" +
+                    lastRun.get(Calendar.DAY_OF_MONTH) + "/" +
                     lastRun.get(Calendar.YEAR));
         }
 

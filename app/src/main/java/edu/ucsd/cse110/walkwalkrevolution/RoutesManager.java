@@ -61,6 +61,7 @@ public class RoutesManager {
         int day = savedRoutesFeatures.getInt(
                 route.getKey() + R.string.day_tag, -1);
         if (year > 0 && month > 0 && day > 0) {
+            lastRun = Calendar.getInstance();
             lastRun.set(year, month, day);
         }
 
