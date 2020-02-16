@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 public class CurrentWalkActivity extends AppCompatActivity {
 
+    String name = "NEW WALK"; // Save the title of walk
     TextView currTime; // Save the current time
     long startTime; // Save the start time
     long countUp; // Count the seconds up to 60
@@ -27,10 +28,19 @@ public class CurrentWalkActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_walk);
 
+
         // Get the user height, and convert it to the foot
         Intent i = getIntent();
         height = (float)i.getSerializableExtra("savedHeight");
         height = height / 12;
+
+        // set title name
+        String tempName = (String)i.getSerializableExtra("title");
+        if(tempName != null) {
+            name = tempName;
+        }
+        TextView title = (TextView) findViewById(R.id.title_routeName);
+        title.setText(name);
 
         Button bt_stopRun = (Button) findViewById(R.id.bt_stopRun);
 
