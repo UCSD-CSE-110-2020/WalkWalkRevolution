@@ -1,9 +1,10 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 // store a single route
-public class Route {
+public class Route implements Serializable {
 
     // Necessary Features
     private String name;
