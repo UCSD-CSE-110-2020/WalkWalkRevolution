@@ -14,16 +14,16 @@ import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import edu.ucsd.cse110.walkwalkrevolution.StepCountActivity;
+import edu.ucsd.cse110.walkwalkrevolution.HomeActivity;
 
 public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "GoogleFitAdapter";
     private GoogleSignInAccount account;
 
-    private StepCountActivity activity;
+    private HomeActivity activity;
 
-    public GoogleFitAdapter(StepCountActivity activity) {
+    public GoogleFitAdapter(HomeActivity activity) {
         this.activity = activity;
     }
 
@@ -86,7 +86,7 @@ public class GoogleFitAdapter implements FitnessService {
                             @Override
                             public void onSuccess(DataSet dataSet) {
                                 Log.d(TAG, dataSet.toString());
-                                long total =
+                                int total =
                                         dataSet.isEmpty()
                                                 ? 0
                                                 : dataSet.getDataPoints().get(0).getValue(Field.FIELD_STEPS).asInt();

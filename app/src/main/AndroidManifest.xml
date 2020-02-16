@@ -9,13 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MockActivity"></activity>
+        <service
+            android:name=".StepCountUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity android:name=".MockActivity" />
         <activity android:name=".RouteActivity" />
         <activity android:name=".RoutesActivity" />
         <activity android:name=".RouteExtraActivity" />
         <activity android:name=".RouteNewActivity" />
         <activity android:name=".CurrentWalkActivity" />
-        <activity android:name=".StepCountActivity" />
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
