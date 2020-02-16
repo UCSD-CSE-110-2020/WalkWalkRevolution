@@ -102,6 +102,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
     public void gotoNewRoute() {
         Intent intent = new Intent(this, RouteNewActivity.class);
         intent.putExtra("finalWalk", newWalk);
+        intent.putExtra("manuallyAddNewRoute", false);
         finish();
         startActivity(intent);
     }

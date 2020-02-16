@@ -37,8 +37,8 @@ public class RouteActivity extends AppCompatActivity {
         if (lastRun == null) {
             lastWalked.setText(R.string.never_run);
         } else {
-            lastWalked.setText(lastRun.get(Calendar.MONTH) + R.string.seperator +
-                    lastRun.get(Calendar.DAY_OF_MONTH) + R.string.seperator +
+            lastWalked.setText(lastRun.get(Calendar.MONTH) + "/" +
+                    lastRun.get(Calendar.DAY_OF_MONTH) + "/" +
                     lastRun.get(Calendar.YEAR));
         }
 

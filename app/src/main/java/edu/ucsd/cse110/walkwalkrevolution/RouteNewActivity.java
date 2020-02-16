@@ -32,6 +32,7 @@ public class RouteNewActivity extends AppCompatActivity{
     private static final String[] difficulty = {"Difficulty:", "Easy", "Moderate", "Difficult"};
 
     Walk prevWalk;
+    private boolean manuallyAddNewRoute = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class RouteNewActivity extends AppCompatActivity{
 
         Intent i = getIntent();
         prevWalk = (Walk)i.getSerializableExtra("finalWalk");
+
+        manuallyAddNewRoute = (boolean) i.getSerializableExtra("manuallyAddNewRoute");
 
         // add a new walk
         if (prevWalk == null) {
@@ -212,6 +215,7 @@ public class RouteNewActivity extends AppCompatActivity{
 
     public void gotoRouteExtra() {
         Intent intent = new Intent(this, RouteExtraActivity.class);
+        intent.putExtra("manuallyAddNewRoute", manuallyAddNewRoute);
         startActivity(intent);
     }
 }
