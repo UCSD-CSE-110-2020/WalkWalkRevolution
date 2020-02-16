@@ -97,7 +97,7 @@ public class RoutesManager {
 
         int steps = newRoute.getSteps();
         featureRouteEditor.putInt(newRoute.getName() + R.string.steps_tag, steps);
-        float distance = newRoute.getSteps();
+        float distance = newRoute.getDistance();
         featureRouteEditor.putFloat(newRoute.getName() + R.string.distance_tag, distance);
 
         int year = -1;
