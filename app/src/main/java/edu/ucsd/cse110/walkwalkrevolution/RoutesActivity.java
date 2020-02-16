@@ -61,7 +61,7 @@ public class RoutesActivity extends AppCompatActivity {
         RoutesManager manager = new RoutesManager(this);
 
         // Route Testing (Alphebetical Order)
-        // manager.clearRoutes();
+        //manager.clearRoutes();
         /* Manager Test
         manager.addRoute(new Route());
         manager.addRoute(new Route("kms", "londong"));
@@ -105,7 +105,10 @@ public class RoutesActivity extends AppCompatActivity {
         startActivity(intentNewRoute);
     }
 
+    // see more info about a specific route
     public void gotoRoute(Route selectedRoute) {
-
+        Intent intentRoute = new Intent(this, RouteActivity.class);
+        intentRoute.putExtra("route", selectedRoute);
+        startActivity(intentRoute);
     }
 }
