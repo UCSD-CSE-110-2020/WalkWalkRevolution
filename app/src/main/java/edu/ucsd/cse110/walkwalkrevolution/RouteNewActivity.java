@@ -31,6 +31,8 @@ public class RouteNewActivity extends AppCompatActivity{
     private Spinner sp_routeDifficulty;
     private static final String[] difficulty = {"Difficulty:", "Easy", "Moderate", "Difficult"};
 
+    Walk prevWalk;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,9 @@ public class RouteNewActivity extends AppCompatActivity{
 
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
         SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
+
+        Intent i = getIntent();
+        prevWalk = (Walk)i.getSerializableExtra("finalWalk");
 
         // drop down features selection
         sp_routeStyle = (Spinner) findViewById(R.id.sp_routeStyle);
@@ -189,11 +194,12 @@ public class RouteNewActivity extends AppCompatActivity{
     public void save() {
         SharedPreferences tempRoute  = getSharedPreferences("tempRoute", MODE_PRIVATE);
         SharedPreferences.Editor tempRouteEdit = tempRoute.edit();
+
         // get route name / starting point
         EditText eName = (EditText) findViewById(R.id.box_title);
         EditText eStartingPoint = (EditText) findViewById(R.id.box_startingPoint);
-        tempRouteEdit.putString("steps", "0");
-        tempRouteEdit.putString("distance", "0");
+        tempRouteEdit.putString("steps", Integer.toString(prevWalk.getSteps()));
+        tempRouteEdit.putString("distance", Double.toString(prevWalk.getDistance()));
         tempRouteEdit.putString("name", eName.getText().toString());
         tempRouteEdit.putString("startingPoint", eStartingPoint.getText().toString());
         tempRouteEdit.apply();
