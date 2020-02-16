@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import android.content.Context;
 import android.content.Intent;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.TimeoutException;
+
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessServiceFactory;
 
@@ -18,16 +21,21 @@ import static com.google.common.truth.Truth.assertThat;
 
 @RunWith(AndroidJUnit4.class)
 public class HomeActivityUnitTest {
-    private static final String TEST_SERVICE = "TEST_SERVICE";
+    private final String FITNESS_SERVICE_TEST_KEY = "TEST_SERVICE";
 
+    private Context context;
     private Intent intent;
-    private long nextStepCount;
+    private int nextStepCount;
 
     @Before
     public void setUp() {
-        FitnessServiceFactory.put(TEST_SERVICE, TestFitnessService::new);
-        intent = new Intent(ApplicationProvider.getApplicationContext(), HomeActivity.class);
-        intent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, TEST_SERVICE);
+        context = ApplicationProvider.getApplicationContext();
+
+        // Add the test fitness service to the factory
+        FitnessServiceFactory.put(FITNESS_SERVICE_TEST_KEY, TestFitnessService::new);
+
+        intent = new Intent(context, HomeActivity.class);
+        intent.putExtra(HomeActivity.FITNESS_SERVICE_KEY, FITNESS_SERVICE_TEST_KEY);
     }
 
     @Test
@@ -36,17 +44,21 @@ public class HomeActivityUnitTest {
 
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
+            // Update the step count
+            activity.getStepCount();
             TextView textSteps = activity.findViewById(R.id.textSteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
     }
 
     @Test
-    public void testSmallUpdateSteps() {
+    public void testSmallUpdateSteps() throws TimeoutException {
         nextStepCount = 10;
 
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
+            // Update the step count
+            activity.getStepCount();
             TextView textSteps = activity.findViewById(R.id.textSteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
@@ -58,6 +70,8 @@ public class HomeActivityUnitTest {
 
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
+            // Update the step count
+            activity.getStepCount();
             TextView textSteps = activity.findViewById(R.id.textSteps);
             assertThat(textSteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
         });
