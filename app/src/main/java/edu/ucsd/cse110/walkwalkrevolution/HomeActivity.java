@@ -129,6 +129,9 @@ public class HomeActivity extends AppCompatActivity {
 
     public void gotoNewRun() {
         Intent intent = new Intent(this, CurrentWalkActivity.class);
+        SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
+        float savedHeight = savedHeightPref.getFloat("user_height", -1);
+        intent.putExtra("savedHeight", savedHeight);
         startActivity(intent);
     }
 

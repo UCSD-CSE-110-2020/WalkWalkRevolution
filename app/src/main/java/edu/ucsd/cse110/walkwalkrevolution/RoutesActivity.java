@@ -61,7 +61,7 @@ public class RoutesActivity extends AppCompatActivity {
         RoutesManager manager = new RoutesManager(this);
 
         // Route Testing (Alphebetical Order)
-        manager.clearRoutes();
+        // manager.clearRoutes();
         /* Manager Test
         manager.addRoute(new Route());
         manager.addRoute(new Route("kms", "londong"));
