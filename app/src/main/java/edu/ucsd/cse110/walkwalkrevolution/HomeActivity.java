@@ -46,6 +46,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.d(TAG, "Creating home activity");
+
         showHeightDialog();
 
         textSteps = findViewById(R.id.box_dailySteps);
@@ -93,12 +95,14 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onRestart() {
+        Log.d(TAG, "Restarting home activity");
         registerReceivers();
         super.onRestart();
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "Destroying home activity");
         super.onDestroy();
         if (receiversRegistered) {
             unregisterReceiver(broadcastReceiver);
@@ -147,6 +151,7 @@ public class HomeActivity extends AppCompatActivity {
     public void launchUpdateService() {
         Intent intent = new Intent(this, StepCountUpdateService.class);
         intent.putExtra("interval", 500);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startService(intent);
     }
 

@@ -8,6 +8,8 @@ import android.util.Log;
 
 public class StepCountUpdateService extends Service {
 
+    public static final String TAG = "StepCountUpdateService";
+
     public static final String BROADCAST_ACTION = "edu.ucsd.cse110";
 
     private final IBinder binder = new LocalBinder();
@@ -40,6 +42,7 @@ public class StepCountUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "Starting step count update service");
         interval = intent.getIntExtra("interval", 1000);
         Thread thread = new Thread(new MyThread(startId));
         thread.start();
