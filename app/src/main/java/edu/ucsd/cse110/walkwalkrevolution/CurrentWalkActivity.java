@@ -3,6 +3,7 @@ package edu.ucsd.cse110.walkwalkrevolution;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -94,6 +95,14 @@ public class CurrentWalkActivity extends AppCompatActivity {
         bt_stopRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // record last walk and display on home screen
+                SharedPreferences lastWalk  = getSharedPreferences("lastWalk", MODE_PRIVATE);
+                SharedPreferences.Editor lastWalkEdit = lastWalk.edit();
+                lastWalkEdit.putString("steps", Integer.toString(newWalk.getSteps()));
+                lastWalkEdit.putString("distance", Double.toString(newWalk.getDistance()));
+                lastWalkEdit.putString("time", newWalk.getTotalTime());
+                lastWalkEdit.apply();
+
                 // if it is a saved route then go to routes screen
                 // if it not saved then go to new route screen
                 if(!isSavedRoute)
