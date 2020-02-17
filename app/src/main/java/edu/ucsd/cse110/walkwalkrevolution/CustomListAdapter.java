@@ -40,6 +40,7 @@ class CustomListAdapter extends ArrayAdapter<String> {
 
 
         TextView nameText = (TextView) rowView.findViewById(R.id.entry_routeName);
+        TextView startingPointText = (TextView) rowView.findViewById(R.id.entry_startingPoint);
         TextView lastRunText = (TextView) rowView.findViewById(R.id.entry_routeDate);
         TextView stepsAndMilesText = (TextView) rowView.findViewById(R.id.entry_routeStepsAndMiles);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon_favoriteStar);
@@ -47,6 +48,7 @@ class CustomListAdapter extends ArrayAdapter<String> {
 
 
         nameText.setText(routeData.get(position).getName());
+        startingPointText.setText("starting point: " + routeData.get(position).getStartingPoint());
         String stepsAndMilesString = "Steps: " + Integer.toString(routeData.get(position).getSteps())
                 + "  Distance: " + Float.toString(routeData.get(position).getDistance());
        stepsAndMilesText.setText(stepsAndMilesString);
@@ -56,8 +58,8 @@ class CustomListAdapter extends ArrayAdapter<String> {
         if (lastRun == null) {
             lastRunText.setText(R.string.never_run);
         } else {
-            lastRunText.setText(lastRun.get(Calendar.MONTH) + R.string.seperator +
-                    lastRun.get(Calendar.DAY_OF_MONTH) + R.string.seperator +
+            lastRunText.setText(lastRun.get(Calendar.MONTH) + "/" +
+                    lastRun.get(Calendar.DAY_OF_MONTH) + "/" +
                     lastRun.get(Calendar.YEAR));
         }
 
