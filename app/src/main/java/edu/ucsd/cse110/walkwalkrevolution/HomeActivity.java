@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Properties;
 
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
@@ -31,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private boolean receiversRegistered;
 
-    private TextView textSteps;
+    private TextView textSteps, textDistance;
     private FitnessService fitnessService;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -51,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
         showHeightDialog();
 
         textSteps = findViewById(R.id.box_dailySteps);
+        textDistance = findViewById(R.id.box_dailyDistance);
 
         // Check if user pressed start new run button
         Button bt_newRun = (Button) findViewById(R.id.bt_startNewWalk);
@@ -190,6 +189,11 @@ public class HomeActivity extends AppCompatActivity {
     public void setStepCount(int stepCount) {
         WalkWalkRevolutionApplication.stepCount.set(stepCount);
         textSteps.setText(String.valueOf(stepCount));
+
+        SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
+        float savedHeight = savedHeightPref.getFloat("user_height", -1);
+        float distance = MeasurementConverter.stepToMiles(stepCount, savedHeight);
+        textDistance.setText(String.format("%.1f", distance));
     }
 
     public void updateStepCount() {
