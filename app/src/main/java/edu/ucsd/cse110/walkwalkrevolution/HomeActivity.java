@@ -168,6 +168,7 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
         float savedHeight = savedHeightPref.getFloat("user_height", -1);
         intent.putExtra("savedHeight", savedHeight);
+        intent.putExtra("isSavedRoute", false);
         startActivity(intent);
     }
 
