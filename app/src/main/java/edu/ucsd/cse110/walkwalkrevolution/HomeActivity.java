@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private boolean receiversRegistered;
 
-    private TextView textSteps;
+    private TextView textSteps, textDistance;
     private FitnessService fitnessService;
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -44,9 +44,12 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Log.d(TAG, "Creating home activity");
+
         showHeightDialog();
 
         textSteps = findViewById(R.id.box_dailySteps);
+        textDistance = findViewById(R.id.box_dailyDistance);
 
         // Check if user pressed start new run button
         Button bt_newRun = (Button) findViewById(R.id.bt_startNewWalk);
@@ -91,30 +94,16 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (receiversRegistered) {
-            unregisterReceiver(broadcastReceiver);
-            receiversRegistered = false;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        registerReceivers();
-        super.onResume();
-    }
-
-    @Override
     protected void onRestart() {
+        Log.d(TAG, "Restarting home activity");
         registerReceivers();
         super.onRestart();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
+    protected void onDestroy() {
+        Log.d(TAG, "Destroying home activity");
+        super.onDestroy();
         if (receiversRegistered) {
             unregisterReceiver(broadcastReceiver);
             receiversRegistered = false;
@@ -161,6 +150,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public void launchUpdateService() {
         Intent intent = new Intent(this, StepCountUpdateService.class);
+        intent.putExtra("interval", 500);
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startService(intent);
     }
 
@@ -200,6 +191,11 @@ public class HomeActivity extends AppCompatActivity {
     public void setStepCount(int stepCount) {
         WalkWalkRevolutionApplication.stepCount.set(stepCount);
         textSteps.setText(String.valueOf(stepCount));
+
+        SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
+        float savedHeight = savedHeightPref.getFloat("user_height", -1);
+        float distance = MeasurementConverter.stepToMiles(stepCount, savedHeight);
+        textDistance.setText(String.format("%.1f", distance));
     }
 
     public void updateStepCount() {

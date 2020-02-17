@@ -4,13 +4,17 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 public class StepCountUpdateService extends Service {
+
+    public static final String TAG = "StepCountUpdateService";
 
     public static final String BROADCAST_ACTION = "edu.ucsd.cse110";
 
     private final IBinder binder = new LocalBinder();
     private boolean isRunning;
+    private int interval;
 
     public StepCountUpdateService() {
     }
@@ -38,6 +42,8 @@ public class StepCountUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(TAG, "Starting step count update service");
+        interval = intent.getIntExtra("interval", 1000);
         Thread thread = new Thread(new MyThread(startId));
         thread.start();
         isRunning = true;
@@ -57,7 +63,7 @@ public class StepCountUpdateService extends Service {
                 while (isRunning) {
                     try {
                         sendBroadcast(broadcastIntent);
-                        Thread.sleep(1000);
+                        Thread.sleep(interval);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
