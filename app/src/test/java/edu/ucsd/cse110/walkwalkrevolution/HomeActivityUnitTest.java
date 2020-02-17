@@ -2,6 +2,7 @@ package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.test.core.app.ActivityScenario;
@@ -78,7 +79,7 @@ public class HomeActivityUnitTest {
     }
 
     private class TestFitnessService implements FitnessService {
-        private static final String TAG = "[TestFitnessService]: ";
+        private static final String TAG = "TestFitnessService";
         private HomeActivity HomeActivity;
 
         public TestFitnessService(HomeActivity HomeActivity) {
@@ -92,12 +93,12 @@ public class HomeActivityUnitTest {
 
         @Override
         public void setup() {
-            System.out.println(TAG + "setup");
+            Log.d(TAG, "Setup");
         }
 
         @Override
         public void updateStepCount() {
-            System.out.println(TAG + "updateStepCount to " + nextStepCount);
+            Log.d(TAG, "Update step count to " + nextStepCount);
             HomeActivity.setStepCount(nextStepCount);
         }
     }

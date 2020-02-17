@@ -27,15 +27,23 @@ public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
 
+    private int mockStepCount = 0;
     private boolean receiversRegistered;
 
     private TextView textSteps, textDistance;
     private FitnessService fitnessService;
 
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver updateBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             fitnessService.updateStepCount();
+        }
+    };
+
+    private BroadcastReceiver mockCountBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mockStepCount = intent.getIntExtra("Mock Step Count", 0);
         }
     };
 
@@ -88,7 +96,8 @@ public class HomeActivity extends AppCompatActivity {
     public void registerReceivers() {
         if (!receiversRegistered) {
             // Register broadcast receiver from step count updater
-            registerReceiver(broadcastReceiver, new IntentFilter(StepCountUpdateService.BROADCAST_ACTION));
+            registerReceiver(updateBroadcastReceiver, new IntentFilter(StepCountUpdateService.BROADCAST_ACTION));
+            registerReceiver(mockCountBroadcastReceiver, new IntentFilter(MockActivity.BROADCAST_ACTION));
             receiversRegistered = true;
         }
     }
@@ -105,7 +114,8 @@ public class HomeActivity extends AppCompatActivity {
         Log.d(TAG, "Destroying home activity");
         super.onDestroy();
         if (receiversRegistered) {
-            unregisterReceiver(broadcastReceiver);
+            unregisterReceiver(updateBroadcastReceiver);
+            unregisterReceiver(mockCountBroadcastReceiver);
             receiversRegistered = false;
         }
     }
@@ -156,6 +166,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void gotoNewRun() {
+        // Reset mock step count because the mock doesn't apply to a new walk
+        Log.d(TAG, "Resetting mock count");
+        mockStepCount = 0;
+        updateStepCount();
+
+        Log.d(TAG, String.valueOf(WalkWalkRevolutionApplication.stepCount.get()));
         Intent intent = new Intent(this, CurrentWalkActivity.class);
         SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
         float savedHeight = savedHeightPref.getFloat("user_height", -1);
@@ -171,7 +187,6 @@ public class HomeActivity extends AppCompatActivity {
 
     public void gotoRoutes() {
         Intent intent = new Intent(this, RoutesActivity.class);
-        finish();
         startActivity(intent);
     }
 
@@ -189,6 +204,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void setStepCount(int stepCount) {
+        // Add mocked steps, if any
+        stepCount += mockStepCount;
+
         WalkWalkRevolutionApplication.stepCount.set(stepCount);
         textSteps.setText(String.valueOf(stepCount));
 

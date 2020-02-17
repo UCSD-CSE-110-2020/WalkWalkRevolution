@@ -4,9 +4,9 @@ import java.io.Serializable;
 public class Walk implements Serializable {
     private String totalTime;
     private int steps;
-    private double distance;
+    private float distance;
 
-    public Walk(String t, int st, double dis) {
+    public Walk(String t, int st, float dis) {
         totalTime = t;
         steps = st;
         distance = dis;
@@ -20,7 +20,7 @@ public class Walk implements Serializable {
         steps = st;
     }
 
-    public void setDistance(double dis) {
+    public void setDistance(float dis) {
         distance = dis;
     }
 
@@ -32,7 +32,7 @@ public class Walk implements Serializable {
         return this.steps;
     }
 
-    public double getDistance() {
+    public float getDistance() {
         return this.distance;
     }
 
