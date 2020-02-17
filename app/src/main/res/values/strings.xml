@@ -64,6 +64,6 @@
     <string name="name_step_mocking">Step Mocking:</string>
     <string name="name_time_mocking">Time Mocking:</string>
     <string name="bt_submit_text">Submit</string>
-    <string name="hint_timeMock">Ex: 1581688678212</string>
+    <string name="hint_timeMock">Ex: 45000 (45 seconds)</string>
     <string name="bt_mock_text">Mock</string>
 </resources>

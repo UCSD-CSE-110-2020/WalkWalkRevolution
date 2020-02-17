@@ -1,59 +1,68 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.time.Clock;
 import java.util.Calendar;
-import java.util.Map;
 
 public class CurrentWalkActivity extends AppCompatActivity {
 
-    String name = "NEW WALK"; // Save the title of walk
-    Route savedRoute = null; // Saved route
-    TextView currTime; // Save the current time
-    long startTime; // Save the start time
-    long countUp; // Count the seconds up to 60
-    int iniStep = 0; // Initial step
-    double iniDistance = 0; // Initial distance
-    float height = 0; // Initial height
-    Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
-    boolean isSavedRoute = false; // Check if current walk is already saved
+    private String name = "NEW WALK"; // Save the title of walk
+    private Route savedRoute = null; // Saved route
+    private TextView currTime; // Save the current time
+    private long countUp; // Count the seconds up to 60
+    private int iniStep = 0; // Initial step
+    private float iniDistance = 0; // Initial distance
+    private float height = 0; // Initial height
+    private Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
+    private boolean isSavedRoute = false; // Check if current walk is already saved
+
+    private static Clock clock;
+    private static Chronometer stopWatch;
+
+    private static final String TAG = "CurrentWalkActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_walk);
 
+        Log.d(TAG, "Creating current walk activity");
 
         // Get the user height, and convert it to the foot
-        Intent i = getIntent();
-        height = (float)i.getSerializableExtra("savedHeight");
-
-        isSavedRoute = (boolean)i.getSerializableExtra("isSavedRoute");
-
-        // set title name
-        String tempName = (String)i.getSerializableExtra("title");
-        if(tempName != null) {
-            name = tempName;
+        Intent intent = getIntent();
+        height = intent.getFloatExtra("savedHeight", -1);
+        isSavedRoute = intent.getBooleanExtra("isSavedRoute", false);
+        savedRoute = (Route)intent.getSerializableExtra("route");
+        if (intent.hasExtra("title")) {
+            name = intent.getStringExtra("title");
         }
+
         TextView title = (TextView) findViewById(R.id.title_routeName);
         title.setText(name);
 
-        savedRoute = (Route)i.getSerializableExtra("route");
-
         Button bt_stopRun = (Button) findViewById(R.id.bt_stopRun);
 
+        // Default case is to use a clock that pulls from the default time zone
+        if (intent.hasExtra("clock")) {
+            clock = (Clock) intent.getSerializableExtra("clock");
+        } else if (clock == null) {
+            clock = Clock.systemDefaultZone();
+        }
+
+        iniStep = WalkWalkRevolutionApplication.stepCount.get();
+
         // Set up the chronometer to keep track of the time
-        Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
+        stopWatch = (Chronometer) findViewById(R.id.chrono);
         currTime = (TextView) findViewById(R.id.box_currTime);
         stopWatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             // Every tick, it will update the information
@@ -63,11 +72,14 @@ public class CurrentWalkActivity extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer arg0) {
                 // Format the timer for user interface
-                countUp = (SystemClock.elapsedRealtime() - arg0.getBase()) / 1000;
-                String asText = (countUp / 60) + ":" + (countUp % 60);
+                countUp = ((clock.millis() - arg0.getBase()) / MeasurementConverter.MILLIS_IN_SEC);
+                String asText = (countUp / MeasurementConverter.SECS_IN_MIN) + ":" + (countUp % MeasurementConverter.SECS_IN_MIN);
 
                 // Record the step and total time, and save them to the walk object
-                int stepCount = WalkWalkRevolutionApplication.stepCount.get();
+                int stepCount = WalkWalkRevolutionApplication.stepCount.get() - iniStep;
+                if (stepCount < 0) {
+                    iniStep = WalkWalkRevolutionApplication.stepCount.get();
+                }
                 newWalk.setSteps(stepCount);
                 newWalk.setTotalTime(asText);
 
@@ -85,6 +97,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
                 currTime.setText(asText);
             }
         });
+        stopWatch.setBase(clock.millis());
         stopWatch.start();
 
         // check if user pressed stop button
@@ -96,8 +109,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
                 // record last walk and display on home screen
                 SharedPreferences lastWalk  = getSharedPreferences("lastWalk", MODE_PRIVATE);
                 SharedPreferences.Editor lastWalkEdit = lastWalk.edit();
-                lastWalkEdit.putString("steps", Integer.toString(newWalk.getSteps()));
-                lastWalkEdit.putString("distance", Double.toString(newWalk.getDistance()));
+                lastWalkEdit.putString("steps", String.valueOf(newWalk.getSteps()));
+                lastWalkEdit.putString("distance", String.format("%.1f", newWalk.getDistance()));
                 lastWalkEdit.putString("time", newWalk.getTotalTime());
                 lastWalkEdit.apply();
 
@@ -120,6 +133,15 @@ public class CurrentWalkActivity extends AppCompatActivity {
         });
     }
 
+    public static void setClock(Clock c) {
+        clock = c;
+
+        // Restart the stopwatch using the new clock
+        stopWatch.stop();
+        stopWatch.setBase(clock.millis());
+        stopWatch.start();
+    }
+
     public void gotoNewRoute() {
         Intent intent = new Intent(this, RouteNewActivity.class);
         intent.putExtra("finalWalk", newWalk);
@@ -136,7 +158,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
         Calendar rightNow = Calendar.getInstance();
         tempRoute.setLastRun(rightNow);
         tempRoute.setSteps(newWalk.getSteps());
-        tempRoute.setDistance((float)newWalk.getDistance());
+        tempRoute.setDistance(newWalk.getDistance());
         manager.addRoute(tempRoute);
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
