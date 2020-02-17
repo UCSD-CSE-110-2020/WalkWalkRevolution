@@ -10,9 +10,13 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Map;
+
 public class CurrentWalkActivity extends AppCompatActivity {
 
     String name = "NEW WALK"; // Save the title of walk
+    Route savedRoute = null; // Saved route
     TextView currTime; // Save the current time
     long startTime; // Save the start time
     long countUp; // Count the seconds up to 60
@@ -22,6 +26,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
     double stepMultiplier = 0.414; // Multiplier for distance calculation
     double footInMile = 5280.00; // Used for conversion to mile
     Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
+    boolean isSavedRoute = false; // Check if current walk is already saved
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
         height = (float)i.getSerializableExtra("savedHeight");
         height = height / 12;
 
+        isSavedRoute = (boolean)i.getSerializableExtra("isSavedRoute");
+
         // set title name
         String tempName = (String)i.getSerializableExtra("title");
         if(tempName != null) {
@@ -41,6 +48,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
         }
         TextView title = (TextView) findViewById(R.id.title_routeName);
         title.setText(name);
+
+        savedRoute = (Route)i.getSerializableExtra("route");
 
         Button bt_stopRun = (Button) findViewById(R.id.bt_stopRun);
 
@@ -85,7 +94,12 @@ public class CurrentWalkActivity extends AppCompatActivity {
         bt_stopRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gotoNewRoute();
+                // if it is a saved route then go to routes screen
+                // if it not saved then go to new route screen
+                if(!isSavedRoute)
+                    gotoNewRoute();
+                else
+                    gotoRoutes();
             }
         });
 
@@ -104,6 +118,20 @@ public class CurrentWalkActivity extends AppCompatActivity {
         intent.putExtra("finalWalk", newWalk);
         intent.putExtra("manuallyAddNewRoute", false);
         finish();
+        startActivity(intent);
+    }
+
+    public void gotoRoutes() {
+        // change data of saved route
+        RoutesManager manager = new RoutesManager(this);
+        Route tempRoute = savedRoute;
+        manager.deleteRoute(name);
+        Calendar rightNow = Calendar.getInstance();
+        tempRoute.setLastRun(rightNow);
+        tempRoute.setSteps(newWalk.getSteps());
+        tempRoute.setDistance((float)newWalk.getDistance());
+        manager.addRoute(tempRoute);
+        Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
     }
 

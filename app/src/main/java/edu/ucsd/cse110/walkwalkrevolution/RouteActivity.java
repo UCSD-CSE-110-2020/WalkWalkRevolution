@@ -95,6 +95,8 @@ public class RouteActivity extends AppCompatActivity {
         float savedHeight = savedHeightPref.getFloat("user_height", -1);
         intent.putExtra("savedHeight", savedHeight);
         intent.putExtra("title", route.getName());
+        intent.putExtra("route", route);
+        intent.putExtra("isSavedRoute", true);
         startActivity(intent);
     }
 }
