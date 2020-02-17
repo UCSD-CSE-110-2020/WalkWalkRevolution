@@ -20,8 +20,6 @@ public class CurrentWalkActivity extends AppCompatActivity {
     int iniStep = 0; // Initial step
     double iniDistance = 0; // Initial distance
     float height = 0; // Initial height
-    double stepMultiplier = 0.414; // Multiplier for distance calculation
-    double footInMile = 5280.00; // Used for conversion to mile
     Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
 
     @Override
@@ -33,7 +31,6 @@ public class CurrentWalkActivity extends AppCompatActivity {
         // Get the user height, and convert it to the foot
         Intent i = getIntent();
         height = (float)i.getSerializableExtra("savedHeight");
-        height = height / 12;
 
         // set title name
         String tempName = (String)i.getSerializableExtra("title");
@@ -65,14 +62,14 @@ public class CurrentWalkActivity extends AppCompatActivity {
                 newWalk.setTotalTime(asText);
 
                 // Calculate the distance in mile, and save it to the walk object
-                iniDistance = ((double)stepCount * height * stepMultiplier) / footInMile;
-                newWalk.setDistance(round(iniDistance, 3));
+                iniDistance = MeasurementConverter.stepToMiles(stepCount, height);
+                newWalk.setDistance(Float.parseFloat(String.format("%.1f", iniDistance)));
 
                 // Update the user interface accordingly
                 TextView updateStep = findViewById(R.id.box_currSteps);
                 TextView updateDistance = findViewById(R.id.box_currDist);
                 updateStep.setText(String.valueOf(stepCount));
-                updateDistance.setText(round(iniDistance, 3) + " miles");
+                updateDistance.setText(String.format("%.1f miles", iniDistance));
 
                 // Update the timer
                 currTime.setText(asText);
@@ -89,8 +86,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
             }
         });
 
+        // Support mocking
         Button bt_mock = (Button) findViewById(R.id.bt_mock);
-        // support mocking
         bt_mock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -109,16 +106,5 @@ public class CurrentWalkActivity extends AppCompatActivity {
     public void gotoMock() {
         Intent intent = new Intent(this, MockActivity.class);
         startActivity(intent);
-    }
-
-    // Round the double to declared position.
-    // Credit to Jonik, https://stackoverflow.com/questions/2808535/round-a-double-to-2-decimal-places
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
     }
 }
