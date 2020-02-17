@@ -8,10 +8,14 @@ import java.time.ZoneId;
 public class SerializableFixedClock extends Clock implements Serializable {
 
     private Instant initialInstant;
-    private int fixedSeconds;
+    private long fixedMillis;
 
     public SerializableFixedClock(int fixedSeconds) {
-        this.fixedSeconds = fixedSeconds;
+        fixedMillis = fixedSeconds * MeasurementConverter.MILLIS_IN_SEC;
+    }
+
+    public SerializableFixedClock(long fixedMillis) {
+        this.fixedMillis = fixedMillis;
     }
 
     @Override
@@ -29,6 +33,6 @@ public class SerializableFixedClock extends Clock implements Serializable {
             initialInstant = Instant.now();
             return Instant.now();
         }
-        return initialInstant.plusSeconds(fixedSeconds);
+        return initialInstant.plusMillis(fixedMillis);
     }
 }

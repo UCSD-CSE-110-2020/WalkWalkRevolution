@@ -10,7 +10,7 @@ public class StepCountUpdateService extends Service {
 
     public static final String TAG = "StepCountUpdateService";
 
-    public static final String BROADCAST_ACTION = "edu.ucsd.cse110";
+    public static final String BROADCAST_ACTION = "edu.ucsd.cse110.STEP_COUNT_UPDATE";
 
     private final IBinder binder = new LocalBinder();
     private boolean isRunning;

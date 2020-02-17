@@ -16,17 +16,18 @@ import java.util.Calendar;
 
 public class CurrentWalkActivity extends AppCompatActivity {
 
-    String name = "NEW WALK"; // Save the title of walk
-    Route savedRoute = null; // Saved route
-    TextView currTime; // Save the current time
-    long countUp; // Count the seconds up to 60
-    int iniStep = 0; // Initial step
-    float iniDistance = 0; // Initial distance
-    float height = 0; // Initial height
-    Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
-    boolean isSavedRoute = false; // Check if current walk is already saved
+    private String name = "NEW WALK"; // Save the title of walk
+    private Route savedRoute = null; // Saved route
+    private TextView currTime; // Save the current time
+    private long countUp; // Count the seconds up to 60
+    private int iniStep = 0; // Initial step
+    private float iniDistance = 0; // Initial distance
+    private float height = 0; // Initial height
+    private Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
+    private boolean isSavedRoute = false; // Check if current walk is already saved
 
-    private Clock clock;
+    private static Clock clock;
+    private static Chronometer stopWatch;
 
     private static final String TAG = "CurrentWalkActivity";
 
@@ -54,14 +55,14 @@ public class CurrentWalkActivity extends AppCompatActivity {
         // Default case is to use a clock that pulls from the default time zone
         if (intent.hasExtra("clock")) {
             clock = (Clock) intent.getSerializableExtra("clock");
-        } else {
+        } else if (clock == null) {
             clock = Clock.systemDefaultZone();
         }
 
         iniStep = WalkWalkRevolutionApplication.stepCount.get();
 
         // Set up the chronometer to keep track of the time
-        Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
+        stopWatch = (Chronometer) findViewById(R.id.chrono);
         currTime = (TextView) findViewById(R.id.box_currTime);
         stopWatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             // Every tick, it will update the information
@@ -76,6 +77,9 @@ public class CurrentWalkActivity extends AppCompatActivity {
 
                 // Record the step and total time, and save them to the walk object
                 int stepCount = WalkWalkRevolutionApplication.stepCount.get() - iniStep;
+                if (stepCount < 0) {
+                    iniStep = WalkWalkRevolutionApplication.stepCount.get();
+                }
                 newWalk.setSteps(stepCount);
                 newWalk.setTotalTime(asText);
 
@@ -127,6 +131,15 @@ public class CurrentWalkActivity extends AppCompatActivity {
                 gotoMock();
             }
         });
+    }
+
+    public static void setClock(Clock c) {
+        clock = c;
+
+        // Restart the stopwatch using the new clock
+        stopWatch.stop();
+        stopWatch.setBase(clock.millis());
+        stopWatch.start();
     }
 
     public void gotoNewRoute() {
