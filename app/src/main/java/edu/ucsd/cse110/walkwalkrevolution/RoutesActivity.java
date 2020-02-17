@@ -96,7 +96,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     public void gotoMainMenu() {
         Intent intentMainMenu = new Intent(this, HomeActivity.class);
-        finish();
+        intentMainMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intentMainMenu);
     }
 
