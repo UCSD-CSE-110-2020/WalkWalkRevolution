@@ -1,19 +1,17 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.time.Clock;
 import java.util.Calendar;
-import java.util.Map;
 
 public class CurrentWalkActivity extends AppCompatActivity {
 
@@ -32,7 +30,6 @@ public class CurrentWalkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_walk);
-
 
         // Get the user height, and convert it to the foot
         Intent i = getIntent();
@@ -53,6 +50,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
         Button bt_stopRun = (Button) findViewById(R.id.bt_stopRun);
 
         // Set up the chronometer to keep track of the time
+        Intent intent = getIntent();
+        Clock clock = (Clock)intent.getSerializableExtra("clock");
         Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
         currTime = (TextView) findViewById(R.id.box_currTime);
         stopWatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
@@ -63,8 +62,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
             @Override
             public void onChronometerTick(Chronometer arg0) {
                 // Format the timer for user interface
-                countUp = (SystemClock.elapsedRealtime() - arg0.getBase()) / 1000;
-                String asText = (countUp / 60) + ":" + (countUp % 60);
+                countUp = ((clock.millis() - arg0.getBase()) / MeasurementConverter.MILLIS_IN_SEC);
+                String asText = (countUp / MeasurementConverter.SECS_IN_MIN) + ":" + (countUp % MeasurementConverter.SECS_IN_MIN);
 
                 // Record the step and total time, and save them to the walk object
                 int stepCount = WalkWalkRevolutionApplication.stepCount.get();
@@ -85,6 +84,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
                 currTime.setText(asText);
             }
         });
+        stopWatch.setBase(clock.millis());
         stopWatch.start();
 
         // check if user pressed stop button
@@ -93,7 +93,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
             public void onClick(View view) {
                 stopWatch.stop();
                 gotoNewRoute();
-              
+
                 // record last walk and display on home screen
                 SharedPreferences lastWalk  = getSharedPreferences("lastWalk", MODE_PRIVATE);
                 SharedPreferences.Editor lastWalkEdit = lastWalk.edit();
