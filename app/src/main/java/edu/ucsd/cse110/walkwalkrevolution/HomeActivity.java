@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
@@ -90,30 +92,14 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (receiversRegistered) {
-            unregisterReceiver(broadcastReceiver);
-            receiversRegistered = false;
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        registerReceivers();
-        super.onResume();
-    }
-
-    @Override
     protected void onRestart() {
         registerReceivers();
         super.onRestart();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
+    protected void onDestroy() {
+        super.onDestroy();
         if (receiversRegistered) {
             unregisterReceiver(broadcastReceiver);
             receiversRegistered = false;
@@ -160,6 +146,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void launchUpdateService() {
         Intent intent = new Intent(this, StepCountUpdateService.class);
+        intent.putExtra("interval", 500);
         startService(intent);
     }
 

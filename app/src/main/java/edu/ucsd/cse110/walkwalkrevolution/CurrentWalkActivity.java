@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -46,33 +47,31 @@ public class CurrentWalkActivity extends AppCompatActivity {
 
         // Set up the chronometer to keep track of the time
         Chronometer stopWatch = (Chronometer) findViewById(R.id.chrono);
-        startTime = SystemClock.elapsedRealtime();
         currTime = (TextView) findViewById(R.id.box_currTime);
-        stopWatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
-
-            @Override
+        stopWatch.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             // Every tick, it will update the information
             // Credit to Steve Haley,
             // https://stackoverflow.com/questions/2536882/create-an-incrementing-timer-in-
             // seconds-in-0000-format
+            @Override
             public void onChronometerTick(Chronometer arg0) {
-
                 // Format the timer for user interface
                 countUp = (SystemClock.elapsedRealtime() - arg0.getBase()) / 1000;
                 String asText = (countUp / 60) + ":" + (countUp % 60);
 
                 // Record the step and total time, and save them to the walk object
-                newWalk.setSteps(iniStep);
+                int stepCount = WalkWalkRevolutionApplication.stepCount.get();
+                newWalk.setSteps(stepCount);
                 newWalk.setTotalTime(asText);
 
                 // Calculate the distance in mile, and save it to the walk object
-                iniDistance = ((double)iniStep * height * stepMultiplier) / footInMile;
+                iniDistance = ((double)stepCount * height * stepMultiplier) / footInMile;
                 newWalk.setDistance(round(iniDistance, 3));
 
                 // Update the user interface accordingly
                 TextView updateStep = findViewById(R.id.box_currSteps);
                 TextView updateDistance = findViewById(R.id.box_currDist);
-                updateStep.setText(Integer.toString(iniStep++));
+                updateStep.setText(String.valueOf(stepCount));
                 updateDistance.setText(round(iniDistance, 3) + " miles");
 
                 // Update the timer
@@ -85,6 +84,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
         bt_stopRun.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                stopWatch.stop();
                 gotoNewRoute();
             }
         });
