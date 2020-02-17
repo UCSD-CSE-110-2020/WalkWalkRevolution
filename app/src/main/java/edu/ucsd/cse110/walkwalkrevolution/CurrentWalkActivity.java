@@ -105,7 +105,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 stopWatch.stop();
-
+              
                 // record last walk and display on home screen
                 SharedPreferences lastWalk  = getSharedPreferences("lastWalk", MODE_PRIVATE);
                 SharedPreferences.Editor lastWalkEdit = lastWalk.edit();
