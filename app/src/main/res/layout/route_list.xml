@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/entry_full"
     android:layout_width="400dp"
-    android:layout_height="75dp">
+    android:layout_height="90dp">
 
     <ImageView
         android:id="@+id/icon_favoriteStar"
@@ -15,7 +15,7 @@
     <LinearLayout
         android:id="@+id/entry_route"
         android:layout_width="370dp"
-        android:layout_height="75dp"
+        android:layout_height="90dp"
         android:orientation="vertical">
 
         <TextView
@@ -29,6 +29,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#4d4d4d"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/entry_startingPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/empty" />
 
         <TextView
             android:id="@+id/entry_routeDate"
