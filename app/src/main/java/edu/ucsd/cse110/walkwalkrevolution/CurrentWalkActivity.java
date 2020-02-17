@@ -21,7 +21,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
     long startTime; // Save the start time
     long countUp; // Count the seconds up to 60
     int iniStep = 0; // Initial step
-    double iniDistance = 0; // Initial distance
+    float iniDistance = 0; // Initial distance
     float height = 0; // Initial height
     Walk newWalk = new Walk("0.0", iniStep, iniDistance); // Walk object to save information
     boolean isSavedRoute = false; // Check if current walk is already saved
@@ -97,8 +97,8 @@ public class CurrentWalkActivity extends AppCompatActivity {
                 // record last walk and display on home screen
                 SharedPreferences lastWalk  = getSharedPreferences("lastWalk", MODE_PRIVATE);
                 SharedPreferences.Editor lastWalkEdit = lastWalk.edit();
-                lastWalkEdit.putString("steps", Integer.toString(newWalk.getSteps()));
-                lastWalkEdit.putString("distance", Double.toString(newWalk.getDistance()));
+                lastWalkEdit.putString("steps", String.valueOf(newWalk.getSteps()));
+                lastWalkEdit.putString("distance", String.format("%.1f", newWalk.getDistance()));
                 lastWalkEdit.putString("time", newWalk.getTotalTime());
                 lastWalkEdit.apply();
 
@@ -137,7 +137,7 @@ public class CurrentWalkActivity extends AppCompatActivity {
         Calendar rightNow = Calendar.getInstance();
         tempRoute.setLastRun(rightNow);
         tempRoute.setSteps(newWalk.getSteps());
-        tempRoute.setDistance((float)newWalk.getDistance());
+        tempRoute.setDistance(newWalk.getDistance());
         manager.addRoute(tempRoute);
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
