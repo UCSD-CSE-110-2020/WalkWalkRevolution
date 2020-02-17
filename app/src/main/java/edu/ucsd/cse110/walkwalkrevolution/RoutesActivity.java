@@ -102,6 +102,7 @@ public class RoutesActivity extends AppCompatActivity {
 
     public void gotoNewRoute() {
         Intent intentNewRoute = new Intent(this, RouteNewActivity.class);
+        intentNewRoute.putExtra("manuallyAddNewRoute", true);
         startActivity(intentNewRoute);
     }
 

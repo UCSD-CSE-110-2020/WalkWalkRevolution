@@ -11,12 +11,19 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import java.util.Calendar;
+
 public class RouteExtraActivity extends AppCompatActivity {
+
+    private boolean manuallyAddNewRoute = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_extra);
+
+        Intent i = getIntent();
+        manuallyAddNewRoute = (boolean) i.getSerializableExtra("manuallyAddNewRoute");
 
         Button bt_done = (Button) findViewById(R.id.bt_done);
 
@@ -79,6 +86,10 @@ public class RouteExtraActivity extends AppCompatActivity {
         newRoute.setFavorite(favorite.isChecked());
         newRoute.setFeatures(tempRoute.getString("style", ""),tempRoute.getString("terrain", ""),
                 tempRoute.getString("environment", ""), tempRoute.getString("surface", ""), tempRoute.getString("difficulty", ""));
+        if(!manuallyAddNewRoute) {
+            Calendar rightNow = Calendar.getInstance();
+            newRoute.setLastRun(rightNow);
+        }
 
         // save new route
         RoutesManager routesManager = new RoutesManager(this);

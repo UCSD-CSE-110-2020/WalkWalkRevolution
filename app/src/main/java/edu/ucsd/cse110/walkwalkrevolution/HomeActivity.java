@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        displayLastWalk();
         registerReceivers();
         launchFitnessActivity();
         launchUpdateService();
@@ -168,6 +169,7 @@ public class HomeActivity extends AppCompatActivity {
         SharedPreferences savedHeightPref = getSharedPreferences("saved_height", MODE_PRIVATE);
         float savedHeight = savedHeightPref.getFloat("user_height", -1);
         intent.putExtra("savedHeight", savedHeight);
+        intent.putExtra("isSavedRoute", false);
         startActivity(intent);
     }
 
@@ -202,5 +204,21 @@ public class HomeActivity extends AppCompatActivity {
 
     public void updateStepCount() {
         fitnessService.updateStepCount();
+    }
+
+    public void displayLastWalk() {
+        SharedPreferences lastWalk  = getSharedPreferences("lastWalk", MODE_PRIVATE);
+        String lastSteps = lastWalk.getString("steps", "N/A");
+        String lastDistance = lastWalk.getString("distance", "N/A");
+        String lastTime = lastWalk.getString("time", "N/A");
+
+        TextView stepsText = (TextView) findViewById(R.id.box_lastSteps);
+        stepsText.setText(lastSteps);
+
+        TextView distanceText = (TextView) findViewById(R.id.box_lastDistance);
+        distanceText.setText(lastDistance);
+
+        TextView timeText = (TextView) findViewById(R.id.box_lastTime);
+        timeText.setText(lastTime);
     }
 }
