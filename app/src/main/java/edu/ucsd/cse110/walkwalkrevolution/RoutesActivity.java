@@ -17,10 +17,14 @@ import java.util.ArrayList;
 
 public class RoutesActivity extends AppCompatActivity {
 
+    public static String TAG = "RoutesActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes);
+
+        Log.d(TAG, "Creating routes list activity");
 
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
 
