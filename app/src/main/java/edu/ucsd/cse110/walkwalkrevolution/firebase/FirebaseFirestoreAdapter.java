@@ -67,7 +67,7 @@ public class FirebaseFirestoreAdapter {
                             Log.w(TAG, "Error writing document", e);
                         }
                     });
-        } else if (ref instanceof CollectionReference){
+        } else if (ref instanceof CollectionReference) {
             ((CollectionReference) ref).add(data)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
