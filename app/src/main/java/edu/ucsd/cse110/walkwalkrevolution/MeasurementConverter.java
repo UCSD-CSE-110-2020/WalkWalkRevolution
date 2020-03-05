@@ -12,4 +12,8 @@ public abstract class MeasurementConverter {
     public static float stepToMiles(int stepCount, float heightInInches) {
         return ((((float)stepCount) * (heightInInches / INCHES_IN_FOOT)) * STEP_TO_DISTANCE) / FEET_IN_MILE;
     }
+
+    public static boolean isEven(int i) {
+        return i % 2 == 0;
+    }
 }
