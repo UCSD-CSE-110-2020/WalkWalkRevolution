@@ -111,13 +111,20 @@ public class HomeActivity extends AppCompatActivity {
     private ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            FirebaseGoogleSignInService.LocalBinder localBinder = (FirebaseGoogleSignInService.LocalBinder)service;
-            firebaseSignInService = localBinder.getService();
-            isBound = true;
-            saveUserLogin();
+            if (service != null) {
+                FirebaseGoogleSignInService.LocalBinder localBinder = (FirebaseGoogleSignInService.LocalBinder) service;
+                firebaseSignInService = localBinder.getService();
+                isBound = true;
+                saveUserLogin();
+            }
         }
+
         @Override
-        public void onServiceDisconnected(ComponentName name) { isBound = false; }
+        public void onServiceDisconnected(ComponentName name) {
+            if (name != null) {
+                isBound = false;
+            }
+        }
     };
 
     public void registerReceivers() {
