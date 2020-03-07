@@ -11,7 +11,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service
             android:name=".StepCountUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
+            android:name=".firebase.FirebaseGoogleSignInService"
             android:enabled="true"
             android:exported="true"></service>
 
