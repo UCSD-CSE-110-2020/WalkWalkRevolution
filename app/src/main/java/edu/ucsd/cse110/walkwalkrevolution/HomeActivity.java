@@ -26,10 +26,13 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Properties;
 
+import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseGoogleSignInService;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessServiceFactory;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.GoogleFitAdapter;
+
+import static java.lang.Thread.sleep;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -115,7 +118,9 @@ public class HomeActivity extends AppCompatActivity {
                 FirebaseGoogleSignInService.LocalBinder localBinder = (FirebaseGoogleSignInService.LocalBinder) service;
                 firebaseSignInService = localBinder.getService();
                 isBound = true;
-                saveUserLogin();
+                if (!firebaseSignInService.isSignedIn()) {
+                    showSignIn();
+                }
             }
         }
 
@@ -175,6 +180,8 @@ public class HomeActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseSignInService.firebaseAuthWithGoogle(account);
+                saveUserLogin();
+                Log.d(TAG, String.valueOf(firebaseSignInService.isSignedIn()));
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
@@ -292,11 +299,11 @@ public class HomeActivity extends AppCompatActivity {
         timeText.setText(lastTime);
     }
 
-    public void saveUserLogin() {
-        if (!firebaseSignInService.isSignedIn()) {
-            firebaseSignInService.signIn(this);
-        }
+    public void showSignIn() {
+        firebaseSignInService.signIn(this);
+    }
 
+    public void saveUserLogin() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String name = user.getDisplayName();
