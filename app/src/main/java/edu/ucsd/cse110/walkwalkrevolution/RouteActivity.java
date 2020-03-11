@@ -87,6 +87,15 @@ public class RouteActivity extends AppCompatActivity {
                 gotoNewRun();
             }
         });
+
+        // Check if user pressed propose walk button
+        Button bt_proposeWalk = (Button) findViewById(R.id.bt_proposeWalk);
+        bt_proposeWalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoProposeWalk();
+            }
+        });
     }
 
     public void gotoRoutes() {
@@ -102,6 +111,11 @@ public class RouteActivity extends AppCompatActivity {
         intent.putExtra("title", route.getName());
         intent.putExtra("route", route);
         intent.putExtra("isSavedRoute", true);
+        startActivity(intent);
+    }
+
+    public void gotoProposeWalk() {
+        Intent intent = new Intent(this, ProposeWalkActivity.class);
         startActivity(intent);
     }
 }
