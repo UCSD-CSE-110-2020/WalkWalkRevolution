@@ -3,28 +3,29 @@
     package="edu.ucsd.cse110.walkwalkrevolution">
 
     <application
-        android:allowBackup="true"
         android:name=".WalkWalkRevolutionApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name="com.google.firebase.messaging.FirebaseMessagingService">
+        <activity android:name=".AddTeamMemberActivity"></activity>
+        <activity android:name=".TeamActivity" />
+
+        <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".StepCountUpdateService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
         <service
             android:name=".firebase.FirebaseGoogleSignInService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".MockActivity" />
         <activity android:name=".RouteActivity" />
