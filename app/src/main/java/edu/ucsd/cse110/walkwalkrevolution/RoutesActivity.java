@@ -53,7 +53,7 @@ public class RoutesActivity extends AppCompatActivity {
 
         FloatingActionButton bt_newRoute = (FloatingActionButton) findViewById(R.id.bt_add);
 
-        // check if user pressed main menu
+        // check if user pressed new route
         bt_newRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
