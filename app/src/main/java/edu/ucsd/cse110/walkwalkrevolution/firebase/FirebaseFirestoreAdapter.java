@@ -50,6 +50,7 @@ public class FirebaseFirestoreAdapter {
     }
 
     public void add(String[] ids, Map<String, Object> data) {
+        Log.d(TAG, "Adding data to Firestore: " + java.util.Arrays.toString(ids));
         assert ids.length > 0;
         Object ref = getDatabaseReference(ids);
 
