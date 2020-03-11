@@ -42,36 +42,24 @@ import java.util.concurrent.Executor;
 
 import edu.ucsd.cse110.walkwalkrevolution.R;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Demonstrate Firebase Authentication using a Google ID Token.
  */
 public class FirebaseGoogleSignInService extends Service {
 
     private static final String TAG = "FirebaseGoogleSignInService";
-    public static final int RC_SIGN_IN = 9001;
+    private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
-
     private GoogleSignInClient mGoogleSignInClient;
 
     private final IBinder binder = new FirebaseGoogleSignInService.LocalBinder();
 
     public FirebaseGoogleSignInService() {
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -86,23 +74,36 @@ public class FirebaseGoogleSignInService extends Service {
     }
 
     public boolean isSignedIn() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         return user != null;
     }
 
+    public int getRequestCode() {
+        return RC_SIGN_IN;
+    }
+
 
     public void signIn(Activity activity) {
+        Log.d(TAG, "Signing in to firebase");
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(activity.getApplicationContext(), gso);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         activity.startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "Attempting to authenticate firebase with Google sign in");
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -126,9 +127,15 @@ public class FirebaseGoogleSignInService extends Service {
                                     });
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.d(TAG, "signInWithCredential:failure", task.getException());
                         }
                     }
                 });
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "Finished authenticating");
     }
 }

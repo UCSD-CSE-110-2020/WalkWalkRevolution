@@ -15,21 +15,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Properties;
+import java.util.concurrent.Executor;
 
+import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseGoogleSignInService;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessService;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.FitnessServiceFactory;
 import edu.ucsd.cse110.walkwalkrevolution.fitness.GoogleFitAdapter;
+
+import static java.lang.Thread.sleep;
 
 
 public class HomeActivity extends AppCompatActivity {
@@ -115,7 +125,9 @@ public class HomeActivity extends AppCompatActivity {
                 FirebaseGoogleSignInService.LocalBinder localBinder = (FirebaseGoogleSignInService.LocalBinder) service;
                 firebaseSignInService = localBinder.getService();
                 isBound = true;
-                saveUserLogin();
+                if (!firebaseSignInService.isSignedIn()) {
+                    askForLogin();
+                }
             }
         }
 
@@ -161,28 +173,33 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult with requestCode = " + requestCode + ", resultCode : " + resultCode);
 
-        // If authentication was required during google fit setup, this will be called after the user authenticates
         if (resultCode == Activity.RESULT_OK) {
+            Log.d(TAG, "RESULT_OK");
+            // If authentication was required during google fit setup, this will be called after the user authenticates
             if (requestCode == fitnessService.getRequestCode()) {
                 fitnessService.updateStepCount();
             }
-        }
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        else if (requestCode == FirebaseGoogleSignInService.RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseSignInService.firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+            // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+            else if (requestCode == firebaseSignInService.getRequestCode()) {
+                Log.d(TAG, "Received request to sign in");
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    // Google Sign In was successful, authenticate with Firebase
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    firebaseSignInService.firebaseAuthWithGoogle(account);
+                    Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
+                    Log.d(TAG, "Saving user login details");
+                    saveNewUserLogin();
+                } catch (ApiException e) {
+                    // Google Sign In failed, update UI appropriately
+                    Log.d(TAG, "Google sign in failed", e);
+                }
             }
         } else {
             Log.e(TAG, "ERROR, home activity result code: " + resultCode);
         }
-
     }
 
     public void launchFitnessActivity() {
@@ -292,14 +309,19 @@ public class HomeActivity extends AppCompatActivity {
         timeText.setText(lastTime);
     }
 
-    public void saveUserLogin() {
-        if (!firebaseSignInService.isSignedIn()) {
-            firebaseSignInService.signIn(this);
-        }
+    public void askForLogin() {
+        Log.d(TAG, "Asking for user to login");
+        firebaseSignInService.signIn(this);
+    }
 
+    public void saveNewUserLogin() {
+        Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         String name = user.getDisplayName();
         String email = user.getEmail();
+        String uid = user.getUid();
+        User appUser = new User(name, email, uid);
+        appUser.addToDatabase(WalkWalkRevolutionApplication.adapter);
     }
 }
