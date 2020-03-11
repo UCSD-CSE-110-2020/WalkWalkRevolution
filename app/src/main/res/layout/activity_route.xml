@@ -6,21 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".RouteActivity">
 
-    <TextView
-        android:id="@+id/name_isFavorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:text="@string/name_isFavorite"
-        android:textColor="#8BC34A"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.085"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_lastWalked"
-        app:layout_constraintVertical_bias="0.006" />
-
     <Button
         android:id="@+id/bt_routes"
         android:layout_width="wrap_content"
@@ -45,10 +30,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.098" />
+        app:layout_constraintVertical_bias="0.036" />
 
     <TextView
         android:id="@+id/name_startingPoint"
@@ -62,23 +47,38 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.198" />
+        app:layout_constraintVertical_bias="0.134" />
 
     <TextView
-        android:id="@+id/box_startingPoint"
+        android:id="@+id/name_features"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/name_features"
+        android:textColor="#8BC34A"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_isFavorite"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/box_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="190dp"
         android:text="@string/empty"
         android:textColor="#8BC34A"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.029"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_startingPoint"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.197" />
+        app:layout_constraintStart_toEndOf="@+id/name_creator"
+        app:layout_constraintTop_toBottomOf="@+id/box_isFavorite"
+        app:layout_constraintVertical_bias="0.01" />
 
     <TextView
         android:id="@+id/name_lastWalked"
@@ -108,36 +108,51 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/name_lastWalked"
         app:layout_constraintTop_toBottomOf="@+id/box_startingPoint"
-        app:layout_constraintVertical_bias="0.022" />
+        app:layout_constraintVertical_bias="0.021" />
 
     <TextView
-        android:id="@+id/box_isFavorite"
+        android:id="@+id/name_isFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/empty"
-        android:textColor="#8BC34A"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.258"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_isFavorite"
-        app:layout_constraintTop_toBottomOf="@+id/box_lastWalked"
-        app:layout_constraintVertical_bias="0.022" />
-
-    <TextView
-        android:id="@+id/name_features"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name_features"
+        android:layout_marginTop="9dp"
+        android:text="@string/name_isFavorite"
         android:textColor="#8BC34A"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.085"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_lastWalked"
+        app:layout_constraintVertical_bias="0.009" />
+
+    <TextView
+        android:id="@+id/name_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="193dp"
+        android:text="@string/name_creator"
+        android:textColor="#8BC34A"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_isFavorite"
-        app:layout_constraintVertical_bias="0.027" />
+        app:layout_constraintVertical_bias="0.017" />
+
+    <TextView
+        android:id="@+id/name_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_notes"
+        android:textColor="#8BC34A"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/box_features"
+        app:layout_constraintVertical_bias="0.028" />
 
     <TextView
         android:id="@+id/box_features"
@@ -154,21 +169,22 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_features"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.026" />
 
     <TextView
-        android:id="@+id/name_notes"
+        android:id="@+id/box_isFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/name_notes"
+        android:text="@string/empty"
         android:textColor="#8BC34A"
-        android:textSize="24sp"
+        android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.258"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/box_features"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/name_isFavorite"
+        app:layout_constraintTop_toBottomOf="@+id/box_lastWalked"
+        app:layout_constraintVertical_bias="0.026" />
 
     <TextView
         android:id="@+id/box_notes"
@@ -185,20 +201,50 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_notes"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.031" />
+
+    <TextView
+        android:id="@+id/box_startingPoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty"
+        android:textColor="#8BC34A"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/name_startingPoint"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.134" />
+
+    <Button
+        android:id="@+id/bt_proposeWalk"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:background="#8BC34A"
+        android:text="@string/bt_proposeWalk"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.128"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_creator"
+        app:layout_constraintVertical_bias="0.511" />
 
     <Button
         android:id="@+id/bt_startWalk"
-        android:layout_width="137dp"
-        android:layout_height="45dp"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
         android:background="#8BC34A"
         android:text="@string/bt_start_walk_text"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.833"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948" />
+        app:layout_constraintTop_toBottomOf="@+id/name_creator"
+        app:layout_constraintVertical_bias="0.511" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

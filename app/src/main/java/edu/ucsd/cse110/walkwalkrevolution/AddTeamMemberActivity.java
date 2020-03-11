@@ -50,6 +50,6 @@ public class AddTeamMemberActivity extends AppCompatActivity {
 
         String name = eName.getText().toString();
         String gmail = eGmail.getText().toString();
-       
+
     }
 }

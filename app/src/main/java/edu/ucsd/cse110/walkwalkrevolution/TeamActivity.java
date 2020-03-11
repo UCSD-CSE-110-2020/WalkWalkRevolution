@@ -37,7 +37,7 @@ public class TeamActivity extends AppCompatActivity {
 
     public void gotoMainMenu() {
         Intent intentMainMenu = new Intent(this, HomeActivity.class);
-        //intentMainMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intentMainMenu.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intentMainMenu);
     }
 
