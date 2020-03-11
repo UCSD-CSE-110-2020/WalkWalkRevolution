@@ -37,7 +37,8 @@
     <string name="name_last_steps">Last Walk Steps:</string>
     <string name="bt_routes_text">Routes</string>
     <string name="bt_next_text">Next</string>
-    <string name="title_routes">Routes</string>
+    <string name="title_personal_routes">Personal Routes</string>
+    <string name="title_team_routes">Team Routes</string>
     <string name="desc_favorite_star">Favorite Star</string>
     <string name="bt_home_text">Home</string>
     <string name="header_info">Enter Information to Save Route:</string>
@@ -64,6 +65,24 @@
     <string name="name_step_mocking">Step Mocking:</string>
     <string name="name_time_mocking">Time Mocking:</string>
     <string name="bt_submit_text">Submit</string>
+    <string name="bt_team_text">TEAM</string>
+    <string name="bt_walk_text">WALK</string>
+    <string name="title_team">Team</string>
+    <string name="title_addTeamMember">Add team member</string>
     <string name="hint_timeMock">Ex: 45000 (45 seconds)</string>
     <string name="bt_mock_text">Mock</string>
+    <string name="title_activity_team">TeamActivity</string>
+    <string name="name_gmail">Gmail:</string>
+    <string name="name_name">Name:</string>
+    <string name="hint_name">Ex: Allen</string>
+    <string name="hint_gmail">Ex: allen@gmail.com</string>
+    <string name="bt_finishAddMember">Add</string>
+    <string name="name_creator">Creator:</string>
+    <string name="bt_proposeWalk">Propose Walk</string>
+    <string name="title_proposeWalk">Propose Walk</string>
+    <string name="hint_time">Ex: 6pm</string>
+    <string name="hint_day">Ex: Wednesday</string>
+    <string name="name_day">Day:</string>
+    <string name="name_time">Time:</string>
+    <string name="bt_sendProposeWalk">Send</string>
 </resources>

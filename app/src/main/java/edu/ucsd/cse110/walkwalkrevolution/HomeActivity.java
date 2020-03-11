@@ -100,6 +100,23 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        // Check if user pressed team button
+        Button bt_team = (Button) findViewById(R.id.bt_team);
+        bt_team.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoTeam();
+            }
+        });
+
+        // Check if user pressed walk button
+        Button bt_walk = (Button) findViewById(R.id.bt_walk);
+        bt_walk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToWalk();
+            }
+        });
 
         // Support mocking
         Button bt_mock = (Button) findViewById(R.id.bt_mock);
@@ -261,6 +278,16 @@ public class HomeActivity extends AppCompatActivity {
     public void gotoRoutes() {
         Intent intent = new Intent(this, RoutesActivity.class);
         startActivity(intent);
+    }
+
+    public void gotoTeam() {
+        Intent intent = new Intent(this, TeamActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToWalk() {
+        //Intent intent = new Intent(this, ScheduledWalksActivity.class);
+        //startActivity(intent);
     }
 
     public void showHeightDialog() {
