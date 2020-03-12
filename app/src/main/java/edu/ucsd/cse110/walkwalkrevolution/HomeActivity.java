@@ -29,6 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.Properties;
 import java.util.concurrent.Executor;
@@ -130,9 +132,9 @@ public class HomeActivity extends AppCompatActivity {
         showHeightDialog();
         displayLastWalk();
         registerReceivers();
+        launchFirebaseSignInService();
         launchFitnessActivity();
         launchUpdateService();
-        launchFirebaseSignInService();
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -144,6 +146,8 @@ public class HomeActivity extends AppCompatActivity {
                 isBound = true;
                 if (!firebaseSignInService.isSignedIn()) {
                     askForLogin();
+                } else {
+                    saveUserLogin();
                 }
             }
         }
@@ -196,6 +200,7 @@ public class HomeActivity extends AppCompatActivity {
             Log.d(TAG, "RESULT_OK");
             // If authentication was required during google fit setup, this will be called after the user authenticates
             if (requestCode == fitnessService.getRequestCode()) {
+                Log.d(TAG, "Received request to update fitness service count");
                 fitnessService.updateStepCount();
             }
             // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -208,7 +213,7 @@ public class HomeActivity extends AppCompatActivity {
                     firebaseSignInService.firebaseAuthWithGoogle(account);
                     Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
                     Log.d(TAG, "Saving user login details");
-                    saveNewUserLogin();
+                    saveUserLogin();
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
                     Log.d(TAG, "Google sign in failed", e);
@@ -341,7 +346,7 @@ public class HomeActivity extends AppCompatActivity {
         firebaseSignInService.signIn(this);
     }
 
-    public void saveNewUserLogin() {
+    public void saveUserLogin() {
         Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
