@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -15,6 +16,9 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import org.w3c.dom.Document;
+
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -85,9 +89,9 @@ public class FirebaseFirestoreAdapter {
         }
     }
 
-    public Task<?> get(String[] ids) {
+    public DocumentReference get(String[] ids) {
         assert isDocumentId(ids);
-        return ((DocumentReference) getDatabaseReference(ids)).get();
+        return ((DocumentReference) getDatabaseReference(ids));
     }
 
     public void subscribeListener(String[] ids, String key, Consumer<Object> listener) {
