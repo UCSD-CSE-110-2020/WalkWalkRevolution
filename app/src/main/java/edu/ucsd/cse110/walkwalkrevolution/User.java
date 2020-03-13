@@ -22,6 +22,7 @@ public class User {
     private String email;
     private String uid;
 
+
     public User(String name, String email, String uid) {
         this.name = name;
         this.email = email;
@@ -38,6 +39,14 @@ public class User {
         String[] ids = {"users", name + " " + uid};
         Log.d(TAG, "Adding new user to the database as a document called '" + name + " " + uid + "'");
         adapter.add(ids, data);
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**
@@ -60,5 +69,15 @@ public class User {
                 }
             }
         });
+    }
+
+    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("team", teamId);
+
+        // Database structure is "users/<NAME> <UID>"
+        String[] ids = {"users", name + " " + uid};
+        Log.d(TAG, "Adding team ('" + teamId + "') to the user document ('" + name + " " + uid + "')");
+        adapter.add(ids, data);
     }
 }
