@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "206820936329-gafkcet8si0treqnkqt3hscut0mg3pof.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsd.cse110.walkwalkrevolution",
+            "certificate_hash": "273da7ed9a4059b18a826e38ac2924928f347cbc"
+          }
+        },
+        {
+          "client_id": "206820936329-85ak96qff2r3bv5ulkt41ulluqomua62.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsd.cse110.walkwalkrevolution",
+            "certificate_hash": "20f672dc89756454216f7b0e386bcbff0d347958"
+          }
+        },
+        {
+          "client_id": "206820936329-k5tt78da6crj98tq63ju02c05chscl1b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsd.cse110.walkwalkrevolution",
+            "certificate_hash": "678c01e1d6e34fad344b296591ac2a9f48cf5e9c"
+          }
+        },
+        {
           "client_id": "206820936329-g112u5827m6b1250ppdll012aid82r21.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
