@@ -29,10 +29,10 @@ public class AddTeamMemberActivity extends AppCompatActivity {
                     Toast.makeText(AddTeamMemberActivity.this, "Please enter a name", Toast.LENGTH_SHORT).show();
                 }
                 else if (((EditText) findViewById(R.id.box_gmail)).getText().toString().matches("")) {
-                    Toast.makeText(AddTeamMemberActivity.this, "Please enter Gmail address", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddTeamMemberActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    save();
+                    invite();
                     gotoTeamMenu();
                 }
             }
@@ -44,12 +44,11 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void save() {
+    public void invite() {
         EditText eName = (EditText) findViewById(R.id.box_name);
         EditText eGmail = (EditText) findViewById(R.id.box_gmail);
 
         String name = eName.getText().toString();
-        String gmail = eGmail.getText().toString();
-
+        String email = eGmail.getText().toString();
     }
 }

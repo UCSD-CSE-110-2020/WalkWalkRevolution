@@ -11,33 +11,33 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 
-public class User {
+public class Team {
 
-    private static final String TAG = User.class.getSimpleName();
+    private static final String TAG = Team.class.getSimpleName();
 
-    private String name;
-    private String email;
-    private String uid;
+    private Map<String, String> users;
+    private String cName, cEmail; // Creator info
 
 
-    public User(String name, String email, String uid) {
-        this.name = name;
-        this.email = email;
-        this.uid = uid;
+    // Team should be initialized with the creator's name and email
+    public Team(String name, String email) {
+        cName = name;
+        cEmail = email;
+        users = new HashMap<>();
+        users.put(email, name);
     }
 
-    public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter) {
+    public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids) {
         Map<String, Object> data = new HashMap<>();
-        data.put("name", name);
-        data.put("email", email);
-        data.put("uid", uid);
+        data.put("members", users);
 
         // Database structure is "users/<NAME> <UID>"
-        String[] ids = {"users", name + " " + uid};
-        Log.d(TAG, "Adding new user to the database as a document called '" + name + " " + uid + "'");
+        Log.d(TAG, "Adding new team to the database as a document called '" + ids[1] + "'");
+        Log.d(TAG, "Created with creator '" + cEmail + ": " + cName + "'");
         adapter.add(ids, data);
     }
 
@@ -45,7 +45,7 @@ public class User {
      * If the document exists, addToDatabase is a no-op
      */
     public void addToDatabase(FirebaseFirestoreAdapter adapter) {
-        String[] ids = {"users", name + " " + uid};
+        String[] ids = {"teams", UUID.randomUUID().toString()};
         DocumentReference docRef = adapter.get(ids);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -54,7 +54,7 @@ public class User {
                     DocumentSnapshot document = task.getResult();
                     if (!document.exists()) {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist, adding it.");
-                        overwriteAddToDatabase(adapter);
+                        overwriteAddToDatabase(adapter, ids);
                     } else {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' already exists, not adding it.");
                     }
