@@ -85,4 +85,9 @@
     <string name="name_day">Day:</string>
     <string name="name_time">Time:</string>
     <string name="bt_sendProposeWalk">Send</string>
+    <string name="header_invitationText">sent you a team invitation</string>
+    <string name="bt_acceptInvitation">ACCEPT</string>
+    <string name="bt_declineInvitation">DECLINE</string>
+    <string name="header_nameOfInviter">NAME</string>
+    <string name="bt_seeMyInvitation">My invitation</string>
 </resources>

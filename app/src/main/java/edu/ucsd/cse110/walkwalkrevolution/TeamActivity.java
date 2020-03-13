@@ -33,6 +33,15 @@ public class TeamActivity extends AppCompatActivity {
                 gotoAddTeamMember();
             }
         });
+
+        // Check if user pressed My invitation button
+        Button bt_seeMyInvitation = (Button) findViewById(R.id.bt_seeMyInvitation);
+        bt_seeMyInvitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoAcceptInvitation();
+            }
+        });
     }
 
     public void gotoMainMenu() {
@@ -44,5 +53,10 @@ public class TeamActivity extends AppCompatActivity {
     public void gotoAddTeamMember() {
         Intent intentAddTeamMember = new Intent(this, AddTeamMemberActivity.class);
         startActivity(intentAddTeamMember);
+    }
+
+    public void gotoAcceptInvitation() {
+        Intent intentAcceptInvitation = new Intent(this, AcceptInvitationActivity.class);
+        startActivity(intentAcceptInvitation);
     }
 }
