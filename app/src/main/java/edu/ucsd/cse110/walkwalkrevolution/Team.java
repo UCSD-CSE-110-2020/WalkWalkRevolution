@@ -34,13 +34,12 @@ public class Team {
     public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids) {
         Map<String, Object> data = new HashMap<>();
         data.put("members", users);
+        data.put("invited", new HashMap<>());
 
         // Database structure is "teams/<Random UUID>"
         Log.d(TAG, "Adding new team to the database as a document called '" + ids[1] + "'");
         Log.d(TAG, "Created with creator '" + cEmail + ": " + cName + "'");
         adapter.add(ids, data);
-
-        //
     }
 
     /**
@@ -54,7 +53,7 @@ public class Team {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (!document.exists()) {
+                    if (document.exists()) {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist, adding it.");
                         overwriteAddToDatabase(adapter, ids);
                     } else {
