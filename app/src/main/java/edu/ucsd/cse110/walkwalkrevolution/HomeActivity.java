@@ -364,6 +364,7 @@ public class HomeActivity extends AppCompatActivity {
         String email = user.getEmail();
         String uid = user.getUid();
         User appUser = new User(name, email, uid);
+
         appUser.addToDatabase(WalkWalkRevolutionApplication.adapter);
     }
 }
