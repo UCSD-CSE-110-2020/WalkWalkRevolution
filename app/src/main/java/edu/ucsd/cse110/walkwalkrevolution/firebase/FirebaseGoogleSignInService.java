@@ -133,7 +133,7 @@ public class FirebaseGoogleSignInService extends Service {
                     }
                 });
         try {
-            sleep(1000);
+            sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

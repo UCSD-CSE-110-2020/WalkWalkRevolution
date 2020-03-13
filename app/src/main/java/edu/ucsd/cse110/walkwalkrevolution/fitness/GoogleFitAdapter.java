@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import edu.ucsd.cse110.walkwalkrevolution.HomeActivity;
 
+import static java.lang.Thread.sleep;
+
 public class GoogleFitAdapter implements FitnessService {
     private final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = System.identityHashCode(this) & 0xFFFF;
     private final String TAG = "GoogleFitAdapter";
@@ -29,6 +31,7 @@ public class GoogleFitAdapter implements FitnessService {
 
 
     public void setup() {
+
         FitnessOptions fitnessOptions = FitnessOptions.builder()
                 .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
                 .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)

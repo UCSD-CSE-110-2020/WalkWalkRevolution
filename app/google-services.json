@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "206820936329-g112u5827m6b1250ppdll012aid82r21.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsd.cse110.walkwalkrevolution",
+            "certificate_hash": "4a829107c7a5e8927f56d2f149415c5413f7f6cf"
+          }
+        },
+        {
           "client_id": "206820936329-ind1e6693v4fikm5q5ad5j1mqe45mcvd.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -36,7 +44,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "206820936329-5taskj4ggb8aqhdl1n871ns9b9k66gui.apps.googleusercontent.com",
+              "client_id": "206820936329-bk4n0d7rl8t4u717do6vpvvuhit0ifii.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
