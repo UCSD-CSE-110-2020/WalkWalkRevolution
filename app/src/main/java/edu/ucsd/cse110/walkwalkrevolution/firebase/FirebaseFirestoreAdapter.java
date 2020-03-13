@@ -122,8 +122,8 @@ public class FirebaseFirestoreAdapter {
         });
     }
 
-    public void notificationSubscribeTeams(NotificationFactory factory, Context context) {
-        db.collection("teams").addSnapshotListener(new EventListener<QuerySnapshot>() {
+    public void notificationSubscribe(NotificationFactory factory, Context context) {
+        db.collection("notifications").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots,
                                 @Nullable FirebaseFirestoreException e) {
@@ -135,36 +135,9 @@ public class FirebaseFirestoreAdapter {
                 for (DocumentChange dc : snapshots.getDocumentChanges()) {
                     switch (dc.getType()) {
                         case ADDED:
-                            Log.d(TAG, "New Teammember" + dc.getDocument().getData());
-                            String text = dc.getDocument().getData() + " has joined your team";
-                            factory.createNotification(context, 1, "New Member", text, Integer.parseInt(text));
-                            break;
-                        case MODIFIED:
-                            break;
-                        case REMOVED:
-                            break;
-                    }
-                }
-            }
-        });
-    }
-
-    public void notificationSubscribeWalk(NotificationFactory factory, Context context) {
-        db.collection("teams").addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot snapshots,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w(TAG, "listen:error", e);
-                    return;
-                }
-
-                for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                    switch (dc.getType()) {
-                        case ADDED:
-                            Log.d(TAG, "New Teammember" + dc.getDocument().getData());
-                            String text = dc.getDocument().getData() + " has joined your team";
-                            factory.createNotification(context, 1, "New Member", text, Integer.parseInt(text));
+                            Log.d(TAG, "New Notification" + dc.getDocument().getData());
+                            String text = dc.getDocument().getData().toString();
+                            factory.createNotification(context, 1, dc.getDocument().getId(), text, Integer.parseInt(text));
                             break;
                         case MODIFIED:
                             break;
