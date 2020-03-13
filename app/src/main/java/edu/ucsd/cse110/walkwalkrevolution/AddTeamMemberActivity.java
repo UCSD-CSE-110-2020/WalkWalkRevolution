@@ -73,6 +73,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
             Team team = new Team(appUser);
             String teamId = team.addToDatabase(WalkWalkRevolutionApplication.adapter);
             teamSpEdit.putString("teamId", teamId);
+            teamSpEdit.commit();
 
             appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
         }
