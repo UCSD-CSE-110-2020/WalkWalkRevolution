@@ -85,9 +85,6 @@ public class HomeActivity extends AppCompatActivity {
         textSteps = findViewById(R.id.box_dailySteps);
         textDistance = findViewById(R.id.box_dailyDistance);
 
-        // Init listeners
-        initNotificationListener();
-
         // Check if user pressed start new run button
         Button bt_newRun = (Button) findViewById(R.id.bt_startNewWalk);
         bt_newRun.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +152,9 @@ public class HomeActivity extends AppCompatActivity {
                     saveUserLogin();
                     launchFitnessActivity();
                     launchUpdateService();
+
+                    // Init listeners
+                    initNotificationListener();
                 }
             }
         }
