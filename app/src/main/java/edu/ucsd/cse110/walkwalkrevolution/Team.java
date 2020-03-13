@@ -44,7 +44,7 @@ public class Team {
     /**
      * If the document exists, addToDatabase is a no-op
      */
-    public void addToDatabase(FirebaseFirestoreAdapter adapter) {
+    public String addToDatabase(FirebaseFirestoreAdapter adapter) {
         String[] ids = {"teams", UUID.randomUUID().toString()};
         DocumentReference docRef = adapter.get(ids);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -61,5 +61,6 @@ public class Team {
                 }
             }
         });
+        return ids[1];
     }
 }

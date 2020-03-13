@@ -8,6 +8,7 @@
     <!-- Constants for storage of route values -->
     <string name="routeInfo_store">routes_info</string>
     <string name="routeFeature_store">routes_features</string>
+    <string name="team_store">team</string>
 
     <string name="steps_tag">_steps</string>
     <string name="distance_tag">_distance</string>
@@ -68,11 +69,11 @@
     <string name="bt_team_text">TEAM</string>
     <string name="bt_walk_text">WALK</string>
     <string name="title_team">Team</string>
-    <string name="title_addTeamMember">Add team member</string>
+    <string name="title_addTeamMember">Add Team Member</string>
     <string name="hint_timeMock">Ex: 45000 (45 seconds)</string>
     <string name="bt_mock_text">Mock</string>
     <string name="title_activity_team">TeamActivity</string>
-    <string name="name_gmail">Gmail:</string>
+    <string name="name_email">Email</string>
     <string name="name_name">Name:</string>
     <string name="hint_name">Ex: Allen</string>
     <string name="hint_gmail">Ex: allen@gmail.com</string>
@@ -85,5 +86,4 @@
     <string name="name_day">Day:</string>
     <string name="name_time">Time:</string>
     <string name="bt_sendProposeWalk">Send</string>
-    <string name="name_email">Email</string>
 </resources>
