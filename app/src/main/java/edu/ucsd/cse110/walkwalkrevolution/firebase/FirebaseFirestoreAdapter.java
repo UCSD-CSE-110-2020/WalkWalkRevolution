@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.walkwalkrevolution.firebase;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,11 +11,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import org.w3c.dom.Document;
@@ -25,6 +28,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import edu.ucsd.cse110.walkwalkrevolution.MeasurementConverter;
+import edu.ucsd.cse110.walkwalkrevolution.NotificationFactory;
 
 public class FirebaseFirestoreAdapter {
     private static final String TAG = FirebaseFirestoreAdapter.class.getSimpleName();
@@ -113,6 +117,60 @@ public class FirebaseFirestoreAdapter {
                     listener.accept(snapshot.get(key));
                 } else {
                     Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+    }
+
+    public void notificationSubscribeTeams(NotificationFactory factory, Context context) {
+        db.collection("teams").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e);
+                    return;
+                }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Log.d(TAG, "New Teammember" + dc.getDocument().getData());
+                            String text = dc.getDocument().getData() + " has joined your team";
+                            factory.createNotification(context, 1, "New Member", text, Integer.parseInt(text));
+                            break;
+                        case MODIFIED:
+                            break;
+                        case REMOVED:
+                            break;
+                    }
+                }
+            }
+        });
+    }
+
+    public void notificationSubscribeWalk(NotificationFactory factory, Context context) {
+        db.collection("teams").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e);
+                    return;
+                }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Log.d(TAG, "New Teammember" + dc.getDocument().getData());
+                            String text = dc.getDocument().getData() + " has joined your team";
+                            factory.createNotification(context, 1, "New Member", text, Integer.parseInt(text));
+                            break;
+                        case MODIFIED:
+                            break;
+                        case REMOVED:
+                            break;
+                    }
                 }
             }
         });

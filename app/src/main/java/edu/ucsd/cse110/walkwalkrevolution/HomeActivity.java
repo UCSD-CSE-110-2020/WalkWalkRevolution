@@ -85,6 +85,10 @@ public class HomeActivity extends AppCompatActivity {
         textSteps = findViewById(R.id.box_dailySteps);
         textDistance = findViewById(R.id.box_dailyDistance);
 
+        // Init listeners
+        initTeamNotificationListener();
+        initWalkNotificationListener();
+
         // Check if user pressed start new run button
         Button bt_newRun = (Button) findViewById(R.id.bt_startNewWalk);
         bt_newRun.setOnClickListener(new View.OnClickListener() {
@@ -366,5 +370,15 @@ public class HomeActivity extends AppCompatActivity {
         User appUser = new User(name, email, uid);
 
         appUser.addToDatabase(WalkWalkRevolutionApplication.adapter);
+    }
+
+    public void initTeamNotificationListener() {
+        NotificationFactory factory = new NotificationFactory(this, "team");
+        WalkWalkRevolutionApplication.adapter.notificationSubscribeTeams(factory,this);
+    }
+
+    public void initWalkNotificationListener() {
+        NotificationFactory factory = new NotificationFactory(this, "scheduled walk");
+        WalkWalkRevolutionApplication.adapter.notificationSubscribeWalk(factory,this);
     }
 }
