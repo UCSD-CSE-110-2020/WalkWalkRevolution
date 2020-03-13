@@ -85,4 +85,5 @@
     <string name="name_day">Day:</string>
     <string name="name_time">Time:</string>
     <string name="bt_sendProposeWalk">Send</string>
+    <string name="name_email">Email</string>
 </resources>

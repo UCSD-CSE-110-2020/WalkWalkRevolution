@@ -24,7 +24,7 @@
         android:id="@+id/name_gmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/name_gmail"
+        android:text="@string/name_email"
         android:textColor="#8BC34A"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
