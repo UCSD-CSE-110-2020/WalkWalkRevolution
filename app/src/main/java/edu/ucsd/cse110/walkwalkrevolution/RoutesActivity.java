@@ -83,7 +83,7 @@ public class RoutesActivity extends AppCompatActivity {
 
         ArrayList<Route> routeList = manager.loadAll();
 
-        CustomListAdapter customAdapter = new CustomListAdapter(this, routeList);
+        RouteListAdapter customAdapter = new RouteListAdapter(this, routeList);
 
         list.setAdapter(customAdapter);
 

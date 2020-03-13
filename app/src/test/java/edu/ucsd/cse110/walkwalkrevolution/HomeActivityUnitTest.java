@@ -46,6 +46,8 @@ public class HomeActivityUnitTest {
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             // Update the step count
+            activity.launchFitnessActivity();
+            activity.launchUpdateService();
             activity.updateStepCount();
             TextView box_dailySteps = activity.findViewById(R.id.box_dailySteps);
             assertThat(box_dailySteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
@@ -59,6 +61,8 @@ public class HomeActivityUnitTest {
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             // Update the step count
+            activity.launchFitnessActivity();
+            activity.launchUpdateService();
             activity.updateStepCount();
             TextView box_dailySteps = activity.findViewById(R.id.box_dailySteps);
             assertThat(box_dailySteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
@@ -72,6 +76,8 @@ public class HomeActivityUnitTest {
         ActivityScenario<HomeActivity> scenario = ActivityScenario.launch(intent);
         scenario.onActivity(activity -> {
             // Update the step count
+            activity.launchFitnessActivity();
+            activity.launchUpdateService();
             activity.updateStepCount();
             TextView box_dailySteps = activity.findViewById(R.id.box_dailySteps);
             assertThat(box_dailySteps.getText().toString()).isEqualTo(String.valueOf(nextStepCount));
