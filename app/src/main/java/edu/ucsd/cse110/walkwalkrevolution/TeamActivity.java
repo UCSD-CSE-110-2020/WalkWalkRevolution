@@ -37,6 +37,15 @@ public class TeamActivity extends AppCompatActivity {
             }
         });
 
+        // Check if user pressed My invitation button
+        Button bt_seeMyInvitation = (Button) findViewById(R.id.bt_seeMyInvitation);
+        bt_seeMyInvitation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gotoAcceptInvitation();
+            }
+        });
+
         // Setup RouteManager
         MembersManager manager = new MembersManager(this);
 
@@ -44,6 +53,7 @@ public class TeamActivity extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.teamList);
 
         manager.load(WalkWalkRevolutionApplication.adapter, list);
+
     }
 
     public void gotoMainMenu() {
@@ -55,5 +65,10 @@ public class TeamActivity extends AppCompatActivity {
     public void gotoAddTeamMember() {
         Intent intentAddTeamMember = new Intent(this, AddTeamMemberActivity.class);
         startActivity(intentAddTeamMember);
+    }
+
+    public void gotoAcceptInvitation() {
+        Intent intentAcceptInvitation = new Intent(this, AcceptInvitationActivity.class);
+        startActivity(intentAcceptInvitation);
     }
 }
