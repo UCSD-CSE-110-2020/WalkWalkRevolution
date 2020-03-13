@@ -71,13 +71,13 @@ public class User {
         });
     }
 
-    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("team", teamId);
-
-        // Database structure is "users/<NAME> <UID>"
-        String[] ids = {"users", name + " " + uid};
-        Log.d(TAG, "Adding team ('" + teamId + "') to the user document ('" + name + " " + uid + "')");
-        adapter.add(ids, data);
-    }
+//    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("team", teamId);
+//
+//        // Database structure is "users/<NAME> <UID>"
+//        String[] ids = {"users", name + " " + uid};
+//        Log.d(TAG, "Adding team ('" + teamId + "') to the user document ('" + name + " " + uid + "')");
+//        adapter.add(ids, data);
+//    }
 }
