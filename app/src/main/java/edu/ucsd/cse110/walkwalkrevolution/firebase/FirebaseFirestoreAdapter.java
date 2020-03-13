@@ -24,6 +24,7 @@ import org.w3c.dom.Document;
 
 import java.sql.DatabaseMetaData;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -122,7 +123,7 @@ public class FirebaseFirestoreAdapter {
         });
     }
 
-    public void notificationSubscribe(NotificationFactory factory, Context context) {
+    public void notificationSubscribe(NotificationFactory factory, Context context, String currentUser) {
         db.collection("notifications").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot snapshots,
@@ -136,8 +137,12 @@ public class FirebaseFirestoreAdapter {
                     switch (dc.getType()) {
                         case ADDED:
                             Log.d(TAG, "New Notification" + dc.getDocument().getData());
-                            String text = dc.getDocument().getData().toString();
-                            factory.createNotification(context, 1, dc.getDocument().getId(), text, Integer.parseInt(text));
+                            Map<String, Object> data = dc.getDocument().getData();
+                            if (data.get("email") == currentUser) {
+                                String title = data.get("title").toString();
+                                String text = data.get("text").toString();
+                                factory.createNotification(context, 1, title, text, Integer.parseInt(dc.getDocument().getId()));
+                            }
                             break;
                         case MODIFIED:
                             break;

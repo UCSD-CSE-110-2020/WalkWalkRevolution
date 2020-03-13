@@ -373,6 +373,8 @@ public class HomeActivity extends AppCompatActivity {
 
     public void initNotificationListener() {
         NotificationFactory factory = new NotificationFactory(this, "notifications");
-        WalkWalkRevolutionApplication.adapter.notificationSubscribe(factory,this);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        WalkWalkRevolutionApplication.adapter.notificationSubscribe(factory, this, user.getEmail());
     }
 }
