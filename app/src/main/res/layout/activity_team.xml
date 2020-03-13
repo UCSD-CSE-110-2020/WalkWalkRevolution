@@ -20,6 +20,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/bt_seeMyInvitation"
+        android:layout_width="202dp"
+        android:layout_height="42dp"
+        android:background="#8BC34A"
+        android:text="@string/bt_seeMyInvitation"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.244"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.93" />
+
     <TextView
         android:id="@+id/title_Team"
         android:layout_width="wrap_content"
