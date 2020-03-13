@@ -56,6 +56,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
 
         String name = eName.getText().toString();
         String email = eGmail.getText().toString();
+
     }
 
     private void checkIfTeamExists() {
@@ -63,19 +64,24 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         SharedPreferences.Editor teamSpEdit = teamSp.edit();
 
         if (!teamSp.contains("teamId")) {
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            FirebaseUser user = mAuth.getCurrentUser();
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            String uid = user.getUid();
-            User appUser = new User(name, email, uid);
-
-            Team team = new Team(appUser);
-            String teamId = team.addToDatabase(WalkWalkRevolutionApplication.adapter);
-            teamSpEdit.putString("teamId", teamId);
-            teamSpEdit.commit();
-
-            appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
+            createTeam(teamSpEdit);
         }
     }
+
+    private void createTeam(SharedPreferences.Editor teamSpEdit) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        String uid = user.getUid();
+        User appUser = new User(name, email, uid);
+
+        Team team = new Team(appUser);
+        String teamId = team.addToDatabase(WalkWalkRevolutionApplication.adapter);
+        teamSpEdit.putString("teamId", teamId);
+        teamSpEdit.commit();
+
+        appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
+    }
+
 }
