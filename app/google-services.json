@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "206820936329-vpn3h10ckc1f1il29ltj7vmhp7llhf31.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsd.cse110.walkwalkrevolution",
+            "certificate_hash": "8ae3c7a34825d0b10b4dec1ecaa2da6b4e45e0bd"
+          }
+        },
+        {
           "client_id": "206820936329-gafkcet8si0treqnkqt3hscut0mg3pof.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
