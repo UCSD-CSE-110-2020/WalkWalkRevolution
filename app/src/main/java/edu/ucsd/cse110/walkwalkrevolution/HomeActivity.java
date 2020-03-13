@@ -53,6 +53,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private int mockStepCount = 0;
     private boolean receiversRegistered;
+    private boolean initial_run = true;
 
     private TextView textSteps, textDistance;
     private FitnessService fitnessService;
@@ -112,12 +113,13 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        showHeightDialog();
+        if (initial_run) {
+            showHeightDialog();
+            registerReceivers();
+            launchFirebaseSignInService();
+            initial_run = false;
+        }
         displayLastWalk();
-        registerReceivers();
-        launchFirebaseSignInService();
-        launchFitnessActivity();
-        launchUpdateService();
     }
 
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -131,6 +133,8 @@ public class HomeActivity extends AppCompatActivity {
                     askForLogin();
                 } else {
                     saveUserLogin();
+                    launchFitnessActivity();
+                    launchUpdateService();
                 }
             }
         }
@@ -182,12 +186,12 @@ public class HomeActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             Log.d(TAG, "RESULT_OK");
             // If authentication was required during google fit setup, this will be called after the user authenticates
-            if (requestCode == fitnessService.getRequestCode()) {
+            if (fitnessService != null && requestCode == fitnessService.getRequestCode()) {
                 Log.d(TAG, "Received request to update fitness service count");
                 fitnessService.updateStepCount();
             }
             // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-            else if (requestCode == firebaseSignInService.getRequestCode()) {
+            if (firebaseSignInService != null && requestCode == firebaseSignInService.getRequestCode()) {
                 Log.d(TAG, "Received request to sign in");
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
                 try {
@@ -197,6 +201,8 @@ public class HomeActivity extends AppCompatActivity {
                     Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
                     Log.d(TAG, "Saving user login details");
                     saveUserLogin();
+                    launchFitnessActivity();
+                    launchUpdateService();
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
                     Log.d(TAG, "Google sign in failed", e);
@@ -208,6 +214,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void launchFitnessActivity() {
+        Log.d(TAG, "Launching fitness activity");
+
         // Read the fitness key from the fitness properties file
         PropertyReader propertyReader = new PropertyReader(this, FITNESS_SERVICE_PROPERTIES);
         Properties properties = propertyReader.get();
@@ -232,6 +240,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void launchUpdateService() {
+        Log.d(TAG, "Launching update service");
+
         Intent intent = new Intent(this, StepCountUpdateService.class);
         intent.putExtra("interval", 500);
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
