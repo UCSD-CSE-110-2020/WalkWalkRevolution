@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProposeWalkActivity"></activity>
+        <activity android:name=".AcceptInvitationActivity"></activity>
+        <activity android:name=".ProposeWalkActivity" />
         <activity android:name=".AddTeamMemberActivity" />
         <activity android:name=".TeamActivity" />
 
