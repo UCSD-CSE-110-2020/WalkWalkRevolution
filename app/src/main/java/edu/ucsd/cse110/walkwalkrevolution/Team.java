@@ -24,21 +24,23 @@ public class Team {
 
 
     // Team should be initialized with the creator's name and email
-    public Team(String name, String email) {
-        cName = name;
-        cEmail = email;
+    public Team(User user) {
+        cName = user.getName();
+        cEmail = user.getEmail();
         users = new HashMap<>();
-        users.put(email, name);
+        users.put(cEmail, cName);
     }
 
     public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids) {
         Map<String, Object> data = new HashMap<>();
         data.put("members", users);
 
-        // Database structure is "users/<NAME> <UID>"
+        // Database structure is "teams/<Random UUID>"
         Log.d(TAG, "Adding new team to the database as a document called '" + ids[1] + "'");
         Log.d(TAG, "Created with creator '" + cEmail + ": " + cName + "'");
         adapter.add(ids, data);
+
+        //
     }
 
     /**

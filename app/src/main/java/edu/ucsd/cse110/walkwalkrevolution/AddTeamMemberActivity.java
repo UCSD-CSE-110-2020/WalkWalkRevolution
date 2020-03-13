@@ -67,10 +67,14 @@ public class AddTeamMemberActivity extends AppCompatActivity {
             FirebaseUser user = mAuth.getCurrentUser();
             String name = user.getDisplayName();
             String email = user.getEmail();
+            String uid = user.getUid();
+            User appUser = new User(name, email, uid);
 
-            Team team = new Team(name, email);
+            Team team = new Team(appUser);
             String teamId = team.addToDatabase(WalkWalkRevolutionApplication.adapter);
             teamSpEdit.putString("teamId", teamId);
+
+            appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
         }
     }
 }

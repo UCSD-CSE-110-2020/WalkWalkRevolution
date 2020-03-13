@@ -41,6 +41,14 @@ public class User {
         adapter.add(ids, data);
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     /**
      * If the document exists, addToDatabase is a no-op
      */
@@ -61,5 +69,15 @@ public class User {
                 }
             }
         });
+    }
+
+    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("team", teamId);
+
+        // Database structure is "users/<NAME> <UID>"
+        String[] ids = {"users", name + " " + uid};
+        Log.d(TAG, "Adding team ('" + teamId + "') to the user document ('" + name + " " + uid + "')");
+        adapter.add(ids, data);
     }
 }
