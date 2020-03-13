@@ -14,12 +14,12 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-class CustomListAdapter extends ArrayAdapter<String> {
+class RouteListAdapter extends ArrayAdapter<String> {
     ArrayList<Route> routeData;
     private Activity context;
     private Integer[] favoriteImg;
 
-    public CustomListAdapter(Activity context, ArrayList<Route> routeData) {
+    public RouteListAdapter(Activity context, ArrayList<Route> routeData) {
         super(context, R.layout.route_list);
         this.routeData = routeData;
         for(Route routeValues : routeData) {
@@ -29,7 +29,7 @@ class CustomListAdapter extends ArrayAdapter<String> {
         this.context=context;
     }
 
-    public CustomListAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
+    public RouteListAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
         super(context, resource, objects);
     }
 
