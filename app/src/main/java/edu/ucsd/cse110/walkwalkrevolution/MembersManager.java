@@ -30,7 +30,6 @@ public class MembersManager {
     private Context context;
     SharedPreferences teamSp;
     String teamId;
-    private ArrayList<String> members;
 
     MembersManager(Context currentContext) {
         context = currentContext;
@@ -42,30 +41,30 @@ public class MembersManager {
     public void load(FirebaseFirestoreAdapter adapter, ListView list) {
         if (teamId.equals(context.getResources().getString(R.string.empty))) { // Make sure team exists
             ArrayList<String> empty = new ArrayList<>();
-            empty.add("Not currently in a team.");
-            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, members);
+            empty.add("Not currently in a team!");
+            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, empty);
             list.setAdapter(customAdapter);
-        }
+        } else {
+            String[] ids = {"teams", teamId};
+            DocumentReference ref = adapter.get(ids);
 
-        String[] ids = {"teams", teamId};
-        DocumentReference ref = adapter.get(ids);
-
-        ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does exist, getting members from it.");
-                        Map data = (Map) document.get("members");
-                        ArrayList<String> members = new ArrayList<String>(data.values());
-                        MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, members);
-                        list.setAdapter(customAdapter);
-                    } else {
-                        Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist, cannot get members from it.");
+            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does exist, getting members from it.");
+                            Map data = (Map) document.get("members");
+                            ArrayList<String> members = new ArrayList<String>(data.values());
+                            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, members);
+                            list.setAdapter(customAdapter);
+                        } else {
+                            Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist, cannot get members from it.");
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 }

@@ -25,7 +25,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="5dp"
             android:text="@string/empty"
-            android:textSize="25sp"
+            android:textSize="23sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#4d4d4d"
             android:textStyle="bold" />
