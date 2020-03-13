@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -14,7 +15,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.SetOptions;
 
+import org.w3c.dom.Document;
+
+import java.sql.DatabaseMetaData;
+import java.util.Collection;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -55,7 +61,7 @@ public class FirebaseFirestoreAdapter {
         Object ref = getDatabaseReference(ids);
 
         if (ref instanceof DocumentReference) {
-            ((DocumentReference) ref).set(data)
+            ((DocumentReference) ref).set(data, SetOptions.merge())
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -85,9 +91,9 @@ public class FirebaseFirestoreAdapter {
         }
     }
 
-    public Task<?> get(String[] ids) {
+    public DocumentReference get(String[] ids) {
         assert isDocumentId(ids);
-        return ((DocumentReference) getDatabaseReference(ids)).get();
+        return ((DocumentReference) getDatabaseReference(ids));
     }
 
     public void subscribeListener(String[] ids, String key, Consumer<Object> listener) {

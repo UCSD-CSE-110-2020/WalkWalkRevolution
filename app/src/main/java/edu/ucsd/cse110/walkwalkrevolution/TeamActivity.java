@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
 
 public class TeamActivity extends AppCompatActivity {
 
@@ -42,6 +45,15 @@ public class TeamActivity extends AppCompatActivity {
                 gotoAcceptInvitation();
             }
         });
+
+        // Setup RouteManager
+        MembersManager manager = new MembersManager(this);
+
+        // Load Route List
+        ListView list = (ListView) findViewById(R.id.teamList);
+
+        manager.load(WalkWalkRevolutionApplication.adapter, list);
+
     }
 
     public void gotoMainMenu() {

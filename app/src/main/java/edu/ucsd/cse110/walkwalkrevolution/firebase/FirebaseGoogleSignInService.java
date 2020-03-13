@@ -95,6 +95,7 @@ public class FirebaseGoogleSignInService extends Service {
         mGoogleSignInClient = GoogleSignIn.getClient(activity.getApplicationContext(), gso);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         activity.startActivityForResult(signInIntent, RC_SIGN_IN);
+        Log.d(TAG, "Signaling activity to start signing in");
     }
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -132,7 +133,7 @@ public class FirebaseGoogleSignInService extends Service {
                     }
                 });
         try {
-            sleep(2000);
+            sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

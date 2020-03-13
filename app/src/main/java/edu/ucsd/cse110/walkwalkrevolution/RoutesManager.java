@@ -25,7 +25,6 @@ import static android.content.Context.MODE_PRIVATE;
 public class RoutesManager {
 
     private Context context;
-    private ArrayList<Route> routes;
     SharedPreferences savedRoutesInfo;
     SharedPreferences savedRoutesFeatures;
     SharedPreferences.Editor infoRouteEditor;
