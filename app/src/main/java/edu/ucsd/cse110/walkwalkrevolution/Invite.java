@@ -8,35 +8,53 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
+import static java.lang.Thread.sleep;
 
 public class Invite {
 
     private static final String TAG = Invite.class.getSimpleName();
 
     Context context;
-    private String name, email; // Creator info
+    private String from, name, email;
 
 
     // Team should be initialized with the creator's name and email
-    public Invite(Context context, String name, String email) {
+    public Invite(Context context, String from, String name, String email) {
         this.context = context;
+        this.from = from;
         this.name = name;
         this.email = email;
     }
 
+    public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids, String teamId) {
+        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> invite = new HashMap<>();
+        invite.put("teamId", teamId);
+        invite.put("from", from);
+        data.put("invite", invite);
+
+        // Database structure is "teams/<Random UUID>"
+        Log.d(TAG, "Adding invite to '" + teamId  + "' from '" + from + "' to the user document ('" + ids[1] + "')");
+        adapter.add(ids, data);
+    }
+
     public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids, Map invited) {
         Map<String, Object> data = new HashMap<>();
-        invited.put(email, name)
+        invited.put(email, name);
         data.put("invited", invited);
 
         // Database structure is "teams/<Random UUID>"
@@ -48,22 +66,47 @@ public class Invite {
      * If the document exists, addToDatabase is a no-op
      */
     public void addToDatabase(FirebaseFirestoreAdapter adapter) {
+        String[] collection = {"users"};
+        CollectionReference usersRef = adapter.collect(collection);
+        Query query = usersRef.whereEqualTo("email", email);
+        String[] userIds = {"users", ""};
         SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
         String teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
-        String[] ids = {"teams", teamId};
+        String[] teamIds = {"teams", teamId};
 
-        DocumentReference docRef = adapter.get(ids);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    QuerySnapshot query = task.getResult();
+                    if (!query.isEmpty()) {
+                        Log.d(TAG, "User with email '" + email + "' does exist, inviting.");
+                        List<DocumentSnapshot> users = query.getDocuments();
+                        userIds[1] = users.get(0).getId();
+                        overwriteAddToDatabase(adapter, userIds, teamId);
+                        addToTeam(adapter, teamIds);
+                    } else {
+                        Log.d(TAG, "User with email '" + email + "' does not exist, cannot invite.");
+                    }
+                }
+            }
+        });
+    }
+
+    private void addToTeam(FirebaseFirestoreAdapter adapter, String[] teamIds) {
+        DocumentReference docRef = adapter.get(teamIds);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (!document.exists()) {
-                        Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does exist, inviting.");
-                        Map invited = (Map) document.get("members");
-                        overwriteAddToDatabase(adapter, ids, invited);
-                    } else {
-                        Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist, cannot invite.");
+                        Log.d(TAG, "Document '" + java.util.Arrays.toString(teamIds) + "' does not exist, cannot invite.");
+                    }
+                    else {
+                        Log.d(TAG, "Document '" + java.util.Arrays.toString(teamIds) + "' does exist, inviting.");
+                        Map invited = (Map) document.get("invited");
+                        overwriteAddToDatabase(adapter, teamIds, invited);
                     }
                 }
             }

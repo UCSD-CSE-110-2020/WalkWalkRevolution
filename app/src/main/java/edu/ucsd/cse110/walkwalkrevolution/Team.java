@@ -53,7 +53,7 @@ public class Team {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
+                    if (!document.exists()) {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist, adding it.");
                         overwriteAddToDatabase(adapter, ids);
                     } else {

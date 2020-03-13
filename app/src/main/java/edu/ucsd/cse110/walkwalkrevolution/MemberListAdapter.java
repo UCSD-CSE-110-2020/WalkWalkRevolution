@@ -2,6 +2,8 @@ package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +18,17 @@ import java.util.Calendar;
 
 class MemberListAdapter extends ArrayAdapter<String> {
     ArrayList<String> memberData;
+    ArrayList<String> invitedData;
     private Activity context;
-    private Integer[] favoriteImg;
+    private Integer[] userIcon;
 
-    public MemberListAdapter(Activity context, ArrayList<String> memberData) {
+    public MemberListAdapter(Activity context, ArrayList<String> memberData, ArrayList<String> invitedData) {
         super(context, R.layout.route_list);
         this.memberData = memberData;
         for(String member : memberData) {
             add(member);
         }
-
+        this.invitedData = invitedData;
         this.context = context;
     }
 
@@ -43,9 +46,13 @@ class MemberListAdapter extends ArrayAdapter<String> {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.icon_memberInitials);
 
         nameText.setText(memberData.get(position));
+        if (invitedData.contains(memberData.get(position))) {
+            nameText.setTextColor(Color.GRAY);
+            nameText.setTypeface(nameText.getTypeface(), Typeface.ITALIC);
+        }
 
         // Parse Favorite or not
-        //imageView.setImageResource(Integer.parseInt(routeData.get(position)[2]));
+        // imageView.setImageResource(Integer.parseInt(routeData.get(position)[2]));
 
         return rowView;
     };
