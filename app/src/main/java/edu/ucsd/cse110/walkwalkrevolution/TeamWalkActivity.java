@@ -22,10 +22,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -35,6 +37,7 @@ public class TeamWalkActivity extends AppCompatActivity {
     ListView responseList;
     Button bt_accept, bt_timeDecline, bt_routeDecline, bt_schedule, bt_withdraw;
     User appUser;
+    String teamId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_withdraw = (Button) findViewById(R.id.bt_withdrawTeamWalk);
 
         appUser = User.getUser();
+        teamId = Team.getTeam(this);
 
         // Check if user pressed home button
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
@@ -96,7 +100,7 @@ public class TeamWalkActivity extends AppCompatActivity {
             nameLocation.setText("Not currently in a team!");
             nameLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
         } else {
-            String[] ids = {"teams", Team.getTeam(this)};
+            String[] ids = {"teams", teamId};
             DocumentReference docRef = WalkWalkRevolutionApplication.adapter.get(ids);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -133,16 +137,85 @@ public class TeamWalkActivity extends AppCompatActivity {
         unhideAll();
 
         String creator = (String) walk.get("creator");
+        Map responses = (Map) walk.get("response");
         if (checkIfCreator(creator)) {
-            bt_schedule.setVisibility(View.VISIBLE);
-            bt_withdraw.setVisibility(View.VISIBLE);
+            setupCreator();
         }
         else {
-            bt_accept.setVisibility(View.VISIBLE);
-            bt_timeDecline.setVisibility(View.VISIBLE);
-            bt_routeDecline.setVisibility(View.VISIBLE);
+            setupMembers();
         }
-        listResponses(members, (Map) walk.get("response"), creator);
+        listResponses(members, responses, creator);
+    }
+
+    private void setupCreator() {
+        bt_schedule.setVisibility(View.VISIBLE);
+        bt_withdraw.setVisibility(View.VISIBLE);
+        String[] ids = {"teams", teamId};
+        Map<String, Object> data = new HashMap<>();
+
+        bt_schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Map<String, Object> walk = new HashMap<>();
+                walk.put("status", (Boolean) true);
+                data.put("walk", walk);
+                WalkWalkRevolutionApplication.adapter.add(ids, data);
+                boxStatus.setText("Scheduled");
+            }
+        });
+
+        bt_withdraw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                data.put("walk", FieldValue.delete());
+                WalkWalkRevolutionApplication.adapter.add(ids, data);
+                gotoMainMenu();
+            }
+        });
+    }
+
+    private void setupMembers() {
+        bt_accept.setVisibility(View.VISIBLE);
+        bt_timeDecline.setVisibility(View.VISIBLE);
+        bt_routeDecline.setVisibility(View.VISIBLE);
+        String[] ids = {"teams", teamId};
+        Map<String, Object> data = new HashMap<>();
+        Map<String, Object> walk = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
+
+        bt_accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                response.put(appUser.getEmail(), "Accepted");
+                walk.put("response", response);
+                data.put("walk", walk);
+                WalkWalkRevolutionApplication.adapter.add(ids, data);
+                finish();
+                startActivity(getIntent());
+            }
+        });
+        bt_timeDecline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                response.put(appUser.getEmail(), "Declined (Bad Time)");
+                walk.put("response", response);
+                data.put("walk", walk);
+                WalkWalkRevolutionApplication.adapter.add(ids, data);
+                finish();
+                startActivity(getIntent());
+            }
+        });
+        bt_routeDecline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                response.put(appUser.getEmail(), "Declined (Bad Route)");
+                walk.put("response", response);
+                data.put("walk", walk);
+                WalkWalkRevolutionApplication.adapter.add(ids, data);
+                finish();
+                startActivity(getIntent());
+            }
+        });
     }
 
     private boolean checkIfCreator(String creator) {
