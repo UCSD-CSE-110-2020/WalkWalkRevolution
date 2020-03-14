@@ -99,7 +99,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                                box_time.setText((hour == 12 ? "12" : hour % 12) + ":" + minutes + " " + (hour / 12 == 1 ? "PM" : "AM"));
+                                box_time.setText((hour == 12 ? "12" : hour % 12) + (minutes / 10 == 0 ? ":0" : ":") + minutes + (hour / 12 == 1 ? " PM" : " AM"));
                                 walkHour = hour;
                                 walkMinutes = minutes;
                             }

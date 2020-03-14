@@ -73,7 +73,9 @@ public class CurrentWalkActivity extends AppCompatActivity {
             public void onChronometerTick(Chronometer arg0) {
                 // Format the timer for user interface
                 countUp = ((clock.millis() - arg0.getBase()) / MeasurementConverter.MILLIS_IN_SEC);
-                String asText = (countUp / MeasurementConverter.SECS_IN_MIN) + ":" + (countUp % MeasurementConverter.SECS_IN_MIN);
+                long minutes = countUp / MeasurementConverter.SECS_IN_MIN;
+                long seconds = countUp % MeasurementConverter.SECS_IN_MIN;
+                String asText = (minutes / 10 == 0 ? "0" + minutes : minutes) + ":" + (seconds / 10 == 0 ? "0" + seconds : seconds) ;
 
                 // Record the step and total time, and save them to the walk object
                 int stepCount = WalkWalkRevolutionApplication.stepCount.get() - iniStep;
