@@ -48,7 +48,6 @@ public class NotificationFactory {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-
         builder = new NotificationCompat.Builder(context, channelId)
                 //.setSmallIcon(icon) off for now
                 .setContentTitle(title)
