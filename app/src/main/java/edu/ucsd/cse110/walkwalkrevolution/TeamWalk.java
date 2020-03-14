@@ -75,9 +75,9 @@ public class TeamWalk {
                     else {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(teamIds) + "' does exist, creating team walk.");
                         overwriteAddToDatabase(adapter, teamIds);
-                        callback.onCallback();
                     }
                 }
+                callback.onCallback();
             }
         });
         Log.d(TAG, "Exiting method");

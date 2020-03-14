@@ -358,12 +358,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void saveUserLogin() {
         Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        User appUser = new User(name, email, uid);
+        User appUser = User.getUser();
 
         appUser.addToDatabase(WalkWalkRevolutionApplication.adapter);
     }

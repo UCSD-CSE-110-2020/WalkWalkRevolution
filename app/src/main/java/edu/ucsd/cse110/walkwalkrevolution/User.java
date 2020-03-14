@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -94,6 +96,15 @@ public class User implements Serializable {
         teamSpEdit.commit();
 
         // appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
+    }
+
+    public static User getUser() {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String name = user.getDisplayName();
+        String email = user.getEmail();
+        String uid = user.getUid();
+        return new User(name, email, uid);
     }
 
 //    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {

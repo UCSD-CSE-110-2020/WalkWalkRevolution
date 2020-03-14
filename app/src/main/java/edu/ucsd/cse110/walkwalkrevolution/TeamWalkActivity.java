@@ -16,10 +16,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Map;
 
 public class TeamWalkActivity extends AppCompatActivity {
     private static final String TAG = TeamWalkActivity.class.getSimpleName();
@@ -44,12 +50,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_schedule = (Button) findViewById(R.id.bt_scheduleTeamWalk);
         bt_withdraw = (Button) findViewById(R.id.bt_withdrawTeamWalk);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        appUser = new User(name, email, uid);
+        appUser = User.getUser();
 
         // Check if user pressed home button
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
@@ -59,6 +60,7 @@ public class TeamWalkActivity extends AppCompatActivity {
                 gotoMainMenu();
             }
         });
+
         checkIfWalkExists();
 
         // Setup RouteManager
@@ -71,58 +73,79 @@ public class TeamWalkActivity extends AppCompatActivity {
 
     }
 
-    private void hideAll() {
-        boxName.setVisibility(View.GONE);
-        boxDate.setVisibility(View.GONE);
-        boxLocation.setVisibility(View.GONE);
-        findViewById(R.id.name_teamWalkStatus).setVisibility(View.GONE);
-        boxStatus.setVisibility(View.GONE);
-        responseList.setVisibility(View.GONE);
-        bt_accept.setVisibility(View.GONE);
-        bt_timeDecline.setVisibility(View.GONE);
-        bt_routeDecline.setVisibility(View.GONE);
-        bt_schedule.setVisibility(View.GONE);
-        bt_withdraw.setVisibility(View.GONE);
+    private void unhideAll() {
+        boxName.setVisibility(View.VISIBLE);
+        boxDate.setVisibility(View.VISIBLE);
+        boxLocation.setVisibility(View.VISIBLE);
+        findViewById(R.id.name_teamWalkStatus).setVisibility(View.VISIBLE);
+        boxStatus.setVisibility(View.VISIBLE);
+        responseList.setVisibility(View.VISIBLE);
     }
 
     private void checkIfWalkExists() {
         String teamId = Team.getTeam(this);
 
         if (teamId.equals(getResources().getString(R.string.empty))) { // If team does not exist, hide everything
-            Log.d(TAG, "Not part of a team, hiding everything.");
-            hideAll();
+            Log.d(TAG, "Not part of a team, keeping everything hidden.");
             nameLocation.setText("Not currently in a team!");
             nameLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
-//        } else {
-//            String[] ids = {"users", appUser.getName() + " " + appUser.getUid()};
-//            DocumentReference docRef = WalkWalkRevolutionApplication.adapter.get(ids);
-//            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//                @Override
-//                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                    if (task.isSuccessful()) {
-//                        DocumentSnapshot document = task.getResult();
-//                        if (document.exists()) {
-//                            Log.d(TAG, "User '" + java.util.Arrays.toString(ids) + "' exists, checking if invited.");
-//                            if (document.get("invite") == null) {
-//                                bt_seeMyInvitation.setVisibility(View.INVISIBLE);
-//                                Log.d(TAG, "User does not have an invitation, hiding button.");
-//                            }
-//                            else {
-//                                bt_seeMyInvitation.setOnClickListener(new View.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(View view) {
-//                                        gotoAcceptInvitation();
-//                                    }
-//                                });
-//                            }
-//                        } else {
-//                            Log.d(TAG, "User '" + java.util.Arrays.toString(ids) + "' does not exist, not checking if invited.");
-//                        }
-//                    }
-//                }
-//            });
+        } else {
+            String[] ids = {"teams", Team.getTeam(this)};
+            DocumentReference docRef = WalkWalkRevolutionApplication.adapter.get(ids);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Log.d(TAG, "Team '" + java.util.Arrays.toString(ids) + "' exists, checking if walk exists.");
+                            Map walk = (Map) document.get("walk");
+                            if (walk == null) {
+                                nameLocation.setText("No team walk currently scheduled!");
+                                nameLocation.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
+                                Log.d(TAG, "No team walk exists, keeping everything hidden.");
+                            }
+                            else {
+                                buildScreen(walk, (Map<String, String>) document.get("members"));
+                            }
+                        } else {
+                            Log.d(TAG, "Team '" + java.util.Arrays.toString(ids) + "' does not exist, not checking if walk exists.");
+                        }
+                    }
+                }
+            });
         }
     }
+
+    private void buildScreen(Map walk, Map<String, String> members) {
+        boxName.setText((String) walk.get("name"));
+        DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm a", Locale.US);
+        String strDate = dateFormat.format(((Timestamp) walk.get("time")).toDate());
+        boxDate.setText(strDate);
+        boxLocation.setText((String) walk.get("location"));
+        boxStatus.setText(((boolean) walk.get("status") ? "Scheduled" : "Proposed"));
+        unhideAll();
+
+        if (checkIfCreator((String) walk.get("creator"))) {
+            bt_schedule.setVisibility(View.VISIBLE);
+            bt_withdraw.setVisibility(View.VISIBLE);
+        }
+        else {
+            bt_accept.setVisibility(View.VISIBLE);
+            bt_timeDecline.setVisibility(View.VISIBLE);
+            bt_routeDecline.setVisibility(View.VISIBLE);
+        }
+        listResponses(members);
+    }
+
+    private boolean checkIfCreator(String creator) {
+        return appUser.getEmail().equals(creator);
+    }
+
+    private void listResponses(Map<String, String> members) {
+
+    }
+
 
     public void gotoMainMenu() {
         Intent intentMainMenu = new Intent(this, HomeActivity.class);

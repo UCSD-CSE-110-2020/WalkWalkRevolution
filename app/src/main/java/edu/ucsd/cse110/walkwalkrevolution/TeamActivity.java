@@ -31,12 +31,7 @@ public class TeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        appUser = new User(name, email, uid);
+        appUser = User.getUser();
 
         // Check if user pressed home button
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);

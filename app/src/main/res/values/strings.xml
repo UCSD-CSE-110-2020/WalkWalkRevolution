@@ -100,4 +100,6 @@
     <string name="scheduleTeamWalk">Schedule</string>
     <string name="withdrawTeamWalk">Withdraw</string>
     <string name="cancelTeamWalk">Cancel</string>
+    <string name="name_team_walk_time">Time:</string>
+    <string name="name_team_walk_route_name">Route Name:</string>
 </resources>

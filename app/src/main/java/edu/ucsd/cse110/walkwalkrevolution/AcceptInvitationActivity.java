@@ -43,25 +43,7 @@ public class AcceptInvitationActivity extends AppCompatActivity {
 
         appUser = (User) getIntent().getSerializableExtra("appUser");
 
-        userIds = new String[]{"users", appUser.getName() + " " + appUser.getUid()};
-        userRef = WalkWalkRevolutionApplication.adapter.get(userIds);
-        TextView header_inviter = (TextView) findViewById(R.id.header_nameOfInviter);
-        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' exists, getting inviter.");
-                        Map invite = (Map) document.get("invite");
-                        header_inviter.setText((String) invite.get("from"));
-                        saveInviterEmail((String) invite.get("email"));
-                    } else {
-                        Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' does not exist, cannot get inviter.");
-                    }
-                }
-            }
-        });
+        getInviter();
 
         // check if user pressed accept
         Button bt_accept = (Button) findViewById(R.id.bt_acceptInvitation);
@@ -91,6 +73,28 @@ public class AcceptInvitationActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getInviter() {
+        userIds = new String[]{"users", appUser.getName() + " " + appUser.getUid()};
+        userRef = WalkWalkRevolutionApplication.adapter.get(userIds);
+        TextView header_inviter = (TextView) findViewById(R.id.header_nameOfInviter);
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' exists, getting inviter.");
+                        Map invite = (Map) document.get("invite");
+                        header_inviter.setText((String) invite.get("from"));
+                        saveInviterEmail((String) invite.get("email"));
+                    } else {
+                        Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' does not exist, cannot get inviter.");
+                    }
+                }
+            }
+        });
     }
 
     public void saveInviterEmail(String email) {
