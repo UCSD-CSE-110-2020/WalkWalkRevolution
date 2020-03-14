@@ -81,7 +81,7 @@
     <string name="name_creator">Creator:</string>
     <string name="bt_proposeWalk">Propose Walk</string>
     <string name="title_proposeWalk">Propose Walk</string>
-    <string name="hint_time">HH:MM AM/PM</string>
+    <string name="hint_time">HH:MM</string>
     <string name="hint_day">MM/DD/YYYY</string>
     <string name="name_date">Date:</string>
     <string name="name_time">Time:</string>
@@ -92,4 +92,12 @@
     <string name="header_nameOfInviter">NAME</string>
     <string name="bt_seeMyInvitation">My invitation</string>
     <string name="initials_icon">Initials Icon</string>
+    <string name="title_team_walk">Team Walk</string>
+    <string name="name_status">Status:</string>
+    <string name="acceptTeamWalk">Accept</string>
+    <string name="declineBadTime">Decline (Bad time)</string>
+    <string name="declineBadRoute">Decline (Not a good route for me)</string>
+    <string name="scheduleTeamWalk">Schedule</string>
+    <string name="withdrawTeamWalk">Withdraw</string>
+    <string name="cancelTeamWalk">Cancel</string>
 </resources>

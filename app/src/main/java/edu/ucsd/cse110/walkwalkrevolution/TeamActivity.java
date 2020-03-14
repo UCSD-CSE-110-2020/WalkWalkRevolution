@@ -3,7 +3,6 @@ package edu.ucsd.cse110.walkwalkrevolution;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,9 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-
-import java.util.ArrayList;
-import java.util.Map;
 
 import static java.lang.Thread.sleep;
 
@@ -43,7 +39,7 @@ public class TeamActivity extends AppCompatActivity {
         appUser = new User(name, email, uid);
 
         // Check if user pressed home button
-        Button bt_mainMenu = (Button) findViewById(R.id.bt_home2);
+        Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
         bt_mainMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +57,7 @@ public class TeamActivity extends AppCompatActivity {
         });
 
         // Check if user pressed My invitation button
-        bt_seeMyInvitation = (Button) findViewById(R.id.bt_seeMyInvitation);
+        bt_seeMyInvitation = (Button) findViewById(R.id.bt_accept_team_walk);
         checkIfInvited();
 
         // Setup RouteManager

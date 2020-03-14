@@ -23,6 +23,7 @@ import java.util.Locale;
 public class ProposeWalkActivity extends AppCompatActivity {
     DatePickerDialog datePicker;
     TimePickerDialog timePicker;
+    int day, month, year, hour, minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // day and time must be entered
                 if (((EditText) findViewById(R.id.box_date)).getText().toString().matches("")) {
-                    Toast.makeText(ProposeWalkActivity.this, "Please enter a day", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProposeWalkActivity.this, "Please enter a date", Toast.LENGTH_SHORT).show();
                 }
                 else if (((EditText) findViewById(R.id.box_time)).getText().toString().matches("")) {
                     Toast.makeText(ProposeWalkActivity.this, "Please enter a time", Toast.LENGTH_SHORT).show();
@@ -54,10 +55,10 @@ public class ProposeWalkActivity extends AppCompatActivity {
         box_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Calendar calendar = Calendar.getInstance();
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                int month = calendar.get(Calendar.MONTH);
-                int year = calendar.get(Calendar.YEAR);
+                Calendar calendar = Calendar.getInstance();
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                month = calendar.get(Calendar.MONTH);
+                year = calendar.get(Calendar.YEAR);
                 // date picker dialog
                 datePicker = new DatePickerDialog(ProposeWalkActivity.this,
                         R.style.DialogTheme,
@@ -77,15 +78,15 @@ public class ProposeWalkActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                int minutes = calendar.get(Calendar.MINUTE);
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                minutes = calendar.get(Calendar.MINUTE);
                 // time picker dialog
                 timePicker = new TimePickerDialog(ProposeWalkActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
-                                box_time.setText(hour % 12 + ":" + minutes + " " + (hour / 12 == 1 ? "PM" : "AM"));
+                                box_time.setText((hour == 12 ? "12" : hour % 12) + ":" + minutes + " " + (hour / 12 == 1 ? "PM" : "AM"));
                             }
                         }, hour, minutes, false);
                 timePicker.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -96,11 +97,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
 
 
     public void save() {
-        EditText eDay = (EditText) findViewById(R.id.box_date);
-        EditText eTime = (EditText) findViewById(R.id.box_time);
 
-        String day = eDay.getText().toString();
-        String time = eTime.getText().toString();
 
     }
 
