@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RouteActivity extends AppCompatActivity {
@@ -49,11 +50,11 @@ public class RouteActivity extends AppCompatActivity {
 
         // display features
         TextView featureView = (TextView) findViewById(R.id.box_features);
-        String[] features = route.getFeatures();
+        ArrayList<String> features = route.getFeatures();
         String featuresString = "";
         for (int i = 0; i < 5; i++) {
-            if (!features[i].equals("")) {
-                featuresString += features[i] + "\n";
+            if (!features.get(i).equals("")) {
+                featuresString += features.get(i) + "\n";
             }
         }
         featureView.setText(featuresString);
@@ -61,6 +62,10 @@ public class RouteActivity extends AppCompatActivity {
         // display notes
         TextView notes = (TextView) findViewById(R.id.box_notes);
         notes.setText(route.getNotes());
+
+        // display creator
+        TextView creatorView = (TextView) findViewById(R.id.box_creator);
+        creatorView.setText(route.getCreator());
 
         // set isFavorite
         TextView isFavorite = (TextView) findViewById(R.id.box_isFavorite);

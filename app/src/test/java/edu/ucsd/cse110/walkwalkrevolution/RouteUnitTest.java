@@ -3,6 +3,7 @@ package edu.ucsd.cse110.walkwalkrevolution;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import static org.junit.Assert.*;
 
@@ -21,7 +22,7 @@ public class RouteUnitTest {
     String difficulty;
     boolean favorite;
     Route route;
-    String[] features;
+    ArrayList<String> features;
 
     @Before
     public void setUp() throws Exception {
@@ -53,11 +54,11 @@ public class RouteUnitTest {
         assertEquals(route.getDistance(), distance, 0.001);
         assertEquals(route.getLastRun(), null);
         assertEquals(route.getNotes(), notes);
-        assertEquals(features[0], style);
-        assertEquals(features[1], terrain);
-        assertEquals(features[2], enviroment);
-        assertEquals(features[3], surface);
-        assertEquals(features[4], difficulty);
+        assertEquals(features.get(0), style);
+        assertEquals(features.get(1), terrain);
+        assertEquals(features.get(2), enviroment);
+        assertEquals(features.get(3), surface);
+        assertEquals(features.get(4), difficulty);
         assertEquals(route.getFavorite(), favorite);
     }
 
