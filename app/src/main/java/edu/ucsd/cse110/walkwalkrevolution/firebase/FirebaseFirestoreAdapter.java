@@ -23,6 +23,7 @@ import com.google.firebase.firestore.SetOptions;
 import org.w3c.dom.Document;
 
 import java.sql.DatabaseMetaData;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -138,7 +139,17 @@ public class FirebaseFirestoreAdapter {
                         case ADDED:
                             Log.d(TAG, "New Notification" + dc.getDocument().getData());
                             Map<String, Object> data = dc.getDocument().getData();
-                            if (data.get("email") == currentUser) {
+                            ArrayList<String> emails = (ArrayList<String>) data.get("emails");
+                            boolean found = false;
+
+                            for (int i = 0; i < emails.size(); i++) {
+                                if (emails.get(i) == currentUser) {
+                                    found = true;
+                                    break;
+                                }
+                            }
+
+                            if (found) {
                                 String title = data.get("title").toString();
                                 String text = data.get("text").toString();
                                 factory.createNotification(context, 1, title, text, Integer.parseInt(dc.getDocument().getId()));
