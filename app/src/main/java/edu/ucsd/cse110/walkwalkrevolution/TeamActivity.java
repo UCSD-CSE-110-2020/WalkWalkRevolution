@@ -62,12 +62,6 @@ public class TeamActivity extends AppCompatActivity {
 
         // Check if user pressed My invitation button
         bt_seeMyInvitation = (Button) findViewById(R.id.bt_seeMyInvitation);
-        bt_seeMyInvitation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gotoAcceptInvitation();
-            }
-        });
         checkIfInvited();
 
         // Setup RouteManager
@@ -80,13 +74,14 @@ public class TeamActivity extends AppCompatActivity {
 
     }
 
+
     private void checkIfInvited() {
         SharedPreferences teamSp = getSharedPreferences(getResources().getString(R.string.team_store), MODE_PRIVATE);
         String teamId = teamSp.getString("teamId", getResources().getString(R.string.empty));
 
         if (!teamId.equals(getResources().getString(R.string.empty))) { // If team exists, hide button
             bt_seeMyInvitation.setVisibility(View.INVISIBLE);
-            Log.d(TAG, "Already apart of a team, hiding button.");
+            Log.d(TAG, "Already a part of a team, hiding button.");
         } else {
             String[] ids = {"users", appUser.getName() + " " + appUser.getUid()};
             DocumentReference docRef = WalkWalkRevolutionApplication.adapter.get(ids);
@@ -97,9 +92,17 @@ public class TeamActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             Log.d(TAG, "User '" + java.util.Arrays.toString(ids) + "' exists, checking if invited.");
-                            if (document.get("invited") == null) {
+                            if (document.get("invite") == null) {
                                 bt_seeMyInvitation.setVisibility(View.INVISIBLE);
                                 Log.d(TAG, "User does not have an invitation, hiding button.");
+                            }
+                            else {
+                                bt_seeMyInvitation.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        gotoAcceptInvitation();
+                                    }
+                                });
                             }
                         } else {
                             Log.d(TAG, "User '" + java.util.Arrays.toString(ids) + "' does not exist, not checking if invited.");

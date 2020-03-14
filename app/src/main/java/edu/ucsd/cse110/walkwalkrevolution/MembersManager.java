@@ -49,11 +49,6 @@ public class MembersManager {
             String[] ids = {"teams", teamId};
             DocumentReference ref = adapter.get(ids);
 
-            try {
-                sleep(250);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
