@@ -1,30 +1,31 @@
 package edu.ucsd.cse110.walkwalkrevolution.firebase;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import org.w3c.dom.Document;
-
-import java.sql.DatabaseMetaData;
-import java.util.Collection;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import edu.ucsd.cse110.walkwalkrevolution.MeasurementConverter;
+import edu.ucsd.cse110.walkwalkrevolution.R;
+import edu.ucsd.cse110.walkwalkrevolution.notifications.NotificationFactory;
 
 public class FirebaseFirestoreAdapter {
     private static final String TAG = FirebaseFirestoreAdapter.class.getSimpleName();
@@ -97,8 +98,27 @@ public class FirebaseFirestoreAdapter {
     }
 
     public CollectionReference collect(String[] ids) {
-        assert !isDocumentId(ids);
+        assert isCollectionId(ids);
         return ((CollectionReference) getDatabaseReference(ids));
+    }
+
+    /**
+     * Assume that the document has no nesting and is the only item that needs to be deleted
+     */
+    public void remove(String[] ids) {
+        assert isDocumentId(ids);
+        DocumentReference docRef = (DocumentReference) getDatabaseReference(ids);
+        docRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Document '" + Arrays.asList(ids) + "' successfully deleted");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error deleting document '" + Arrays.asList(ids) + "'.");
+            }
+        });
     }
 
     public void subscribeListener(String[] ids, String key, Consumer<Object> listener) {
@@ -118,6 +138,43 @@ public class FirebaseFirestoreAdapter {
                     listener.accept(snapshot.get(key));
                 } else {
                     Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+    }
+
+    public void notificationSubscribe(String[] ids, NotificationFactory factory, Context context, String currentUser) {
+        assert isCollectionId(ids);
+        CollectionReference colRef = (CollectionReference) getDatabaseReference(ids);
+        colRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot snapshots,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "listen:error", e);
+                    return;
+                }
+
+                for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                    switch (dc.getType()) {
+                        case ADDED:
+                            Log.d(TAG, "New Notification" + dc.getDocument().getData());
+                            Map<String, Object> data = dc.getDocument().getData();
+                            if (data.containsKey("emails")) {
+                                if (((List<String>)data.get("emails")).contains(currentUser)) {
+                                    Log.d(TAG, "Creating notification");
+                                    String title = data.get("title").toString();
+                                    String text = data.get("text").toString();
+                                    String docName = dc.getDocument().getId();
+                                    factory.createNotification(context, R.drawable.ic_launcher_foreground, title, text, Integer.parseInt(String.valueOf(docName.hashCode())));
+                                }
+                            }
+                            break;
+                        case MODIFIED:
+                            break;
+                        case REMOVED:
+                            break;
+                    }
                 }
             }
         });
