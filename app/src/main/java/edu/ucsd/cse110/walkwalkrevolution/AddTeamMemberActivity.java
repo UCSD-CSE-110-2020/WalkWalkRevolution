@@ -14,6 +14,11 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import edu.ucsd.cse110.walkwalkrevolution.notifications.Notification;
+
 import static java.lang.Thread.sleep;
 
 public class AddTeamMemberActivity extends AppCompatActivity {
@@ -76,6 +81,9 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         Invite invite = new Invite(this, appUser.getName(), iName, iEmail);
         Log.d(TAG, "Requesting that invite be added to the database");
         invite.addToDatabase(WalkWalkRevolutionApplication.adapter, callback);
+        List<String> emails = new ArrayList<>();
+        emails.add(iEmail);
+        Notification.sendNotification(WalkWalkRevolutionApplication.adapter, emails, "Invitation", appUser.getName() + " sent you an invitation!");
     }
 
     private void checkIfTeamExists() {
