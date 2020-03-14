@@ -29,35 +29,37 @@ public class Invite {
     private static final String TAG = Invite.class.getSimpleName();
 
     Context context;
-    private String from, name, email;
+    private String inviterName, inviterEmail, inviteeName, inviteeEmail;
 
 
     // Team should be initialized with the creator's name and email
-    public Invite(Context context, String from, String name, String email) {
+    public Invite(Context context, String inviterName, String inviterEmail, String inviteeName, String inviteeEmail) {
         this.context = context;
-        this.from = from;
-        this.name = name;
-        this.email = email;
+        this.inviterName = inviterName;
+        this.inviterEmail = inviterEmail;
+        this.inviteeName = inviteeName;
+        this.inviteeEmail = inviteeEmail;
     }
 
     public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids, String teamId) {
         Map<String, Object> data = new HashMap<>();
         Map<String, Object> invite = new HashMap<>();
         invite.put("teamId", teamId);
-        invite.put("from", from);
+        invite.put("from", inviterName);
+        invite.put("email", inviterEmail);
         data.put("invite", invite);
 
-        Log.d(TAG, "Adding invite to '" + teamId  + "' from '" + from + "' to the user document ('" + ids[1] + "')");
+        Log.d(TAG, "Adding invite to '" + teamId  + "' from '" + inviterName + "' to the user document ('" + ids[1] + "')");
         adapter.add(ids, data);
     }
 
     public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids, Map invited) {
         Map<String, Object> data = new HashMap<>();
-        invited.put(email, name);
+        invited.put(inviteeEmail, inviteeName);
         data.put("invited", invited);
 
         // Database structure is "teams/<Random UUID>"
-        Log.d(TAG, "Adding user ('" + email + ": " + name + "') to the team document ('" + ids[1] + "')");
+        Log.d(TAG, "Adding user ('" + inviteeEmail + ": " + inviteeName + "') to the team document ('" + ids[1] + "')");
         adapter.add(ids, data);
     }
 
@@ -68,7 +70,7 @@ public class Invite {
         Log.d(TAG, "Adding invite to the database");
         String[] collection = {"users"};
         CollectionReference usersRef = adapter.collect(collection);
-        Query query = usersRef.whereEqualTo("email", email);
+        Query query = usersRef.whereEqualTo("email", inviteeEmail);
         String[] userIds = {"users", ""};
         SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
         String teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
@@ -80,13 +82,13 @@ public class Invite {
                 if (task.isSuccessful()) {
                     QuerySnapshot query = task.getResult();
                     if (!query.isEmpty()) {
-                        Log.d(TAG, "User with email '" + email + "' does exist, inviting.");
+                        Log.d(TAG, "User with email '" + inviteeEmail + "' does exist, inviting.");
                         List<DocumentSnapshot> users = query.getDocuments();
                         userIds[1] = users.get(0).getId();
                         overwriteAddToDatabase(adapter, userIds, teamId);
                         inviteToTeam(adapter, teamIds, callback);
                     } else {
-                        Log.d(TAG, "User with email '" + email + "' does not exist, cannot invite.");
+                        Log.d(TAG, "User with email '" + inviteeEmail + "' does not exist, cannot invite.");
                     }
                 }
             }

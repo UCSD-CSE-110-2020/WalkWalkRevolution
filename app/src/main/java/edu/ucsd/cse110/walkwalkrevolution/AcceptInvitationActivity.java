@@ -24,6 +24,8 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.ucsd.cse110.walkwalkrevolution.notifications.Notification;
+
 import static java.lang.Thread.sleep;
 
 public class AcceptInvitationActivity extends AppCompatActivity {
@@ -32,6 +34,7 @@ public class AcceptInvitationActivity extends AppCompatActivity {
     User appUser;
     DocumentReference userRef;
     String[] userIds;
+    String inviterEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class AcceptInvitationActivity extends AppCompatActivity {
                         Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' exists, getting inviter.");
                         Map invite = (Map) document.get("invite");
                         header_inviter.setText((String) invite.get("from"));
+                        saveInviterEmail((String) invite.get("email"));
                     } else {
                         Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' does not exist, cannot get inviter.");
                     }
@@ -94,12 +98,18 @@ public class AcceptInvitationActivity extends AppCompatActivity {
 
     }
 
+    public void saveInviterEmail(String email) {
+        inviterEmail = email;
+    }
+
     public void acceptInvitation(Callback callback) {
         Toast.makeText(AcceptInvitationActivity.this, "Team invitation accepted", Toast.LENGTH_SHORT).show();
+        Notification.sendNotification(WalkWalkRevolutionApplication.adapter, inviterEmail, "Invitation Response", appUser.getName() + " accepted your team invitation!");
         respondToInvitation(true, callback);
     }
 
     public void declineInvitation(Callback callback) {
+        Notification.sendNotification(WalkWalkRevolutionApplication.adapter, inviterEmail, "Invitation Response", appUser.getName() + " declined your team invitation!");
         Toast.makeText(AcceptInvitationActivity.this, "Team invitation declined", Toast.LENGTH_SHORT).show();
         respondToInvitation(false, callback);
     }

@@ -78,12 +78,10 @@ public class AddTeamMemberActivity extends AppCompatActivity {
 
         String iName = eName.getText().toString().trim();
         String iEmail = eEmail.getText().toString().trim().toLowerCase();
-        Invite invite = new Invite(this, appUser.getName(), iName, iEmail);
+        Invite invite = new Invite(this, appUser.getName(), appUser.getEmail(), iName, iEmail);
         Log.d(TAG, "Requesting that invite be added to the database");
         invite.addToDatabase(WalkWalkRevolutionApplication.adapter, callback);
-        List<String> emails = new ArrayList<>();
-        emails.add(iEmail);
-        Notification.sendNotification(WalkWalkRevolutionApplication.adapter, emails, "Invitation", appUser.getName() + " sent you an invitation!");
+        Notification.sendNotification(WalkWalkRevolutionApplication.adapter, iEmail, "Invitation", appUser.getName() + " sent you an invitation!");
     }
 
     private void checkIfTeamExists() {
