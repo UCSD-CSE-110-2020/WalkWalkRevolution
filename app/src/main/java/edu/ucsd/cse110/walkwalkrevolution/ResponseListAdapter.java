@@ -18,18 +18,17 @@ import java.util.ArrayList;
 
 class ResponseListAdapter extends ArrayAdapter<String> {
     ArrayList<String> memberData;
-    ArrayList<String> invitedData;
+    ArrayList<String> responseData;
     private Activity context;
-    private Integer[] userIcon;
 
-    public ResponseListAdapter(Activity context, ArrayList<String> memberData, ArrayList<String> invitedData) {
+    public ResponseListAdapter(Activity context, ArrayList<String> memberData, ArrayList<String> responseData) {
         super(context, R.layout.route_list);
         this.memberData = memberData;
         for(String member : memberData) {
             add(member);
         }
-        this.invitedData = invitedData;
         this.context = context;
+        this.responseData = responseData;
     }
 
     public ResponseListAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
@@ -39,23 +38,23 @@ class ResponseListAdapter extends ArrayAdapter<String> {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
 
-        View rowView = inflater.inflate(R.layout.member_list, null,true);
-
+        View rowView = inflater.inflate(R.layout.response_list, null,true);
 
         TextView nameText = (TextView) rowView.findViewById(R.id.entry_memberName);
+        TextView responseText = (TextView) rowView.findViewById(R.id.entry_memberResponse);
         ImageView iconImage = (ImageView) rowView.findViewById(R.id.icon_image);
         TextView iconText = (TextView) rowView.findViewById(R.id.icon_text);
 
         nameText.setText(memberData.get(position));
-        if (invitedData.contains(memberData.get(position))) {
-            nameText.setTextColor(Color.GRAY);
-            nameText.setTypeface(nameText.getTypeface(), Typeface.ITALIC);
+        responseText.setText(responseData.get(position));
+        if (responseData.get(position).equals("No Response")) {
+            responseText.setTextColor(Color.GRAY);
+            responseText.setTypeface(nameText.getTypeface(), Typeface.ITALIC);
         }
-
 
         int[] rainbow = context.getResources().getIntArray(R.array.rainbow);
         iconImage.getDrawable().setColorFilter(rainbow[position], PorterDuff.Mode.MULTIPLY);
-        String name = (String) nameText.getText();
+        String name = memberData.get(position);
         String initials = "" + Character.toUpperCase(name.charAt(0));
         for (int i = 1; i < name.length() - 1; i++) {
             if (name.charAt(i) == ' ') {
@@ -63,10 +62,6 @@ class ResponseListAdapter extends ArrayAdapter<String> {
             }
         }
         iconText.setText(initials);
-
-        if (name.equals("Not currently in a team!")) {
-            rowView.findViewById(R.id.icon_initials).setVisibility(View.GONE);
-        }
 
         return rowView;
     };

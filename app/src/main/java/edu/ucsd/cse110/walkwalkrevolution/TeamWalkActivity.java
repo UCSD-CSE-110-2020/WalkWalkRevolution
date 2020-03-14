@@ -1,5 +1,6 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,12 +25,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Map;
 
 public class TeamWalkActivity extends AppCompatActivity {
     private static final String TAG = TeamWalkActivity.class.getSimpleName();
-    TextView boxName, boxDate, boxLocation, boxStatus, nameLocation;
+    TextView nameName, boxName, nameDate, boxDate, boxLocation, boxStatus, nameLocation;
     ListView responseList;
     Button bt_accept, bt_timeDecline, bt_routeDecline, bt_schedule, bt_withdraw;
     User appUser;
@@ -38,7 +40,9 @@ public class TeamWalkActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team_walk);
+        nameName = (TextView) findViewById(R.id.name_teamWalkName);
         boxName = (TextView) findViewById(R.id.box_teamWalkName);
+        nameDate = (TextView) findViewById(R.id.name_teamWalkDate);
         boxDate = (TextView) findViewById(R.id.box_teamWalkDate);
         boxLocation = (TextView) findViewById(R.id.box_teamWalkLocation);
         boxStatus = (TextView) findViewById(R.id.box_teamWalkStatus);
@@ -74,7 +78,9 @@ public class TeamWalkActivity extends AppCompatActivity {
     }
 
     private void unhideAll() {
+        nameName.setVisibility(View.VISIBLE);
         boxName.setVisibility(View.VISIBLE);
+        nameDate.setVisibility(View.VISIBLE);
         boxDate.setVisibility(View.VISIBLE);
         boxLocation.setVisibility(View.VISIBLE);
         findViewById(R.id.name_teamWalkStatus).setVisibility(View.VISIBLE);
@@ -126,7 +132,8 @@ public class TeamWalkActivity extends AppCompatActivity {
         boxStatus.setText(((boolean) walk.get("status") ? "Scheduled" : "Proposed"));
         unhideAll();
 
-        if (checkIfCreator((String) walk.get("creator"))) {
+        String creator = (String) walk.get("creator");
+        if (checkIfCreator(creator)) {
             bt_schedule.setVisibility(View.VISIBLE);
             bt_withdraw.setVisibility(View.VISIBLE);
         }
@@ -135,15 +142,33 @@ public class TeamWalkActivity extends AppCompatActivity {
             bt_timeDecline.setVisibility(View.VISIBLE);
             bt_routeDecline.setVisibility(View.VISIBLE);
         }
-        listResponses(members);
+        listResponses(members, (Map) walk.get("response"), creator);
     }
 
     private boolean checkIfCreator(String creator) {
         return appUser.getEmail().equals(creator);
     }
 
-    private void listResponses(Map<String, String> members) {
+    private void listResponses(Map<String, String> members, Map<String, String> responses, String creator) {
+        // Save response List
+        ListView list = (ListView) findViewById(R.id.teamWalkList);
 
+
+        ArrayList<String> membersList = new ArrayList<String>(members.values());
+        ArrayList<String> responseList = new ArrayList<String>();
+        for (String mEmail : members.keySet()) {
+            if (responses.containsKey(mEmail)) {
+                responseList.add(responses.get(mEmail));
+            }
+            else if (creator.equals(mEmail)) {
+                responseList.add("(Creator)");
+            }
+            else {
+                responseList.add("No Response");
+            }
+        }
+        ResponseListAdapter customAdapter = new ResponseListAdapter(this, membersList, responseList);
+        list.setAdapter(customAdapter);
     }
 
 

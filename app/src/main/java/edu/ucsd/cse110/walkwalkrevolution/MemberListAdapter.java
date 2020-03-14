@@ -23,7 +23,6 @@ class MemberListAdapter extends ArrayAdapter<String> {
     ArrayList<String> memberData;
     ArrayList<String> invitedData;
     private Activity context;
-    private Integer[] userIcon;
 
     public MemberListAdapter(Activity context, ArrayList<String> memberData, ArrayList<String> invitedData) {
         super(context, R.layout.route_list);
@@ -55,10 +54,9 @@ class MemberListAdapter extends ArrayAdapter<String> {
             nameText.setTypeface(nameText.getTypeface(), Typeface.ITALIC);
         }
 
-
         int[] rainbow = context.getResources().getIntArray(R.array.rainbow);
         iconImage.getDrawable().setColorFilter(rainbow[position], PorterDuff.Mode.MULTIPLY);
-        String name = (String) nameText.getText();
+        String name = memberData.get(position);
         String initials = "" + Character.toUpperCase(name.charAt(0));
         for (int i = 1; i < name.length() - 1; i++) {
             if (name.charAt(i) == ' ') {
