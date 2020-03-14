@@ -15,6 +15,8 @@ import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 
+import edu.ucsd.cse110.walkwalkrevolution.notifications.NotificationFactory;
+
 import static org.junit.Assert.assertEquals;
 
 public class NotificationUnitTest {
@@ -24,5 +26,4 @@ public class NotificationUnitTest {
     @Before
     public void setUp() {
     }
-
 }

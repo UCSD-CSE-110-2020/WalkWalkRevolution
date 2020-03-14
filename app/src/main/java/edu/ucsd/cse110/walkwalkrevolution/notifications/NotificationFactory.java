@@ -1,4 +1,4 @@
-package edu.ucsd.cse110.walkwalkrevolution;
+package edu.ucsd.cse110.walkwalkrevolution.notifications;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.Map;
 import java.util.TreeMap;
 
+import edu.ucsd.cse110.walkwalkrevolution.HomeActivity;
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -37,7 +38,7 @@ public class NotificationFactory {
     NotificationCompat.Builder builder;
     String channelId;
 
-    NotificationFactory(Context context, String channelId) {
+    public NotificationFactory(Context context, String channelId) {
         this.channelId = channelId;
         createNotificationChannel(channelId, context);
     }
@@ -49,10 +50,10 @@ public class NotificationFactory {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         builder = new NotificationCompat.Builder(context, channelId)
-                //.setSmallIcon(icon) off for now
+                .setSmallIcon(icon)
                 .setContentTitle(title)
                 .setContentText(text)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 // Set Intent on tap
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
