@@ -52,7 +52,7 @@
         android:id="@+id/header_nameOfInviter"
         android:layout_width="320dp"
         android:layout_height="86dp"
-        android:text="@string/header_nameOfInviter"
+        android:text="@string/empty"
         android:textAlignment="center"
         android:textColor="#8BC34A"
         android:textSize="30sp"

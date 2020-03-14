@@ -1,6 +1,9 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -9,10 +12,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
+
+import static java.lang.Thread.sleep;
 
 public class User {
 
@@ -49,6 +55,10 @@ public class User {
         return name;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
     /**
      * If the document exists, addToDatabase is a no-op
      */
@@ -71,13 +81,13 @@ public class User {
         });
     }
 
-    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("team", teamId);
-
-        // Database structure is "users/<NAME> <UID>"
-        String[] ids = {"users", name + " " + uid};
-        Log.d(TAG, "Adding team ('" + teamId + "') to the user document ('" + name + " " + uid + "')");
-        adapter.add(ids, data);
-    }
+//    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {
+//        Map<String, Object> data = new HashMap<>();
+//        data.put("team", teamId);
+//
+//        // Database structure is "users/<NAME> <UID>"
+//        String[] ids = {"users", name + " " + uid};
+//        Log.d(TAG, "Adding team ('" + teamId + "') to the user document ('" + name + " " + uid + "')");
+//        adapter.add(ids, data);
+//    }
 }
