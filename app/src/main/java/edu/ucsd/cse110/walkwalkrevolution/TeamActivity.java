@@ -40,7 +40,7 @@ public class TeamActivity extends AppCompatActivity {
         String name = user.getDisplayName();
         String email = user.getEmail();
         String uid = user.getUid();
-        appUser = new User(name, email, uid);
+        appUser = new User(WalkWalkRevolutionApplication.adapter, name, email, uid);
 
         // Check if user pressed home button
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home2);

@@ -9,14 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -24,6 +22,7 @@ import com.google.firebase.firestore.FieldValue;
 import java.util.HashMap;
 import java.util.Map;
 
+import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 import edu.ucsd.cse110.walkwalkrevolution.notifications.Notification;
 
 import static java.lang.Thread.sleep;
@@ -41,13 +40,7 @@ public class AcceptInvitationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_invitation);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        appUser = new User(name, email, uid);
-
+        appUser = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
         userIds = new String[]{"users", appUser.getName() + " " + appUser.getUid()};
         userRef = WalkWalkRevolutionApplication.adapter.get(userIds);
         TextView header_inviter = (TextView) findViewById(R.id.header_nameOfInviter);
@@ -60,7 +53,7 @@ public class AcceptInvitationActivity extends AppCompatActivity {
                         Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' exists, getting inviter.");
                         Map invite = (Map) document.get("invite");
                         header_inviter.setText((String) invite.get("from"));
-                        saveInviterEmail((String) invite.get("email"));
+                        inviterEmail = (String) invite.get("email");
                     } else {
                         Log.d(TAG, "User '" + java.util.Arrays.toString(userIds) + "' does not exist, cannot get inviter.");
                     }
@@ -73,9 +66,9 @@ public class AcceptInvitationActivity extends AppCompatActivity {
         bt_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                acceptInvitation(new Callback() {
+                acceptInvitation(new Callback.NoArg() {
                     @Override
-                    public void onCallback() {
+                    public void call() {
                         gotoTeamMenu();
                     }
                 });
@@ -87,9 +80,9 @@ public class AcceptInvitationActivity extends AppCompatActivity {
         bt_decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                declineInvitation(new Callback() {
+                declineInvitation(new Callback.NoArg() {
                     @Override
-                    public void onCallback() {
+                    public void call() {
                         gotoTeamMenu();
                     }
                 });
@@ -98,23 +91,19 @@ public class AcceptInvitationActivity extends AppCompatActivity {
 
     }
 
-    public void saveInviterEmail(String email) {
-        inviterEmail = email;
-    }
-
-    public void acceptInvitation(Callback callback) {
+    public void acceptInvitation(Callback.NoArg callback) {
         Toast.makeText(AcceptInvitationActivity.this, "Team invitation accepted", Toast.LENGTH_SHORT).show();
         Notification.sendNotification(WalkWalkRevolutionApplication.adapter, inviterEmail, "Invitation Response", appUser.getName() + " accepted your team invitation!");
         respondToInvitation(true, callback);
     }
 
-    public void declineInvitation(Callback callback) {
+    public void declineInvitation(Callback.NoArg callback) {
         Notification.sendNotification(WalkWalkRevolutionApplication.adapter, inviterEmail, "Invitation Response", appUser.getName() + " declined your team invitation!");
         Toast.makeText(AcceptInvitationActivity.this, "Team invitation declined", Toast.LENGTH_SHORT).show();
         respondToInvitation(false, callback);
     }
 
-    public void respondToInvitation(boolean accepted, Callback callback) {
+    public void respondToInvitation(boolean accepted, Callback.NoArg callback) {
         Map<String, Object> remove = new HashMap<>();
         remove.put("invite", FieldValue.delete());
 
@@ -133,11 +122,12 @@ public class AcceptInvitationActivity extends AppCompatActivity {
         });
     }
 
-    private void removeFromTeam(String teamId, boolean accepted, Callback callback) {
+    private void removeFromTeam(String teamId, boolean accepted, Callback.NoArg callback) {
         String[] teamIds = {"teams", teamId};
         if (accepted) {
             storeTeam(teamId);
         }
+        Team team = new Team(WalkWalkRevolutionApplication.adapter, teamIds);
         DocumentReference docRef = WalkWalkRevolutionApplication.adapter.get(teamIds);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -151,14 +141,27 @@ public class AcceptInvitationActivity extends AppCompatActivity {
                     Map<String, Object> data = new HashMap<>();
                     data.put("invited", invited);
                     if (accepted) {
-                        Map members = (Map) document.get("members");
-                        members.put(appUser.getEmail(), nickname);
-                        data.put("members", members);
-                        Log.d(TAG, "Putting into members.");
+                        team.addUser(appUser, nickname);
+                        appUser.setNickname(nickname);
+                        appUser.overwriteAddToDatabase(WalkWalkRevolutionApplication.adapter);
+                        appUser.updateCreatorOfPersonalRoutes(new Callback.NoArg() {
+                            @Override
+                            public void call() {
+                                team.forEachTeammateOf(appUser, new Callback.SingleArg<User>() {
+                                    @Override
+                                    public void call(User teammate) {
+                                        Log.d(TAG, "Adding teammate's personal routes to user's team routes");
+                                        appUser.addPersonalRoutesFrom(teammate);
+                                        Log.d(TAG, "Adding user's personal routes to teammate's team routes");
+                                        teammate.addPersonalRoutesFrom(appUser);
+                                    }
+                                });
+                            }
+                        });
                     }
                     WalkWalkRevolutionApplication.adapter.add(teamIds, data);
                     Log.d(TAG, "Removing from invited.");
-                    callback.onCallback();
+                    callback.call();
                 }
             }
         });

@@ -35,7 +35,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         String name = user.getDisplayName();
         String email = user.getEmail();
         String uid = user.getUid();
-        appUser = new User(name, email, uid);
+        appUser = new User(WalkWalkRevolutionApplication.adapter, name, email, uid);
 
         // Check if user pressed add button
         Button bt_finishAddMember = (Button) findViewById(R.id.bt_finishAddMember);
@@ -53,9 +53,9 @@ public class AddTeamMemberActivity extends AppCompatActivity {
                 }
                 else {
                     Log.d(TAG, "Starting invite with valid name and email address");
-                    invite(new Callback() {
+                    invite(new Callback.NoArg() {
                         @Override
-                        public void onCallback() {
+                        public void call() {
                             gotoTeamMenu();
                         }
                     });
@@ -70,7 +70,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void invite(Callback callback) {
+    public void invite(Callback.NoArg callback) {
         checkIfTeamExists();
 
         EditText eName = (EditText) findViewById(R.id.box_name);

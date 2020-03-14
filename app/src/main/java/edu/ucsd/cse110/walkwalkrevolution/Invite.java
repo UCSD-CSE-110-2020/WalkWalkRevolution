@@ -17,7 +17,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 
@@ -66,7 +65,7 @@ public class Invite {
     /**
      * If the document exists, addToDatabase is a no-op
      */
-    public void addToDatabase(FirebaseFirestoreAdapter adapter, Callback callback) {
+    public void addToDatabase(FirebaseFirestoreAdapter adapter, Callback.NoArg callback) {
         Log.d(TAG, "Adding invite to the database");
         String[] collection = {"users"};
         CollectionReference usersRef = adapter.collect(collection);
@@ -96,7 +95,7 @@ public class Invite {
         Log.d(TAG, "Exiting method");
     }
 
-    private void inviteToTeam(FirebaseFirestoreAdapter adapter, String[] teamIds, Callback callback) {
+    private void inviteToTeam(FirebaseFirestoreAdapter adapter, String[] teamIds, Callback.NoArg callback) {
         Log.d(TAG, "Refreshing team's invited list");
         DocumentReference docRef = adapter.get(teamIds);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -111,7 +110,7 @@ public class Invite {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(teamIds) + "' does exist, inviting.");
                         Map invited = (Map) document.get("invited");
                         overwriteAddToDatabase(adapter, teamIds, invited);
-                        callback.onCallback();
+                        callback.call();
                     }
                 }
             }

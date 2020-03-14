@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.common.util.ArrayUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import edu.ucsd.cse110.walkwalkrevolution.ArrayUtil;
 import edu.ucsd.cse110.walkwalkrevolution.MeasurementConverter;
 import edu.ucsd.cse110.walkwalkrevolution.R;
 import edu.ucsd.cse110.walkwalkrevolution.notifications.NotificationFactory;
@@ -46,13 +49,6 @@ public class FirebaseFirestoreAdapter {
         return !isDocumentId(ids);
     }
 
-    static <T> T[] append(T[] arr, T element) {
-        final int N = arr.length;
-        arr = Arrays.copyOf(arr, N + 1);
-        arr[N] = element;
-        return arr;
-    }
-
     private Object getDatabaseReference(String[] ids) {
         Object ref = db.collection(ids[0]);
         for (int i = 1; i < ids.length; i++) {
@@ -65,7 +61,7 @@ public class FirebaseFirestoreAdapter {
         return ref;
     }
 
-    public void add(String[] ids, Map<String, Object> data) {
+    public void add(String[] ids, @NonNull Object data) {
         Log.d(TAG, "Adding data to Firestore: " + java.util.Arrays.toString(ids));
         assert ids.length > 0;
         Object ref = getDatabaseReference(ids);
@@ -99,6 +95,23 @@ public class FirebaseFirestoreAdapter {
                         }
                     });
         }
+    }
+
+    public void update(String[] ids, String key, Object value) {
+        Log.d(TAG, "Updating key '" + key + "', value '" + value + "' to Firestore: " + java.util.Arrays.toString(ids));
+        assert isDocumentId(ids);
+        DocumentReference docRef = (DocumentReference) getDatabaseReference(ids);
+        docRef.update(key, value).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "Document '" + Arrays.asList(ids) + "' successfully deleted");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error updating document '" + Arrays.asList(ids) + "'.");
+            }
+        });
     }
 
     public DocumentReference get(String[] ids) {
@@ -178,7 +191,7 @@ public class FirebaseFirestoreAdapter {
                                     factory.createNotification(context, R.drawable.ic_launcher_foreground, title, text, Integer.parseInt(String.valueOf(docName.hashCode())));
 
                                     // Remove document after it has been processed
-                                    remove(append(ids, docName));
+                                    remove(ArrayUtil.append(ids, docName));
                                 }
                             }
                             break;

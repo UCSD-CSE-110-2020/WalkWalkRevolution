@@ -18,10 +18,13 @@ import android.widget.ListView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
@@ -101,37 +104,22 @@ public class RoutesActivity extends AppCompatActivity {
         manager.addRoute(new Route("aaadfdaaa", "ok"));
         */
 
-        // Load Personal Route List
-        ListView list = (ListView) findViewById(R.id.routeList);
+        // Load personal route UI list
+        ListView personalListView = (ListView) findViewById(R.id.routeList);
 
-        ArrayList<Route> routeList = manager.loadAll();
+        //ArrayList<Route> routeList = manager.loadAll();
+        User user = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
+        String[] personalRouteIds = {"users", user.getDatabaseId(), "personal_routes"};
+        manager.loadAllFromFirebase(personalRouteIds, personalListView, this);
 
-        RouteListAdapter customAdapter = new RouteListAdapter(this, routeList);
-
-        list.setAdapter(customAdapter);
-
-        // Setup Onclick
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-                gotoRoute(routeList.get(position));
-            }
-        });
-
-        // load teammate name
+        // Load teammates
         loadTeammates(WalkWalkRevolutionApplication.adapter);
 
-        for(String name: teamMembers) {
-            Log.d("teamMembers", name);
-        }
-
-        // load routes from database
-        // Load Route List
-        ListView teamList = (ListView) findViewById(R.id.teamRouteList);
-        manager.loadAllFromFirebase(teamList, this);
-
-
+        // Load team route UI list
+        ListView teamRouteListView = (ListView) findViewById(R.id.teamRouteList);
+        // Load routes from database
+        String[] teamRouteIds = {"users", user.getDatabaseId(), "team_routes"};
+        manager.loadAllFromFirebase(teamRouteIds, teamRouteListView, this);
     }
 
     public void gotoMainMenu() {
@@ -155,7 +143,6 @@ public class RoutesActivity extends AppCompatActivity {
 
     // load teammates
     public void loadTeammates(FirebaseFirestoreAdapter adapter) {
-
         if (teamId.equals(context.getResources().getString(R.string.empty))) { // Make sure team exists
             teamMembers = new ArrayList<>();
             teamMembers.add("N/A");
@@ -171,12 +158,14 @@ public class RoutesActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Map data = (Map) document.get("members");
                             teamMembers = new ArrayList<String>(data.values());
+                            Log.d(TAG, "Listing " + teamMembers.size() + " team members");
+                            for(String name: teamMembers) {
+                                Log.d(TAG, name);
+                            }
                         }
                     }
                 }
             });
         }
     }
-
-
 }

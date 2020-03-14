@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,15 +43,13 @@ import static android.content.Context.MODE_PRIVATE;
 
 // store all routes and load routes from user preferences
 public class RoutesManager {
-
+    private static String TAG = RoutesManager.class.getSimpleName();
 
     private Context context;
     SharedPreferences savedRoutesInfo;
     SharedPreferences savedRoutesFeatures;
     SharedPreferences.Editor infoRouteEditor;
     SharedPreferences.Editor featureRouteEditor;
-
-    ArrayList<Route> firebaseRoutes;
 
     RoutesManager(Context currentContext) {
         context = currentContext;
@@ -59,7 +59,6 @@ public class RoutesManager {
                 context.getResources().getString(R.string.routeFeature_store), MODE_PRIVATE);
         infoRouteEditor = savedRoutesInfo.edit();
         featureRouteEditor = savedRoutesFeatures.edit();
-        firebaseRoutes = new ArrayList<>();
     }
 
     // load saved routes
@@ -73,11 +72,11 @@ public class RoutesManager {
     }
 
     // load routes from Firebase
-    // load saved routes
-    public void loadAllFromFirebase(ListView teamList, Context context) {
-        firebaseRoutes = new ArrayList<>();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("routes")
+    // load saved routes from Firebase, assuming that the ids specify a collection with documents
+    // that are each serialized Route classes
+    public void loadAllFromFirebase(String[] ids, ListView listView, Context context) {
+        ArrayList<Route> firebaseRoutes = new ArrayList<>();
+        WalkWalkRevolutionApplication.adapter.collect(ids)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -86,28 +85,21 @@ public class RoutesManager {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Route newRoute = document.toObject(Route.class);
                                 firebaseRoutes.add(newRoute);
-                                Log.d("teamRoutes", Integer.toString(firebaseRoutes.size()));
-
                             }
-                            Log.d("teamRoutes", Integer.toString(firebaseRoutes.size()));
+                            Log.d(TAG, "Firebase routes size: " + Integer.toString(firebaseRoutes.size()));
+                            Log.d(TAG, "Teammates routes: " + Arrays.toString(firebaseRoutes.toArray()));
                             RouteListAdapter customAdapter = new RouteListAdapter((Activity) context, firebaseRoutes);
-                            teamList.setAdapter(customAdapter);
-                            // Setup Onclick
-                            teamList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
+                            listView.setAdapter(customAdapter);
+                            // Setup onclick
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
-                                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     gotoRoute(firebaseRoutes.get(position), context);
                                 }
                             });
                         }
                     }
                 });
-
-    }
-
-    public  ArrayList<Route> getFirebaseRoutes() {
-        return firebaseRoutes;
     }
 
     public Route loadRoute(Map.Entry<String, ?> route) {
@@ -231,10 +223,37 @@ public class RoutesManager {
         featureRouteEditor.apply();
     }
 
+    // Add the route to the Firebase Firestore database as a document of the following signature:
+    // "/users/<USER_ID>/personal_routes/<CREATOR_NAME> <ROUTE_NAME>"
     public void uploadRoute(Route route, FirebaseFirestoreAdapter adapter) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String docuName = route.getCreator() + "  " + route.getName();
-        db.collection("routes").document(docuName).set(route);
+        User appUser = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
+        String docName = route.getCreator() + "  " + route.getName();
+        String[] routeId = {"users", appUser.getDatabaseId(), "personal_routes", docName};
+        adapter.add(routeId, route);
+
+        SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
+        if (teamSp.contains("teamId")) {
+            String teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
+            String[] teamIds = {"teams", teamId};
+            Log.d(TAG, "Loading team: " + Arrays.toString(teamIds));
+            Team team = new Team();
+            team.load(WalkWalkRevolutionApplication.adapter, teamIds, new Callback.NoArg() {
+                @Override
+                public void call() {
+                    appUser.updateCreatorOfPersonalRoutes(new Callback.NoArg() {
+                        @Override
+                        public void call() {
+                            team.forEachTeammateOf(appUser, new Callback.SingleArg<User>() {
+                                @Override
+                                public void call(User teammate) {
+                                    teammate.addRouteFrom(routeId);
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
     }
 
     public void gotoRoute(Route selectedRoute, Context context) {
