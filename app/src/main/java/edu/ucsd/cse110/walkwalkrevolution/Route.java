@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import com.google.firebase.firestore.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,6 +126,7 @@ public class Route implements Serializable {
         lastRun = newLastRun;
     }
 
+    @Exclude
     public Calendar getLastRun() {
         return lastRun;
     }

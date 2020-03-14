@@ -60,7 +60,7 @@ public class TeamWalk {
     /**
      * If the document exists, addToDatabase is a no-op
      */
-    public void addToDatabase(FirebaseFirestoreAdapter adapter, Callback callback) {
+    public void addToDatabase(FirebaseFirestoreAdapter adapter, Callback.NoArg callback) {
         String teamId = Team.getTeam(context);
         String[] teamIds = {"teams", teamId};
         DocumentReference docRef = adapter.get(teamIds);
@@ -77,7 +77,7 @@ public class TeamWalk {
                         overwriteAddToDatabase(adapter, teamIds);
                     }
                 }
-                callback.onCallback();
+                callback.call();
             }
         });
         Log.d(TAG, "Exiting method");

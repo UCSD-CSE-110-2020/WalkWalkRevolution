@@ -48,9 +48,9 @@ public class AddTeamMemberActivity extends AppCompatActivity {
                 }
                 else {
                     Log.d(TAG, "Starting invite with valid name and email address");
-                    invite(new Callback() {
+                    invite(new Callback.NoArg() {
                         @Override
-                        public void onCallback() {
+                        public void call() {
                             gotoTeamMenu();
                         }
                     });
@@ -65,7 +65,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void invite(Callback callback) {
+    public void invite(Callback.NoArg callback) {
         if (Team.teamExists(this)) {
             appUser.createTeam(this);
         }

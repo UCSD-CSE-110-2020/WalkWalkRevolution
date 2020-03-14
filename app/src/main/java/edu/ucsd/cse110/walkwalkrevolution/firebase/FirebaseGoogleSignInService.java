@@ -40,6 +40,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.concurrent.Executor;
 
+import edu.ucsd.cse110.walkwalkrevolution.Callback;
 import edu.ucsd.cse110.walkwalkrevolution.R;
 
 import static java.lang.Thread.sleep;
@@ -98,7 +99,7 @@ public class FirebaseGoogleSignInService extends Service {
         Log.d(TAG, "Signaling activity to start signing in");
     }
 
-    public void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    public void firebaseAuthWithGoogle(GoogleSignInAccount acct, Callback.NoArg callback) {
         Log.d(TAG, "Attempting to authenticate firebase with Google sign in");
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -130,13 +131,9 @@ public class FirebaseGoogleSignInService extends Service {
                             // If sign in fails, display a message to the user.
                             Log.d(TAG, "signInWithCredential:failure", task.getException());
                         }
+                        callback.call();
+                        Log.d(TAG, "Finished authenticating");
                     }
                 });
-        try {
-            sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.d(TAG, "Finished authenticating");
     }
 }

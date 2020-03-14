@@ -214,12 +214,16 @@ public class HomeActivity extends AppCompatActivity {
                 try {
                     // Google Sign In was successful, authenticate with Firebase
                     GoogleSignInAccount account = task.getResult(ApiException.class);
-                    firebaseSignInService.firebaseAuthWithGoogle(account);
-                    Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
-                    Log.d(TAG, "Saving user login details");
-                    saveUserLogin();
-                    launchFitnessActivity();
-                    launchUpdateService();
+                    firebaseSignInService.firebaseAuthWithGoogle(account, new Callback.NoArg() {
+                        @Override
+                        public void call() {
+                            Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
+                            Log.d(TAG, "Saving user login details");
+                            saveUserLogin();
+                            launchFitnessActivity();
+                            launchUpdateService();
+                        }
+                    });
                 } catch (ApiException e) {
                     // Google Sign In failed, update UI appropriately
                     Log.d(TAG, "Google sign in failed", e);
@@ -358,6 +362,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void saveUserLogin() {
         Log.d(TAG, "Is user signed in = " + firebaseSignInService.isSignedIn());
+
         User appUser = User.getUser();
 
         appUser.addToDatabase(WalkWalkRevolutionApplication.adapter);
