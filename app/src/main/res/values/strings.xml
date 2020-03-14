@@ -81,9 +81,9 @@
     <string name="name_creator">Creator:</string>
     <string name="bt_proposeWalk">Propose Walk</string>
     <string name="title_proposeWalk">Propose Walk</string>
-    <string name="hint_time">Ex: 6pm</string>
-    <string name="hint_day">Ex: Wednesday</string>
-    <string name="name_day">Day:</string>
+    <string name="hint_time">HH:MM AM/PM</string>
+    <string name="hint_day">MM/DD/YYYY</string>
+    <string name="name_date">Date:</string>
     <string name="name_time">Time:</string>
     <string name="bt_sendProposeWalk">Send</string>
     <string name="header_invitationText">sent you a team invitation</string>
