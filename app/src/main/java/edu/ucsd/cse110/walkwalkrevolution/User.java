@@ -1,6 +1,9 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -9,10 +12,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
+
+import static java.lang.Thread.sleep;
 
 public class User {
 
@@ -47,6 +53,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     /**
