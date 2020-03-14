@@ -1,22 +1,40 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.common.util.ArrayUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -24,11 +42,14 @@ import static android.content.Context.MODE_PRIVATE;
 // store all routes and load routes from user preferences
 public class RoutesManager {
 
+
     private Context context;
     SharedPreferences savedRoutesInfo;
     SharedPreferences savedRoutesFeatures;
     SharedPreferences.Editor infoRouteEditor;
     SharedPreferences.Editor featureRouteEditor;
+
+    ArrayList<Route> firebaseRoutes;
 
     RoutesManager(Context currentContext) {
         context = currentContext;
@@ -38,6 +59,7 @@ public class RoutesManager {
                 context.getResources().getString(R.string.routeFeature_store), MODE_PRIVATE);
         infoRouteEditor = savedRoutesInfo.edit();
         featureRouteEditor = savedRoutesFeatures.edit();
+        firebaseRoutes = new ArrayList<>();
     }
 
     // load saved routes
@@ -48,6 +70,44 @@ public class RoutesManager {
             loadList.add(loadRoute(entry));
         }
         return loadList;
+    }
+
+    // load routes from Firebase
+    // load saved routes
+    public void loadAllFromFirebase(ListView teamList, Context context) {
+        firebaseRoutes = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("routes")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Route newRoute = document.toObject(Route.class);
+                                firebaseRoutes.add(newRoute);
+                                Log.d("teamRoutes", Integer.toString(firebaseRoutes.size()));
+
+                            }
+                            Log.d("teamRoutes", Integer.toString(firebaseRoutes.size()));
+                            RouteListAdapter customAdapter = new RouteListAdapter((Activity) context, firebaseRoutes);
+                            teamList.setAdapter(customAdapter);
+                            // Setup Onclick
+                            teamList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                                    gotoRoute(firebaseRoutes.get(position), context);
+                                }
+                            });
+                        }
+                    }
+                });
+
+    }
+
+    public  ArrayList<Route> getFirebaseRoutes() {
+        return firebaseRoutes;
     }
 
     public Route loadRoute(Map.Entry<String, ?> route) {
@@ -87,6 +147,9 @@ public class RoutesManager {
                 savedRoutesFeatures.getBoolean(
                         route.getKey() + R.string.favorite_tag, false)
         );
+
+        loadedRoute.setCreator(savedRoutesFeatures.getString(
+                route.getKey() + R.string.creator_tag, ""));
         return loadedRoute;
     }
 
@@ -117,15 +180,18 @@ public class RoutesManager {
         String notes = newRoute.getNotes();
         featureRouteEditor.putString(newRoute.getName() + R.string.notes_tag, notes);
 
-        String path = newRoute.getFeatures()[0];
+        String creator = newRoute.getCreator();
+        featureRouteEditor.putString(newRoute.getName() + R.string.creator_tag, creator);
+
+        String path = newRoute.getFeatures().get(0);
         featureRouteEditor.putString(newRoute.getName() + R.string.path_tag, path);
-        String terrain = newRoute.getFeatures()[1];
+        String terrain = newRoute.getFeatures().get(1);
         featureRouteEditor.putString(newRoute.getName() + R.string.terrain_tag, terrain);
-        String enviroment = newRoute.getFeatures()[2];
+        String enviroment = newRoute.getFeatures().get(2);
         featureRouteEditor.putString(newRoute.getName() + R.string.environment_tag, enviroment);
-        String surface = newRoute.getFeatures()[3];
+        String surface = newRoute.getFeatures().get(3);
         featureRouteEditor.putString(newRoute.getName() + R.string.surface_tag, surface);
-        String difficulty = newRoute.getFeatures()[4];
+        String difficulty = newRoute.getFeatures().get(4);
         featureRouteEditor.putString(newRoute.getName() + R.string.difficulty_tag, difficulty);
 
         boolean favorite = newRoute.getFavorite();
@@ -148,6 +214,7 @@ public class RoutesManager {
         featureRouteEditor.remove(name + R.string.path_tag);
         featureRouteEditor.remove(name + R.string.terrain_tag);
         featureRouteEditor.remove(name + R.string.environment_tag);
+        featureRouteEditor.remove(name + R.string.creator_tag);
         featureRouteEditor.remove(name + R.string.surface_tag);
         featureRouteEditor.remove(name + R.string.difficulty_tag);
         featureRouteEditor.remove(name + R.string.favorite_tag);
@@ -162,5 +229,17 @@ public class RoutesManager {
         featureRouteEditor.clear();
         infoRouteEditor.apply();
         featureRouteEditor.apply();
+    }
+
+    public void uploadRoute(Route route, FirebaseFirestoreAdapter adapter) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String docuName = route.getCreator() + "  " + route.getName();
+        db.collection("routes").document(docuName).set(route);
+    }
+
+    public void gotoRoute(Route selectedRoute, Context context) {
+        Intent intentRoute = new Intent(context, RouteActivity.class);
+        intentRoute.putExtra("route", selectedRoute);
+        context.startActivity(intentRoute);
     }
 }
