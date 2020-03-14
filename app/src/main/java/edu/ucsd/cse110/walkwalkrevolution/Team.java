@@ -34,13 +34,12 @@ public class Team {
     public void overwriteAddToDatabase(FirebaseFirestoreAdapter adapter, String[] ids) {
         Map<String, Object> data = new HashMap<>();
         data.put("members", users);
+        data.put("invited", new HashMap<>());
 
         // Database structure is "teams/<Random UUID>"
         Log.d(TAG, "Adding new team to the database as a document called '" + ids[1] + "'");
         Log.d(TAG, "Created with creator '" + cEmail + ": " + cName + "'");
         adapter.add(ids, data);
-
-        //
     }
 
     /**

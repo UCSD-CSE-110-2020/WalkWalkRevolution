@@ -102,6 +102,11 @@ public class FirebaseFirestoreAdapter {
         return ((DocumentReference) getDatabaseReference(ids));
     }
 
+    public CollectionReference collect(String[] ids) {
+        assert !isDocumentId(ids);
+        return ((CollectionReference) getDatabaseReference(ids));
+    }
+
     public void subscribeListener(String[] ids, String key, Consumer<Object> listener) {
         assert isDocumentId(ids);
         DocumentReference docRef = (DocumentReference) getDatabaseReference(ids);
