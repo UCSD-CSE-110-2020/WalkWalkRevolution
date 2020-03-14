@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.Calendar;
 
 public class RouteExtraActivity extends AppCompatActivity {
@@ -82,6 +85,12 @@ public class RouteExtraActivity extends AppCompatActivity {
         newRoute.setSteps(numSteps);
         float distance = Float.parseFloat(tempRoute.getString("distance", "0"));
         newRoute.setDistance(distance);
+        //set creator name
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userName = user.getDisplayName();
+
+        newRoute.setCreator(userName);
         newRoute.setNotes(tempRoute.getString("notes", ""));
         newRoute.setFavorite(favorite.isChecked());
         newRoute.setFeatures(tempRoute.getString("style", ""),tempRoute.getString("terrain", ""),
@@ -94,5 +103,8 @@ public class RouteExtraActivity extends AppCompatActivity {
         // save new route
         RoutesManager routesManager = new RoutesManager(this);
         routesManager.addRoute(newRoute);
+
+        //upload new route
+        routesManager.uploadRoute(newRoute, WalkWalkRevolutionApplication.adapter);
     }
 }

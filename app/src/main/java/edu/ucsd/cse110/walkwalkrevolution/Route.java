@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 // store a single route
@@ -17,9 +18,11 @@ public class Route implements Serializable {
     private Calendar lastRun;
 
     // Additional Features
-    private String features[];
+    private ArrayList<String> features;
     private String notes;
     private boolean isFavorite;
+
+    private String creator;
 
     /**
      * Constructors
@@ -31,8 +34,9 @@ public class Route implements Serializable {
         distance = 0;
         lastRun = null;
         notes = "error";
-        features = new String[5];
+        features = new ArrayList<String>(5);
         isFavorite = false;
+        creator = "ERROR";
     }
 
     Route(String name, String startingPoint) {
@@ -42,8 +46,9 @@ public class Route implements Serializable {
         distance = 0;
         lastRun = null;
         notes = "";
-        features = new String[5];
+        features = new ArrayList<String>(5);
         isFavorite = false;
+        creator = "ERROR";
     }
 
     Route(String name, String startingPoint, int steps, float distance,
@@ -56,8 +61,15 @@ public class Route implements Serializable {
         this.distance = distance;
         this.lastRun = lastRun;
         this.notes = notes;
-        features = new String[]{style, terrain, enviroment, surface, difficulty};
+        features = new ArrayList<String>(5);
+        features.add( style);
+        features.add(terrain);
+        features.add(enviroment);
+        features.add(surface);
+        features.add(difficulty);
+
         isFavorite = favorite;
+        creator = "ERROR";
     }
 
     /**
@@ -113,14 +125,15 @@ public class Route implements Serializable {
     public void setFeatures(String newPath, String newTerrain,
                             String newEnviroment, String newSurface,
                             String newDifficulty) {
-        features[0] = newPath;
-        features[1] = newTerrain;
-        features[2] = newEnviroment;
-        features[3] = newSurface;
-        features[4] = newDifficulty;
+        features = new ArrayList<String>(5);
+        features.add(newPath);
+        features.add(newTerrain);
+        features.add(newEnviroment);
+        features.add(newSurface);
+        features.add(newDifficulty);
     }
 
-    public String[] getFeatures() {
+    public ArrayList<String> getFeatures() {
         return features;
     }
 
@@ -138,6 +151,12 @@ public class Route implements Serializable {
 
     public boolean getFavorite() {
         return isFavorite;
+    }
+
+    public void setCreator(String name) { creator = name; }
+
+    public String getCreator() {
+        return creator;
     }
 
 }

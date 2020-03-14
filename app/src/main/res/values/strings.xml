@@ -9,7 +9,7 @@
     <string name="routeInfo_store">routes_info</string>
     <string name="routeFeature_store">routes_features</string>
     <string name="team_store">team</string>
-
+    <string name="creator_tag">_creator</string>
     <string name="steps_tag">_steps</string>
     <string name="distance_tag">_distance</string>
     <string name="year_tag">_year</string>
