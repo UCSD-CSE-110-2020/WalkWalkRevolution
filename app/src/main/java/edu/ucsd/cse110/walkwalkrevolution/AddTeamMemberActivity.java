@@ -2,10 +2,10 @@ package edu.ucsd.cse110.walkwalkrevolution;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +14,10 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static java.lang.Thread.sleep;
+
 public class AddTeamMemberActivity extends AppCompatActivity {
+    private static final String TAG = AddTeamMemberActivity.class.getSimpleName();
     User appUser;
 
     @Override
@@ -36,7 +39,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         bt_finishAddMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // name and emial must be entered
+                // name and email must be entered
                 if (((EditText) findViewById(R.id.box_name)).getText().toString().matches("")) {
                     Toast.makeText(AddTeamMemberActivity.this, "Please enter a name", Toast.LENGTH_SHORT).show();
                 }
@@ -44,8 +47,13 @@ public class AddTeamMemberActivity extends AppCompatActivity {
                     Toast.makeText(AddTeamMemberActivity.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    invite();
-                    gotoTeamMenu();
+                    Log.d(TAG, "Starting invite with valid name and email address");
+                    invite(new Callback() {
+                        @Override
+                        public void onCallback() {
+                            gotoTeamMenu();
+                        }
+                    });
                 }
             }
         });
@@ -53,10 +61,11 @@ public class AddTeamMemberActivity extends AppCompatActivity {
 
     public void gotoTeamMenu() {
         Intent intent = new Intent(this, TeamActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 
-    public void invite() {
+    public void invite(Callback callback) {
         checkIfTeamExists();
 
         EditText eName = (EditText) findViewById(R.id.box_name);
@@ -65,7 +74,8 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         String iName = eName.getText().toString().trim();
         String iEmail = eEmail.getText().toString().trim().toLowerCase();
         Invite invite = new Invite(this, appUser.getName(), iName, iEmail);
-        invite.addToDatabase(WalkWalkRevolutionApplication.adapter);
+        Log.d(TAG, "Requesting that invite be added to the database");
+        invite.addToDatabase(WalkWalkRevolutionApplication.adapter, callback);
     }
 
     private void checkIfTeamExists() {

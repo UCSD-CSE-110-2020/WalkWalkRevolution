@@ -47,7 +47,6 @@ public class Invite {
         invite.put("from", from);
         data.put("invite", invite);
 
-        // Database structure is "teams/<Random UUID>"
         Log.d(TAG, "Adding invite to '" + teamId  + "' from '" + from + "' to the user document ('" + ids[1] + "')");
         adapter.add(ids, data);
     }
@@ -65,7 +64,8 @@ public class Invite {
     /**
      * If the document exists, addToDatabase is a no-op
      */
-    public void addToDatabase(FirebaseFirestoreAdapter adapter) {
+    public void addToDatabase(FirebaseFirestoreAdapter adapter, Callback callback) {
+        Log.d(TAG, "Adding invite to the database");
         String[] collection = {"users"};
         CollectionReference usersRef = adapter.collect(collection);
         Query query = usersRef.whereEqualTo("email", email);
@@ -84,16 +84,18 @@ public class Invite {
                         List<DocumentSnapshot> users = query.getDocuments();
                         userIds[1] = users.get(0).getId();
                         overwriteAddToDatabase(adapter, userIds, teamId);
-                        addToTeam(adapter, teamIds);
+                        inviteToTeam(adapter, teamIds, callback);
                     } else {
                         Log.d(TAG, "User with email '" + email + "' does not exist, cannot invite.");
                     }
                 }
             }
         });
+        Log.d(TAG, "Exiting method");
     }
 
-    private void addToTeam(FirebaseFirestoreAdapter adapter, String[] teamIds) {
+    private void inviteToTeam(FirebaseFirestoreAdapter adapter, String[] teamIds, Callback callback) {
+        Log.d(TAG, "Refreshing team's invited list");
         DocumentReference docRef = adapter.get(teamIds);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -107,6 +109,7 @@ public class Invite {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(teamIds) + "' does exist, inviting.");
                         Map invited = (Map) document.get("invited");
                         overwriteAddToDatabase(adapter, teamIds, invited);
+                        callback.onCallback();
                     }
                 }
             }
