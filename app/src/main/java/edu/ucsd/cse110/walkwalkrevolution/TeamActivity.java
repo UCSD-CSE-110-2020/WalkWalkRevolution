@@ -70,7 +70,6 @@ public class TeamActivity extends AppCompatActivity {
         String teamId = Team.getTeam(this);
 
         if (!teamId.equals(getResources().getString(R.string.empty))) { // If team exists, hide button
-            bt_seeMyInvitation.setVisibility(View.INVISIBLE);
             Log.d(TAG, "Already a part of a team, hiding button.");
         } else {
             String[] ids = {"users", appUser.getName() + " " + appUser.getUid()};
@@ -83,10 +82,10 @@ public class TeamActivity extends AppCompatActivity {
                         if (document.exists()) {
                             Log.d(TAG, "User '" + java.util.Arrays.toString(ids) + "' exists, checking if invited.");
                             if (document.get("invite") == null) {
-                                bt_seeMyInvitation.setVisibility(View.INVISIBLE);
                                 Log.d(TAG, "User does not have an invitation, hiding button.");
                             }
                             else {
+                                bt_seeMyInvitation.setVisibility(View.VISIBLE);
                                 bt_seeMyInvitation.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {

@@ -50,9 +50,9 @@ public class ProposeWalkActivity extends AppCompatActivity {
                     Toast.makeText(ProposeWalkActivity.this, "Please enter a time", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    save(new Callback() {
+                    save(new Callback.NoArg() {
                         @Override
-                        public void onCallback() {
+                        public void call() {
                             goToWalk();
                         }
                     });
@@ -111,7 +111,7 @@ public class ProposeWalkActivity extends AppCompatActivity {
     }
 
 
-    public void save(Callback callback) {
+    public void save(Callback.NoArg callback) {
         // Get name of route
         String name = getIntent().getStringExtra("name");
         // Get location of route
