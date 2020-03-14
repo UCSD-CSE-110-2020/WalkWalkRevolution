@@ -30,12 +30,7 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_team_member);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        appUser = new User(name, email, uid);
+        appUser = (User) getIntent().getSerializableExtra("appUser");
 
         // Check if user pressed add button
         Button bt_finishAddMember = (Button) findViewById(R.id.bt_finishAddMember);
@@ -71,35 +66,18 @@ public class AddTeamMemberActivity extends AppCompatActivity {
     }
 
     public void invite(Callback callback) {
-        checkIfTeamExists();
+        if (Team.teamExists(this)) {
+            appUser.createTeam(this);
+        }
 
         EditText eName = (EditText) findViewById(R.id.box_name);
         EditText eEmail = (EditText) findViewById(R.id.box_gmail);
-
         String iName = eName.getText().toString().trim();
         String iEmail = eEmail.getText().toString().trim().toLowerCase();
+
         Invite invite = new Invite(this, appUser.getName(), appUser.getEmail(), iName, iEmail);
         Log.d(TAG, "Requesting that invite be added to the database");
         invite.addToDatabase(WalkWalkRevolutionApplication.adapter, callback);
         Notification.sendNotification(WalkWalkRevolutionApplication.adapter, iEmail, "Invitation", appUser.getName() + " sent you an invitation!");
     }
-
-    private void checkIfTeamExists() {
-        SharedPreferences teamSp = getSharedPreferences(getResources().getString(R.string.team_store), MODE_PRIVATE);
-        SharedPreferences.Editor teamSpEdit = teamSp.edit();
-
-        if (!teamSp.contains("teamId")) {
-            createTeam(teamSpEdit);
-        }
-    }
-
-    private void createTeam(SharedPreferences.Editor teamSpEdit) {
-        Team team = new Team(appUser);
-        String teamId = team.addToDatabase(WalkWalkRevolutionApplication.adapter);
-        teamSpEdit.putString("teamId", teamId);
-        teamSpEdit.commit();
-
-        // appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
-    }
-
 }

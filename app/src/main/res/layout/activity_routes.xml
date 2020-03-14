@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:text="@string/title_personal_routes"
         android:textColor="#8BC34A"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -35,12 +35,12 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <TextView
-        android:id="@+id/title_team_routes"
+        android:id="@+id/title_teamRoutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_team_routes"
         android:textColor="#8BC34A"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -62,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_team_routes"
+        app:layout_constraintTop_toBottomOf="@+id/title_teamRoutes"
         app:layout_constraintVertical_bias="0.0" />
 
     <ListView

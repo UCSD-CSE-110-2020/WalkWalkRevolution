@@ -1,5 +1,7 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Team {
 
@@ -63,5 +67,15 @@ public class Team {
             }
         });
         return ids[1];
+    }
+
+    static boolean teamExists(Context context) {
+        SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
+        return !teamSp.contains("teamId");
+    }
+
+    static String getTeam(Context context) {
+        SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
+        return teamSp.getString("teamId", context.getResources().getString(R.string.empty));
     }
 }

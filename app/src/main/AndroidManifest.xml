@@ -14,6 +14,7 @@
         <activity android:name=".ProposeWalkActivity" />
         <activity android:name=".AddTeamMemberActivity" />
         <activity android:name=".TeamActivity" />
+        <activity android:name=".TeamWalkActivity"></activity>
 
         <service android:name="com.google.firebase.messaging.FirebaseMessagingService">
             <intent-filter>

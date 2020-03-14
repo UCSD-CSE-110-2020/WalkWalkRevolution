@@ -14,16 +14,22 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.w3c.dom.Text;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class ProposeWalkActivity extends AppCompatActivity {
     DatePickerDialog datePicker;
     TimePickerDialog timePicker;
-    int day, month, year, hour, minutes;
+    int walkDay, walkMonth, walkYear, walkHour, walkMinutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +50,12 @@ public class ProposeWalkActivity extends AppCompatActivity {
                     Toast.makeText(ProposeWalkActivity.this, "Please enter a time", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    save();
-                    gotoMainMenu();
+                    save(new Callback() {
+                        @Override
+                        public void onCallback() {
+                            goToWalk();
+                        }
+                    });
                 }
             }
         });
@@ -56,9 +66,9 @@ public class ProposeWalkActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                day = calendar.get(Calendar.DAY_OF_MONTH);
-                month = calendar.get(Calendar.MONTH);
-                year = calendar.get(Calendar.YEAR);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                int month = calendar.get(Calendar.MONTH);
+                int year = calendar.get(Calendar.YEAR);
                 // date picker dialog
                 datePicker = new DatePickerDialog(ProposeWalkActivity.this,
                         R.style.DialogTheme,
@@ -66,6 +76,9 @@ public class ProposeWalkActivity extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 box_date.setText((month + 1) + "/" + day + "/" + year);
+                                walkDay = day;
+                                walkMonth = month;
+                                walkYear = year;
                             }
                         }, year, month, day);
                 datePicker.show();
@@ -78,8 +91,8 @@ public class ProposeWalkActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                hour = calendar.get(Calendar.HOUR_OF_DAY);
-                minutes = calendar.get(Calendar.MINUTE);
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int minutes = calendar.get(Calendar.MINUTE);
                 // time picker dialog
                 timePicker = new TimePickerDialog(ProposeWalkActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
@@ -87,6 +100,8 @@ public class ProposeWalkActivity extends AppCompatActivity {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int hour, int minutes) {
                                 box_time.setText((hour == 12 ? "12" : hour % 12) + ":" + minutes + " " + (hour / 12 == 1 ? "PM" : "AM"));
+                                walkHour = hour;
+                                walkMinutes = minutes;
                             }
                         }, hour, minutes, false);
                 timePicker.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
@@ -96,13 +111,27 @@ public class ProposeWalkActivity extends AppCompatActivity {
     }
 
 
-    public void save() {
+    public void save(Callback callback) {
+        // Get name of route
+        String name = getIntent().getStringExtra("name");
+        // Get location of route
+        String location = getIntent().getStringExtra("location");
+        // Get time of scheduling
+        Calendar cal = Calendar.getInstance();
+        cal.set(walkYear, walkMonth, walkDay, walkHour, walkMinutes, 0);
+        Timestamp time = new Timestamp(cal.getTimeInMillis());
+        // Get self-identifier
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String email = user.getEmail();
 
-
+        TeamWalk teamWalk = new TeamWalk(this, name, location, time, email);
+        teamWalk.addToDatabase(WalkWalkRevolutionApplication.adapter, callback);
     }
 
-    public void gotoMainMenu() {
-        Intent intentMainMenu = new Intent(this, HomeActivity.class);
-        startActivity(intentMainMenu);
+    public void goToWalk() {
+        Intent intent = new Intent(this, TeamWalkActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 }

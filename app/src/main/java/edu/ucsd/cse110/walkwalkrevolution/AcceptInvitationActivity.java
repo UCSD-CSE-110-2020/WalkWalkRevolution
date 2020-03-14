@@ -41,12 +41,7 @@ public class AcceptInvitationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_invitation);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        appUser = new User(name, email, uid);
+        appUser = (User) getIntent().getSerializableExtra("appUser");
 
         userIds = new String[]{"users", appUser.getName() + " " + appUser.getUid()};
         userRef = WalkWalkRevolutionApplication.adapter.get(userIds);

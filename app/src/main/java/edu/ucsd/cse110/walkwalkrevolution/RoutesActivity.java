@@ -31,7 +31,6 @@ import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 public class RoutesActivity extends AppCompatActivity {
 
     public static String TAG = "RoutesActivity";
-    private Context context;
     SharedPreferences teamSp;
     String teamId;
     ArrayList<String> teamMembers = new ArrayList<String>();
@@ -45,9 +44,7 @@ public class RoutesActivity extends AppCompatActivity {
 
         Log.d(TAG, "Creating routes list activity");
 
-        context = this;
-        teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
-        teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
+        teamId = Team.getTeam(this);
 
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
 
@@ -156,7 +153,7 @@ public class RoutesActivity extends AppCompatActivity {
     // load teammates
     public void loadTeammates(FirebaseFirestoreAdapter adapter) {
 
-        if (teamId.equals(context.getResources().getString(R.string.empty))) { // Make sure team exists
+        if (teamId.equals(getResources().getString(R.string.empty))) { // Make sure team exists
             teamMembers = new ArrayList<>();
             teamMembers.add("N/A");
         } else {

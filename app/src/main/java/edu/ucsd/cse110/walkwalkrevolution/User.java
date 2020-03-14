@@ -1,6 +1,7 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.View;
@@ -12,15 +13,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 
+import static android.content.Context.MODE_PRIVATE;
 import static java.lang.Thread.sleep;
 
-public class User {
+public class User implements Serializable {
 
     private static final String TAG = User.class.getSimpleName();
 
@@ -79,6 +82,18 @@ public class User {
                 }
             }
         });
+    }
+
+    public void createTeam(Context context) {
+        SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
+        SharedPreferences.Editor teamSpEdit = teamSp.edit();
+
+        Team team = new Team(this);
+        String teamId = team.addToDatabase(WalkWalkRevolutionApplication.adapter);
+        teamSpEdit.putString("teamId", teamId);
+        teamSpEdit.commit();
+
+        // appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
     }
 
 //    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {

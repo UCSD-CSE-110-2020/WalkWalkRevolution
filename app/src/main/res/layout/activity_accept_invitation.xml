@@ -6,6 +6,36 @@
     android:layout_height="match_parent"
     tools:context=".AcceptInvitationActivity">
 
+    <TextView
+        android:id="@+id/header_nameOfInviter"
+        android:layout_width="320dp"
+        android:layout_height="86dp"
+        android:text="@string/empty"
+        android:textAlignment="center"
+        android:textColor="#8BC34A"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.19" />
+
+    <TextView
+        android:id="@+id/header_invitationText"
+        android:layout_width="321dp"
+        android:layout_height="88dp"
+        android:text="@string/header_invitationText"
+        android:textAlignment="center"
+        android:textColor="#8BC34A"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.349" />
+
     <Button
         android:id="@+id/bt_acceptInvitation"
         android:layout_width="105dp"
@@ -32,34 +62,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.908" />
-
-    <TextView
-        android:id="@+id/header_invitationText"
-        android:layout_width="321dp"
-        android:layout_height="88dp"
-        android:text="@string/header_invitationText"
-        android:textAlignment="center"
-        android:textColor="#8BC34A"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.349" />
-
-    <TextView
-        android:id="@+id/header_nameOfInviter"
-        android:layout_width="320dp"
-        android:layout_height="86dp"
-        android:text="@string/empty"
-        android:textAlignment="center"
-        android:textColor="#8BC34A"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.507"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.19" />
 </androidx.constraintlayout.widget.ConstraintLayout>

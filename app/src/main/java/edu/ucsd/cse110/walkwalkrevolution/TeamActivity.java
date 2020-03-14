@@ -57,13 +57,13 @@ public class TeamActivity extends AppCompatActivity {
         });
 
         // Check if user pressed My invitation button
-        bt_seeMyInvitation = (Button) findViewById(R.id.bt_accept_team_walk);
+        bt_seeMyInvitation = (Button) findViewById(R.id.bt_myInvitation);
         checkIfInvited();
 
-        // Setup RouteManager
+        // Setup MembersManager
         MembersManager manager = new MembersManager(this);
 
-        // Load Route List
+        // Load Member List
         ListView list = (ListView) findViewById(R.id.teamList);
 
         manager.load(WalkWalkRevolutionApplication.adapter, list);
@@ -72,8 +72,7 @@ public class TeamActivity extends AppCompatActivity {
 
 
     private void checkIfInvited() {
-        SharedPreferences teamSp = getSharedPreferences(getResources().getString(R.string.team_store), MODE_PRIVATE);
-        String teamId = teamSp.getString("teamId", getResources().getString(R.string.empty));
+        String teamId = Team.getTeam(this);
 
         if (!teamId.equals(getResources().getString(R.string.empty))) { // If team exists, hide button
             bt_seeMyInvitation.setVisibility(View.INVISIBLE);
@@ -117,11 +116,13 @@ public class TeamActivity extends AppCompatActivity {
 
     public void gotoAddTeamMember() {
         Intent intentAddTeamMember = new Intent(this, AddTeamMemberActivity.class);
+        intentAddTeamMember.putExtra("appUser", appUser);
         startActivity(intentAddTeamMember);
     }
 
     public void gotoAcceptInvitation() {
         Intent intentAcceptInvitation = new Intent(this, AcceptInvitationActivity.class);
+        intentAcceptInvitation.putExtra("appUser", appUser);
         startActivity(intentAcceptInvitation);
     }
 }

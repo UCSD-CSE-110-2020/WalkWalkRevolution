@@ -40,8 +40,7 @@ public class MembersManager {
 
     MembersManager(Context currentContext) {
         context = currentContext;
-        teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
-        teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
+        teamId = Team.getTeam(context);
     }
 
     // load saved routes

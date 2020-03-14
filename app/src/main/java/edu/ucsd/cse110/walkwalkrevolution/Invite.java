@@ -72,8 +72,7 @@ public class Invite {
         CollectionReference usersRef = adapter.collect(collection);
         Query query = usersRef.whereEqualTo("email", inviteeEmail);
         String[] userIds = {"users", ""};
-        SharedPreferences teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
-        String teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
+        String teamId = Team.getTeam(context);
         String[] teamIds = {"teams", teamId};
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -95,6 +94,7 @@ public class Invite {
         });
         Log.d(TAG, "Exiting method");
     }
+
 
     private void inviteToTeam(FirebaseFirestoreAdapter adapter, String[] teamIds, Callback callback) {
         Log.d(TAG, "Refreshing team's invited list");

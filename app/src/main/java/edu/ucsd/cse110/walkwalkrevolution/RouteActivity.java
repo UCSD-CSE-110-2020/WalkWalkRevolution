@@ -101,6 +101,9 @@ public class RouteActivity extends AppCompatActivity {
                 gotoProposeWalk();
             }
         });
+        if (Team.teamExists(this)) {
+            bt_proposeWalk.setVisibility(View.GONE);
+        }
     }
 
     public void gotoRoutes() {
@@ -121,6 +124,8 @@ public class RouteActivity extends AppCompatActivity {
 
     public void gotoProposeWalk() {
         Intent intent = new Intent(this, ProposeWalkActivity.class);
+        intent.putExtra("name", route.getName());
+        intent.putExtra("location", route.getStartingPoint());
         startActivity(intent);
     }
 }

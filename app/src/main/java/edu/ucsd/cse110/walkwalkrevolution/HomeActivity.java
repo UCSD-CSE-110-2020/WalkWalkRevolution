@@ -301,8 +301,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void goToWalk() {
-        //Intent intent = new Intent(this, ScheduledWalksActivity.class);
-        //startActivity(intent);
+        Intent intent = new Intent(this, TeamWalkActivity.class);
+        startActivity(intent);
     }
 
     public void showHeightDialog() {

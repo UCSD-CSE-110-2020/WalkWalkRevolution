@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/title_Team"
+        android:id="@+id/title_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_team_walk"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <TextView
-        android:id="@+id/box_team_walk_name"
+        android:id="@+id/box_teamWalkName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty"
@@ -49,7 +49,7 @@
         app:layout_constraintVertical_bias="0.108" />
 
     <TextView
-        android:id="@+id/box_team_walk_date"
+        android:id="@+id/box_teamWalkDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty"
@@ -63,7 +63,7 @@
         app:layout_constraintVertical_bias="0.161" />
 
     <TextView
-        android:id="@+id/name_startingPoint"
+        android:id="@+id/name_teamWalkLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name_starting_point"
@@ -77,7 +77,7 @@
         app:layout_constraintVertical_bias="0.216" />
 
     <TextView
-        android:id="@+id/box_team_walk_start"
+        android:id="@+id/box_teamWalkLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -88,12 +88,12 @@
         app:layout_constraintHorizontal_bias="0.896"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_startingPoint"
+        app:layout_constraintStart_toEndOf="@+id/name_teamWalkLocation"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.216" />
 
     <TextView
-        android:id="@+id/name_status"
+        android:id="@+id/name_teamWalkStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name_status"
@@ -107,7 +107,7 @@
         app:layout_constraintVertical_bias="0.271" />
 
     <TextView
-        android:id="@+id/box_team_walk_status"
+        android:id="@+id/box_teamWalkStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
@@ -118,12 +118,12 @@
         app:layout_constraintHorizontal_bias="0.896"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_status"
+        app:layout_constraintStart_toEndOf="@+id/name_teamWalkStatus"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.271" />
 
     <ListView
-        android:id="@+id/teamList"
+        android:id="@+id/teamWalkList"
         android:layout_width="335dp"
         android:layout_height="298dp"
         android:background="@drawable/border"
@@ -138,7 +138,7 @@
         app:layout_constraintVertical_bias="0.54" />
 
     <Button
-        android:id="@+id/bt_accept_team_walk"
+        android:id="@+id/bt_acceptTeamWalk"
         android:layout_width="224dp"
         android:layout_height="40dp"
         android:background="#8BC34A"
@@ -152,7 +152,7 @@
         app:layout_constraintVertical_bias="0.798" />
 
     <Button
-        android:id="@+id/bt_time_decline_team_walk"
+        android:id="@+id/bt_timeDeclineTeamWalk"
         android:layout_width="224dp"
         android:layout_height="35dp"
         android:background="#8BC34A"
@@ -166,7 +166,7 @@
         app:layout_constraintVertical_bias="0.879" />
 
     <Button
-        android:id="@+id/bt_route_decline_team_walk"
+        android:id="@+id/bt_routeDeclineTeamWalk"
         android:layout_width="220dp"
         android:layout_height="52dp"
         android:background="#8BC34A"
@@ -179,7 +179,7 @@
         app:layout_constraintVertical_bias="0.976" />
 
     <Button
-        android:id="@+id/bt_schedule_team_walk"
+        android:id="@+id/bt_scheduleTeamWalk"
         android:layout_width="202dp"
         android:layout_height="42dp"
         android:background="#8BC34A"
@@ -193,7 +193,7 @@
         app:layout_constraintVertical_bias="0.834" />
 
     <Button
-        android:id="@+id/bt_withdraw_team_walk"
+        android:id="@+id/bt_withdrawTeamWalk"
         android:layout_width="202dp"
         android:layout_height="42dp"
         android:background="#8BC34A"
@@ -204,20 +204,6 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.921" />
-
-    <Button
-        android:id="@+id/bt_cancel_team_walk"
-        android:layout_width="202dp"
-        android:layout_height="42dp"
-        android:background="#8BC34A"
-        android:text="@string/cancelTeamWalk"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.879" />
+        app:layout_constraintVertical_bias="0.939" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

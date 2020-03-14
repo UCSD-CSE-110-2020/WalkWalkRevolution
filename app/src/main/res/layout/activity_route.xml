@@ -50,35 +50,20 @@
         app:layout_constraintVertical_bias="0.134" />
 
     <TextView
-        android:id="@+id/name_features"
+        android:id="@+id/box_startingPoint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/name_features"
-        android:textColor="#8BC34A"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_isFavorite"
-        app:layout_constraintVertical_bias="0.03" />
-
-    <TextView
-        android:id="@+id/box_creator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="85dp"
-        android:layout_marginTop="190dp"
         android:text="@string/empty"
         android:textColor="#8BC34A"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_creator"
-        app:layout_constraintTop_toBottomOf="@+id/box_isFavorite"
-        app:layout_constraintVertical_bias="0.01" />
+        app:layout_constraintStart_toEndOf="@+id/name_startingPoint"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.134" />
 
     <TextView
         android:id="@+id/name_lastWalked"
@@ -126,33 +111,33 @@
         app:layout_constraintVertical_bias="0.009" />
 
     <TextView
-        android:id="@+id/name_creator"
+        android:id="@+id/box_isFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="193dp"
-        android:text="@string/name_creator"
+        android:text="@string/empty"
+        android:textColor="#8BC34A"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.258"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/name_isFavorite"
+        app:layout_constraintTop_toBottomOf="@+id/box_lastWalked"
+        app:layout_constraintVertical_bias="0.026" />
+
+    <TextView
+        android:id="@+id/name_features"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name_features"
         android:textColor="#8BC34A"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.08"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name_isFavorite"
-        app:layout_constraintVertical_bias="0.017" />
-
-    <TextView
-        android:id="@+id/name_notes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/name_notes"
-        android:textColor="#8BC34A"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/box_features"
-        app:layout_constraintVertical_bias="0.028" />
+        app:layout_constraintVertical_bias="0.03" />
 
     <TextView
         android:id="@+id/box_features"
@@ -172,19 +157,18 @@
         app:layout_constraintVertical_bias="0.026" />
 
     <TextView
-        android:id="@+id/box_isFavorite"
+        android:id="@+id/name_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/empty"
+        android:text="@string/name_notes"
         android:textColor="#8BC34A"
-        android:textSize="25sp"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.258"
+        app:layout_constraintHorizontal_bias="0.073"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_isFavorite"
-        app:layout_constraintTop_toBottomOf="@+id/box_lastWalked"
-        app:layout_constraintVertical_bias="0.026" />
+        app:layout_constraintTop_toBottomOf="@+id/box_features"
+        app:layout_constraintVertical_bias="0.028" />
 
     <TextView
         android:id="@+id/box_notes"
@@ -204,34 +188,36 @@
         app:layout_constraintVertical_bias="0.031" />
 
     <TextView
-        android:id="@+id/box_startingPoint"
+        android:id="@+id/name_creator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="193dp"
+        android:text="@string/name_creator"
+        android:textColor="#8BC34A"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/name_isFavorite"
+        app:layout_constraintVertical_bias="0.017" />
+
+    <TextView
+        android:id="@+id/box_creator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="190dp"
         android:text="@string/empty"
         android:textColor="#8BC34A"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.029"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_startingPoint"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.134" />
-
-    <Button
-        android:id="@+id/bt_proposeWalk"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
-        android:background="#8BC34A"
-        android:text="@string/bt_proposeWalk"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.128"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_creator"
-        app:layout_constraintVertical_bias="0.511" />
+        app:layout_constraintStart_toEndOf="@+id/name_creator"
+        app:layout_constraintTop_toBottomOf="@+id/box_isFavorite"
+        app:layout_constraintVertical_bias="0.01" />
 
     <Button
         android:id="@+id/bt_startWalk"
@@ -242,9 +228,23 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name_creator"
-        app:layout_constraintVertical_bias="0.511" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.787" />
+
+    <Button
+        android:id="@+id/bt_proposeWalk"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:background="#8BC34A"
+        android:text="@string/bt_proposeWalk"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bt_startWalk"
+        app:layout_constraintVertical_bias="0.389" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
