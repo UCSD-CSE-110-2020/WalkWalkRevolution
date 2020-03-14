@@ -4,13 +4,29 @@
     android:layout_width="400dp"
     android:layout_height="75dp">
 
-    <ImageView
-        android:id="@+id/icon_memberInitials"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/desc_favorite_star"
-        android:padding="5dp" />
+    <RelativeLayout android:id="@+id/icon_initials"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/icon_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7.5dp"
+            android:contentDescription="@string/initials_icon"
+            android:src="@drawable/bg_icon" />
+
+        <TextView
+            android:id="@+id/icon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/empty"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/entry_member"
@@ -22,13 +38,13 @@
             android:id="@+id/entry_memberName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:text="@string/empty"
-            android:textSize="23sp"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#4d4d4d"
+            android:textSize="30sp"
             android:textStyle="bold" />
-
     </LinearLayout>
+
 </LinearLayout>

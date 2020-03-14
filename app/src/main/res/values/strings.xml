@@ -91,4 +91,5 @@
     <string name="bt_declineInvitation">DECLINE</string>
     <string name="header_nameOfInviter">NAME</string>
     <string name="bt_seeMyInvitation">My invitation</string>
+    <string name="initials_icon">Initials Icon</string>
 </resources>
