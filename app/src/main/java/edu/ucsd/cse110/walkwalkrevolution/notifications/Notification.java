@@ -2,6 +2,7 @@ package edu.ucsd.cse110.walkwalkrevolution.notifications;
 
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,5 +22,11 @@ public class Notification {
         data.put("title", title);
         data.put("text", text);
         adapter.add(ids, data);
+    }
+
+    public static void sendNotification(FirebaseFirestoreAdapter adapter, String toUserEmail, String title, String text) {
+        List<String> toUserEmails = new ArrayList<>();
+        toUserEmails.add(toUserEmail);
+        sendNotification(adapter, toUserEmails, title, text);
     }
 }

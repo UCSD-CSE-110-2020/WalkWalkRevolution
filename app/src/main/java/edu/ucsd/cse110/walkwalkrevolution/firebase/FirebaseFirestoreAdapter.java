@@ -161,19 +161,12 @@ public class FirebaseFirestoreAdapter {
                             Log.d(TAG, "New Notification" + dc.getDocument().getData());
                             Map<String, Object> data = dc.getDocument().getData();
                             if (data.containsKey("emails")) {
-                                Log.d(TAG, Arrays.toString(new List[]{(List<String>) data.get("emails")}));
-                                Log.d(TAG, currentUser);
                                 if (((List<String>)data.get("emails")).contains(currentUser)) {
                                     Log.d(TAG, "Creating notification");
                                     String title = data.get("title").toString();
                                     String text = data.get("text").toString();
                                     String docName = dc.getDocument().getId();
                                     factory.createNotification(context, R.drawable.ic_launcher_foreground, title, text, Integer.parseInt(String.valueOf(docName.hashCode())));
-
-                                    // Remove the notification document after it has been processed
-                                    //String[] ids = {"notifications", docName};
-                                    //Log.d(TAG, "Deleting " + docName);
-                                    //remove(ids);
                                 }
                             }
                             break;
