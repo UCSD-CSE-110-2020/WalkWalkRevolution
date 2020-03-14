@@ -35,6 +35,11 @@ public class Route implements Serializable {
         lastRun = null;
         notes = "error";
         features = new ArrayList<String>(5);
+        features.add("");
+        features.add("");
+        features.add("");
+        features.add("");
+        features.add("");
         isFavorite = false;
         creator = "ERROR";
     }
@@ -47,6 +52,11 @@ public class Route implements Serializable {
         lastRun = null;
         notes = "";
         features = new ArrayList<String>(5);
+        features.add("");
+        features.add("");
+        features.add("");
+        features.add("");
+        features.add("");
         isFavorite = false;
         creator = "ERROR";
     }
