@@ -2,14 +2,18 @@ package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +21,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -43,6 +49,8 @@ public class RoutesManager {
     SharedPreferences.Editor infoRouteEditor;
     SharedPreferences.Editor featureRouteEditor;
 
+    ArrayList<Route> firebaseRoutes;
+
     RoutesManager(Context currentContext) {
         context = currentContext;
         savedRoutesInfo = context.getSharedPreferences(
@@ -51,7 +59,7 @@ public class RoutesManager {
                 context.getResources().getString(R.string.routeFeature_store), MODE_PRIVATE);
         infoRouteEditor = savedRoutesInfo.edit();
         featureRouteEditor = savedRoutesFeatures.edit();
-
+        firebaseRoutes = new ArrayList<>();
     }
 
     // load saved routes
@@ -66,35 +74,41 @@ public class RoutesManager {
 
     // load routes from Firebase
     // load saved routes
-    /**
-    public ArrayList<Route> loadAllFromFirebase(FirebaseFirestoreAdapter adapter) {
-        if (routeId.equals(context.getResources().getString(R.string.empty))) { // Make sure team exists
-            ArrayList<Route> empty = new ArrayList<>();
-            return empty;
-        }
+    public void loadAllFromFirebase(ListView teamList, Context context) {
+        firebaseRoutes = new ArrayList<>();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("routes")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Route newRoute = document.toObject(Route.class);
+                                firebaseRoutes.add(newRoute);
+                                Log.d("teamRoutes", Integer.toString(firebaseRoutes.size()));
 
-        else {
-            String[] ids = {"routes", routeId};
-            DocumentReference ref = adapter.get(ids);
+                            }
+                            Log.d("teamRoutes", Integer.toString(firebaseRoutes.size()));
+                            RouteListAdapter customAdapter = new RouteListAdapter((Activity) context, firebaseRoutes);
+                            teamList.setAdapter(customAdapter);
+                            // Setup Onclick
+                            teamList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            Map data = (Map) document.get("members");
-                            ArrayList<String> members = new ArrayList<String>(data.values());
-                            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, members);
-                            list.setAdapter(customAdapter);
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+                                    gotoRoute(firebaseRoutes.get(position), context);
+                                }
+                            });
                         }
                     }
-                }
-            });
+                });
 
-        }
-    }*/
+    }
 
+    public  ArrayList<Route> getFirebaseRoutes() {
+        return firebaseRoutes;
+    }
 
     public Route loadRoute(Map.Entry<String, ?> route) {
         Calendar lastRun = null;
@@ -221,5 +235,11 @@ public class RoutesManager {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String docuName = route.getCreator() + "  " + route.getName();
         db.collection("routes").document(docuName).set(route);
+    }
+
+    public void gotoRoute(Route selectedRoute, Context context) {
+        Intent intentRoute = new Intent(context, RouteActivity.class);
+        intentRoute.putExtra("route", selectedRoute);
+        context.startActivity(intentRoute);
     }
 }

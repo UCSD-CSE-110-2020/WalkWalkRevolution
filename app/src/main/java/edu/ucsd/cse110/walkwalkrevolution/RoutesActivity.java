@@ -1,23 +1,42 @@
 package edu.ucsd.cse110.walkwalkrevolution;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
+
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class RoutesActivity extends AppCompatActivity {
 
     public static String TAG = "RoutesActivity";
+    private Context context;
+    SharedPreferences teamSp;
+    String teamId;
+    ArrayList<String> teamMembers = new ArrayList<String>();
+    ArrayList<Route> teamRouteList = new ArrayList<Route>();
+    RoutesManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +44,10 @@ public class RoutesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_routes);
 
         Log.d(TAG, "Creating routes list activity");
+
+        context = this;
+        teamSp = context.getSharedPreferences(context.getResources().getString(R.string.team_store), MODE_PRIVATE);
+        teamId = teamSp.getString("teamId", context.getResources().getString(R.string.empty));
 
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
 
@@ -62,7 +85,7 @@ public class RoutesActivity extends AppCompatActivity {
         });
 
         // Setup RouteManager
-        RoutesManager manager = new RoutesManager(this);
+        manager = new RoutesManager(this);
 
         // Route Testing (Alphebetical Order)
         //manager.clearRoutes();
@@ -78,7 +101,7 @@ public class RoutesActivity extends AppCompatActivity {
         manager.addRoute(new Route("aaadfdaaa", "ok"));
         */
 
-        // Load Route List
+        // Load Personal Route List
         ListView list = (ListView) findViewById(R.id.routeList);
 
         ArrayList<Route> routeList = manager.loadAll();
@@ -95,6 +118,19 @@ public class RoutesActivity extends AppCompatActivity {
                 gotoRoute(routeList.get(position));
             }
         });
+
+        // load teammate name
+        loadTeammates(WalkWalkRevolutionApplication.adapter);
+
+        for(String name: teamMembers) {
+            Log.d("teamMembers", name);
+        }
+
+        // load routes from database
+        // Load Route List
+        ListView teamList = (ListView) findViewById(R.id.teamRouteList);
+        manager.loadAllFromFirebase(teamList, this);
+
 
     }
 
@@ -116,4 +152,31 @@ public class RoutesActivity extends AppCompatActivity {
         intentRoute.putExtra("route", selectedRoute);
         startActivity(intentRoute);
     }
+
+    // load teammates
+    public void loadTeammates(FirebaseFirestoreAdapter adapter) {
+
+        if (teamId.equals(context.getResources().getString(R.string.empty))) { // Make sure team exists
+            teamMembers = new ArrayList<>();
+            teamMembers.add("N/A");
+        } else {
+            String[] ids = {"teams", teamId};
+            DocumentReference ref = adapter.get(ids);
+
+            ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            Map data = (Map) document.get("members");
+                            teamMembers = new ArrayList<String>(data.values());
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+
 }
