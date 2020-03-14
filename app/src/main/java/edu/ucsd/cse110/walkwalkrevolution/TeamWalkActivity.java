@@ -27,9 +27,12 @@ import com.google.firebase.firestore.FieldValue;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import edu.ucsd.cse110.walkwalkrevolution.notifications.Notification;
 
 public class TeamWalkActivity extends AppCompatActivity {
     private static final String TAG = TeamWalkActivity.class.getSimpleName();
@@ -38,6 +41,7 @@ public class TeamWalkActivity extends AppCompatActivity {
     Button bt_accept, bt_timeDecline, bt_routeDecline, bt_schedule, bt_withdraw;
     User appUser;
     String teamId;
+    String creatorEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +61,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_schedule = (Button) findViewById(R.id.bt_scheduleTeamWalk);
         bt_withdraw = (Button) findViewById(R.id.bt_withdrawTeamWalk);
 
-        appUser = User.getUser();
+        appUser = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
         teamId = Team.getTeam(this);
 
         // Check if user pressed home button
@@ -136,26 +140,30 @@ public class TeamWalkActivity extends AppCompatActivity {
         boxStatus.setText(((boolean) walk.get("status") ? "Scheduled" : "Proposed"));
         unhideAll();
 
-        String creator = (String) walk.get("creator");
+        creatorEmail = (String) walk.get("creator");
         Map responses = (Map) walk.get("response");
-        if (checkIfCreator(creator)) {
-            setupCreator();
+        if (checkIfCreator(creatorEmail)) {
+            setupCreator(members);
         }
         else {
             setupMembers();
         }
-        listResponses(members, responses, creator);
+        listResponses(members, responses, creatorEmail);
     }
 
-    private void setupCreator() {
+    private void setupCreator(Map<String, String> members) {
         bt_schedule.setVisibility(View.VISIBLE);
         bt_withdraw.setVisibility(View.VISIBLE);
         String[] ids = {"teams", teamId};
         Map<String, Object> data = new HashMap<>();
 
+        ArrayList<String> memberEmails = new ArrayList<>(members.keySet());
+        memberEmails.remove(creatorEmail);
+        Log.d(TAG, memberEmails.toString());
         bt_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification.sendNotification(WalkWalkRevolutionApplication.adapter, memberEmails, "Proposed walk update", "The proposed walk has now been scheduled");
                 Map<String, Object> walk = new HashMap<>();
                 walk.put("status", (Boolean) true);
                 data.put("walk", walk);
@@ -167,6 +175,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_withdraw.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification.sendNotification(WalkWalkRevolutionApplication.adapter, memberEmails, "Proposed walk update", "The proposed walk has now been withdrawn");
                 data.put("walk", FieldValue.delete());
                 WalkWalkRevolutionApplication.adapter.add(ids, data);
                 gotoMainMenu();
@@ -186,6 +195,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification.sendNotification(WalkWalkRevolutionApplication.adapter, creatorEmail, "Proposed walk update", appUser.getNickname() + " accepted your proposed walk");
                 response.put(appUser.getEmail(), "Accepted");
                 walk.put("response", response);
                 data.put("walk", walk);
@@ -197,6 +207,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_timeDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification.sendNotification(WalkWalkRevolutionApplication.adapter, creatorEmail, "Proposed walk update", appUser.getNickname() + " declined (bad time) your proposed walk");
                 response.put(appUser.getEmail(), "Declined (Bad Time)");
                 walk.put("response", response);
                 data.put("walk", walk);
@@ -208,6 +219,7 @@ public class TeamWalkActivity extends AppCompatActivity {
         bt_routeDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Notification.sendNotification(WalkWalkRevolutionApplication.adapter, creatorEmail, "Proposed walk update", appUser.getNickname() + " declined (not a good route for me) your proposed walk");
                 response.put(appUser.getEmail(), "Declined (Bad Route)");
                 walk.put("response", response);
                 data.put("walk", walk);

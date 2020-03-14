@@ -74,7 +74,7 @@ public class RoutesManager {
     // load routes from Firebase
     // load saved routes from Firebase, assuming that the ids specify a collection with documents
     // that are each serialized Route classes
-    public void loadAllFromFirebase(String[] ids, ListView listView, Context context) {
+    public void loadAllFromFirebase(String[] ids, Team team, ListView listView, Context context) {
         ArrayList<Route> firebaseRoutes = new ArrayList<>();
         WalkWalkRevolutionApplication.adapter.collect(ids)
                 .get()
@@ -88,7 +88,7 @@ public class RoutesManager {
                             }
                             Log.d(TAG, "Firebase routes size: " + Integer.toString(firebaseRoutes.size()));
                             Log.d(TAG, "Teammates routes: " + Arrays.toString(firebaseRoutes.toArray()));
-                            RouteListAdapter customAdapter = new RouteListAdapter((Activity) context, firebaseRoutes);
+                            RouteListAdapter customAdapter = new RouteListAdapter((Activity) context, firebaseRoutes, team);
                             listView.setAdapter(customAdapter);
                             // Setup onclick
                             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

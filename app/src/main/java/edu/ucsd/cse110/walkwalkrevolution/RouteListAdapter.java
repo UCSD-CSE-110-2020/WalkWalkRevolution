@@ -2,6 +2,10 @@ package edu.ucsd.cse110.walkwalkrevolution;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +17,19 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Map;
 
 class RouteListAdapter extends ArrayAdapter<String> {
+    private static String TAG = RouteListAdapter.class.getSimpleName();
     ArrayList<Route> routeData;
+    private Team team;
     private Activity context;
     private Integer[] favoriteImg;
 
-    public RouteListAdapter(Activity context, ArrayList<Route> routeData) {
+    public RouteListAdapter(Activity context, ArrayList<Route> routeData, Team team) {
         super(context, R.layout.route_list);
         this.routeData = routeData;
+        this.team = team;
         for(Route routeValues : routeData) {
             add(routeValues.getName());
         }
@@ -51,7 +59,7 @@ class RouteListAdapter extends ArrayAdapter<String> {
         startingPointText.setText("starting point: " + routeData.get(position).getStartingPoint());
         String stepsAndMilesString = "Steps: " + Integer.toString(routeData.get(position).getSteps())
                 + "  Distance: " + Float.toString(routeData.get(position).getDistance());
-       stepsAndMilesText.setText(stepsAndMilesString);
+        stepsAndMilesText.setText(stepsAndMilesString);
 
         Calendar lastRun = routeData.get(position).getLastRun();
 
@@ -61,6 +69,29 @@ class RouteListAdapter extends ArrayAdapter<String> {
             lastRunText.setText(lastRun.get(Calendar.MONTH) + "/" +
                     lastRun.get(Calendar.DAY_OF_MONTH) + "/" +
                     lastRun.get(Calendar.YEAR));
+        }
+
+
+        if (team.existsInDatabase()) {
+            // Add icon
+            ImageView iconImage = (ImageView) rowView.findViewById(R.id.icon_image);
+            TextView iconText = (TextView) rowView.findViewById(R.id.icon_text);
+
+            String name = routeData.get(position).getCreator();
+            Log.d(TAG, "Drawing icon for " + name);
+            team.reload(new Callback.NoArg() {
+                @Override
+                public void call() {
+                    iconImage.getDrawable().setColorFilter(team.getMemberColors().get(name).intValue(), PorterDuff.Mode.MULTIPLY);
+                    String initials = "" + Character.toUpperCase(name.charAt(0));
+                    for (int i = 1; i < name.length() - 1; i++) {
+                        if (name.charAt(i) == ' ') {
+                            initials = initials + (Character.toUpperCase(name.charAt(i + 1)));
+                        }
+                    }
+                    iconText.setText(initials);
+                }
+            });
         }
 
         // Parse Favorite or not

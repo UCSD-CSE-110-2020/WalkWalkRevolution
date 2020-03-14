@@ -4,17 +4,41 @@
     android:layout_width="400dp"
     android:layout_height="90dp">
 
+    <RelativeLayout android:id="@+id/icon_initials"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/icon_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_margin="7.5dp"
+            android:contentDescription="@string/initials_icon"
+            android:src="@drawable/bg_icon" />
+
+        <TextView
+            android:id="@+id/icon_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/empty"
+            android:textColor="@android:color/black"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/icon_favoriteStar"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:contentDescription="@string/desc_favorite_star"
         android:layout_gravity="center"
+        android:contentDescription="@string/desc_favorite_star"
         android:padding="5dp" />
 
     <LinearLayout
         android:id="@+id/entry_route"
-        android:layout_width="370dp"
+        android:layout_width="300dp"
         android:layout_height="90dp"
         android:orientation="vertical">
 

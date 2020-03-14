@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
+
 import static java.lang.Thread.sleep;
 
 public class TeamActivity extends AppCompatActivity {
@@ -31,7 +33,7 @@ public class TeamActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
 
-        appUser = User.getUser();
+        appUser = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
 
         // Check if user pressed home button
         Button bt_mainMenu = (Button) findViewById(R.id.bt_home);
@@ -110,13 +112,13 @@ public class TeamActivity extends AppCompatActivity {
 
     public void gotoAddTeamMember() {
         Intent intentAddTeamMember = new Intent(this, AddTeamMemberActivity.class);
-        intentAddTeamMember.putExtra("appUser", appUser);
+        //intentAddTeamMember.putExtra("appUser", appUser);
         startActivity(intentAddTeamMember);
     }
 
     public void gotoAcceptInvitation() {
         Intent intentAcceptInvitation = new Intent(this, AcceptInvitationActivity.class);
-        intentAcceptInvitation.putExtra("appUser", appUser);
+        //intentAcceptInvitation.putExtra("appUser", appUser);
         startActivity(intentAcceptInvitation);
     }
 }

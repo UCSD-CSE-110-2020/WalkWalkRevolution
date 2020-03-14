@@ -22,9 +22,10 @@ import java.util.Calendar;
 class MemberListAdapter extends ArrayAdapter<String> {
     ArrayList<String> memberData;
     ArrayList<String> invitedData;
+    private Team team;
     private Activity context;
 
-    public MemberListAdapter(Activity context, ArrayList<String> memberData, ArrayList<String> invitedData) {
+    public MemberListAdapter(Activity context, ArrayList<String> memberData, ArrayList<String> invitedData, Team team) {
         super(context, R.layout.route_list);
         this.memberData = memberData;
         for(String member : memberData) {
@@ -32,6 +33,7 @@ class MemberListAdapter extends ArrayAdapter<String> {
         }
         this.invitedData = invitedData;
         this.context = context;
+        this.team = team;
     }
 
     public MemberListAdapter(@NonNull Context context, int resource, @NonNull String[] objects) {
@@ -57,6 +59,9 @@ class MemberListAdapter extends ArrayAdapter<String> {
         int[] rainbow = context.getResources().getIntArray(R.array.rainbow);
         iconImage.getDrawable().setColorFilter(rainbow[position], PorterDuff.Mode.MULTIPLY);
         String name = memberData.get(position);
+        if (team != null) {
+            team.setColor(name, rainbow[position]);
+        }
         String initials = "" + Character.toUpperCase(name.charAt(0));
         for (int i = 1; i < name.length() - 1; i++) {
             if (name.charAt(i) == ' ') {

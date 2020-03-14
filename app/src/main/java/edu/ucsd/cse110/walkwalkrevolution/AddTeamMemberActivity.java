@@ -30,7 +30,8 @@ public class AddTeamMemberActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_team_member);
 
-        appUser = (User) getIntent().getSerializableExtra("appUser");
+        //appUser = (User) getIntent().getSerializableExtra("appUser");
+        appUser = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
 
         // Check if user pressed add button
         Button bt_finishAddMember = (Button) findViewById(R.id.bt_finishAddMember);

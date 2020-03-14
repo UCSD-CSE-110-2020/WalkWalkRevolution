@@ -40,7 +40,8 @@ public class AcceptInvitationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accept_invitation);
 
-        appUser = (User) getIntent().getSerializableExtra("appUser");
+        //appUser = (User) getIntent().getSerializableExtra("appUser");
+        appUser = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
 
         getInviter();
         // check if user pressed accept
@@ -166,6 +167,8 @@ public class AcceptInvitationActivity extends AppCompatActivity {
                                 });
                             }
                         });
+                    } else {
+                        team.removeColor(nickname);
                     }
                     WalkWalkRevolutionApplication.adapter.add(teamIds, data);
                     Log.d(TAG, "Removing from invited.");

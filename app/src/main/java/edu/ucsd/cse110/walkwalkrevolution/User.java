@@ -28,7 +28,7 @@ import edu.ucsd.cse110.walkwalkrevolution.firebase.FirebaseFirestoreAdapter;
 import static android.content.Context.MODE_PRIVATE;
 import static java.lang.Thread.sleep;
 
-public class User implements Serializable {
+public class User {
 
     private static final String TAG = User.class.getSimpleName();
 
@@ -42,12 +42,6 @@ public class User implements Serializable {
     private String[] ids;
 
     public User() {}
-
-    public User(String name, String email, String uid) {
-        this.name = name;
-        this.email = email;
-        this.uid = uid;
-    }
 
     public User(FirebaseFirestoreAdapter adapter, String name, String email, String uid) {
         this.adapter = adapter;
@@ -226,15 +220,6 @@ public class User implements Serializable {
         teamSpEdit.commit();
 
         // appUser.addTeamToDatabase(WalkWalkRevolutionApplication.adapter, teamId);
-    }
-
-    public static User getUser() {
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String name = user.getDisplayName();
-        String email = user.getEmail();
-        String uid = user.getUid();
-        return new User(name, email, uid);
     }
 
 //    public void addTeamToDatabase(FirebaseFirestoreAdapter adapter, String teamId) {

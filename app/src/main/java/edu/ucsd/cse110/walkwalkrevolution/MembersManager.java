@@ -48,10 +48,11 @@ public class MembersManager {
         if (teamId.equals(context.getResources().getString(R.string.empty))) { // Make sure team exists
             ArrayList<String> empty = new ArrayList<>();
             empty.add("Not currently in a team!");
-            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, empty, empty);
+            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, empty, empty, null);
             list.setAdapter(customAdapter);
         } else {
             String[] ids = {"teams", teamId};
+            Team team = new Team(WalkWalkRevolutionApplication.adapter, ids);
             DocumentReference ref = adapter.get(ids);
 
             ref.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -69,7 +70,7 @@ public class MembersManager {
                             ArrayList<String> membersList = new ArrayList<String>(members.values());
                             ArrayList<String> invitedList = new ArrayList<String>(invited.values());
                             membersList.addAll(invitedList);
-                            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, membersList, invitedList);
+                            MemberListAdapter customAdapter = new MemberListAdapter((Activity) context, membersList, invitedList, team);
                             list.setAdapter(customAdapter);
                         }
                     }

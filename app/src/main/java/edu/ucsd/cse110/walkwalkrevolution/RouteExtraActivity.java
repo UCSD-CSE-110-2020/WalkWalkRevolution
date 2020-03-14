@@ -85,12 +85,10 @@ public class RouteExtraActivity extends AppCompatActivity {
         newRoute.setSteps(numSteps);
         float distance = Float.parseFloat(tempRoute.getString("distance", "0"));
         newRoute.setDistance(distance);
-        //set creator name
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userName = user.getDisplayName();
 
-        newRoute.setCreator(userName);
+        //set creator name
+        User user = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
+        newRoute.setCreator(user.getNickname());
         newRoute.setNotes(tempRoute.getString("notes", ""));
         newRoute.setFavorite(favorite.isChecked());
         newRoute.setFeatures(tempRoute.getString("style", ""),tempRoute.getString("terrain", ""),

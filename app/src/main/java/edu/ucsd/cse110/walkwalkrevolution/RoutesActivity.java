@@ -104,10 +104,14 @@ public class RoutesActivity extends AppCompatActivity {
         // Load personal route UI list
         ListView personalListView = (ListView) findViewById(R.id.routeList);
 
+        // Load team
+        String[] teamIds = {"teams", teamId};
+        Team team = new Team(WalkWalkRevolutionApplication.adapter, teamIds);
+
         //ArrayList<Route> routeList = manager.loadAll();
         User user = new User(WalkWalkRevolutionApplication.adapter, FirebaseAuth.getInstance().getCurrentUser());
         String[] personalRouteIds = {"users", user.getDatabaseId(), "personal_routes"};
-        manager.loadAllFromFirebase(personalRouteIds, personalListView, this);
+        manager.loadAllFromFirebase(personalRouteIds, team, personalListView, this);
 
         // Load teammates
         loadTeammates(WalkWalkRevolutionApplication.adapter);
@@ -116,7 +120,7 @@ public class RoutesActivity extends AppCompatActivity {
         ListView teamRouteListView = (ListView) findViewById(R.id.teamRouteList);
         // Load routes from database
         String[] teamRouteIds = {"users", user.getDatabaseId(), "team_routes"};
-        manager.loadAllFromFirebase(teamRouteIds, teamRouteListView, this);
+        manager.loadAllFromFirebase(teamRouteIds, team, teamRouteListView, this);
     }
 
     public void gotoMainMenu() {

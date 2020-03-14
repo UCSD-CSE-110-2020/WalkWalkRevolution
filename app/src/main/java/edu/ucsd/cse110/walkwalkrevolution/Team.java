@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Arrays;
@@ -30,9 +31,11 @@ public class Team {
     // User mapping is email to nick name
     private Map<String, String> members;
 
+    // Colors mapping is nickname to color
+    private Map<String, Long> memberColors;
+
     // Creator info
     private String cName, cEmail;
-
 
     private FirebaseFirestoreAdapter adapter;
     private String[] ids;
@@ -42,11 +45,13 @@ public class Team {
         cName = user.getName();
         cEmail = user.getEmail();
         members = new HashMap<>();
+        memberColors = new HashMap<>();
         members.put(cEmail, cName);
     }
 
     public Team() {
-
+        members = new HashMap<>();
+        memberColors = new HashMap<>();
     }
 
     // Retrieve team from Firestore ids
@@ -55,9 +60,17 @@ public class Team {
         load(adapter, ids, null);
     }
 
+    public boolean existsInDatabase() {
+        return !(ids[ids.length - 1].equals("N/A"));
+    }
+
     public void load(FirebaseFirestoreAdapter adapter, String[] ids, Callback.NoArg callback) {
         this.adapter = adapter;
         this.ids = ids;
+        // Check if team doesn't exist
+        if (!existsInDatabase()) {
+            return;
+        }
         adapter.get(ids).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -67,6 +80,9 @@ public class Team {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' exists, loading team from it.");
                         Map<String, Object> data = document.getData();
                         members = (Map<String, String>)data.get("members");
+                        if (data.containsKey("member_colors")) {
+                            memberColors = (Map<String, Long>)data.get("member_colors");
+                        }
                     } else {
                         Log.d(TAG, "Document '" + java.util.Arrays.toString(ids) + "' does not exist.");
                     }
@@ -77,6 +93,28 @@ public class Team {
             }
         });
     }
+
+    public void reload(Callback.NoArg callback) {
+        load(adapter, ids, callback);
+    }
+
+    public void setColor(String name, int color) {
+        Log.d(TAG, "Adding color mapping: " + name + " -> "  + color);
+        memberColors.put(name, (long)color);
+        updateMemberColorsInDatabase();
+    }
+
+    public void removeColor(String name) {
+        Log.d(TAG, "Removing color mapping for " + name);
+        memberColors.remove(name);
+        updateMemberColorsInDatabase();
+    }
+
+    public Map<String, Long> getMemberColors() {
+        Log.d(TAG, "Retrieving member colors: " + memberColors.toString());
+        return memberColors;
+    }
+
 
     // Adds a user to the database with the mapping of user to nickname
     public void addUser(User user, String nickname) {
@@ -92,8 +130,20 @@ public class Team {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     Log.d(TAG, "Updating team's members.");
-                    //Map databaseMembers = (Map) document.get("members");
                     adapter.update(ids, "members", members);
+                }
+            }
+        });
+    }
+
+    public void updateMemberColorsInDatabase() {
+        adapter.get(ids).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Log.d(TAG, "Updating team members' colors.");
+                    adapter.update(ids, "member_colors", memberColors);
                 }
             }
         });
@@ -133,6 +183,7 @@ public class Team {
         Map<String, Object> data = new HashMap<>();
         data.put("members", members);
         data.put("invited", new HashMap<>());
+        data.put("member_colors", memberColors);
 
         // Database structure is "teams/<Random UUID>"
         Log.d(TAG, "Adding new team to the database as a document called '" + ids[1] + "'");
