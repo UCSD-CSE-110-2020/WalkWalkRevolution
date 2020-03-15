@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
@@ -19,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,13 +42,6 @@ public class FirebaseFirestoreAdapter {
 
     private static boolean isCollectionId(String ids[]) {
         return !isDocumentId(ids);
-    }
-
-    static <T> T[] append(T[] arr, T element) {
-        final int N = arr.length;
-        arr = Arrays.copyOf(arr, N + 1);
-        arr[N] = element;
-        return arr;
     }
 
     private Object getDatabaseReference(String[] ids) {
@@ -176,9 +167,6 @@ public class FirebaseFirestoreAdapter {
                                     String text = data.get("text").toString();
                                     String docName = dc.getDocument().getId();
                                     factory.createNotification(context, R.drawable.ic_launcher_foreground, title, text, Integer.parseInt(String.valueOf(docName.hashCode())));
-
-                                    // Remove document after it has been processed
-                                    remove(append(ids, docName));
                                 }
                             }
                             break;

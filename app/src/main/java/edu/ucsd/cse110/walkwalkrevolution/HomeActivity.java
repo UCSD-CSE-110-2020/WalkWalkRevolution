@@ -56,9 +56,7 @@ public class HomeActivity extends AppCompatActivity {
     private BroadcastReceiver updateBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (fitnessService != null) {
-                fitnessService.updateStepCount();
-            }
+            fitnessService.updateStepCount();
         }
     };
 
